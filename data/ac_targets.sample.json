@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Long Story Short",
+    "slug": "long-story-short",
+    "pages": {
+      "home": "https://공식도메인을-여기에.example.com/",
+      "services": "https://공식도메인을-여기에.example.com/services"
+    },
+    "news_queries": ["\"롱스토리숏\" 스타트업", "\"Long Story Short\" 액셀러레이터 한국"],
+    "watch_hints": "前 500 Global APAC 총괄 스카우트 예정 언급 있음 — 인력 영입 소식 중점 확인"
+  },
+  {
+    "name": "업라이트컨설팅 (Upright)",
+    "slug": "upright",
+    "pages": { "home": "http://upright.co.kr/" },
+    "news_queries": ["\"업라이트컨설팅\"", "\"업라이트\" IR 컨설팅 스타트업"],
+    "watch_hints": "IR 컨설팅 서비스 구성·가격 변경 여부"
+  },
+  {
+    "name": "Intralink",
+    "slug": "intralink",
+    "pages": {
+      "home": "https://www.intralinkgroup.com/ko-kr/",
+      "services": "https://www.intralinkgroup.com/ko-kr/corporate-services",
+      "news": "https://www.intralinkgroup.com/ko-kr/latest"
+    },
+    "news_queries": ["\"인트라링크\" 스타트업 해외진출", "\"Intralink\" Korea startup"],
+    "watch_hints": "해외진출 BD 서비스 범위·가격, 한국 오피스 인력 변동"
+  }
+]

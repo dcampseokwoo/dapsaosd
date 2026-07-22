@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.env
+checkpoints/
+data/*.xlsx
+!data/*.csv
+output/

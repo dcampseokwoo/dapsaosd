@@ -1,0 +1,426 @@
+행,국문 회사명,기존 스테이지,최신 스테이지,반영 여부,신뢰도,근거,출처 URL,비고
+4,엔씽,Series B,Series C,반영(교차 검증 완료),medium,"2025.4 기사 기준 시리즈C까지 누적투자금 381억원 이상 유치, 2026.3 삼성벤처투자 전략적 투자 유치 (아시아타임즈/플래텀)",https://www.asiatime.co.kr/article/20250425500001,2건 독립 검색으로 시리즈C 교차 확인
+5,캐비지,Series A,Pre-A,미반영(근거 부족),medium,"2023.7 프리시리즈A 19억 유치 후 2024.5, 2025.1 프리A 추가 투자로 누적 38억 (THE VC/와우테일)",https://thevc.kr/cabbage,THE VC 기준 최근 단계 Pre-A. 일부 자료(법률사무소 사유)는 동일 라운드를 시리즈A로 표기 — 기존 기재 Series A는 과대 기재 가능성
+6,메텍홀딩스,Series A,Series A,변경 없음,low,확인 불가,https://thevc.kr/metechholdings,2025년 보도 기준 시리즈A는 '상반기 유치 계획' 단계로 실제 클로징 기사 미확인. 2025.3 유라이크코리아 지분 51% 인수 등 활발히 사업 중
+10,스트레인지플래닛,Seed,Seed,변경 없음,medium,"THE VC 기준 투자 유치 1건, 최근 단계 Seed (프라이머 시드 투자, 2023)",https://thevc.kr/strangeplanet,2023.9 프라이머 데모데이 이후 Pre-A 유치 추진 언급 있었으나 클로징 확인 안 됨
+11,농업회사법인 머쉬앤,Seed,Seed,변경 없음,medium,THE VC 기준 투자 라운드 2건 모두 Seed 단계 (2024년경),https://thevc.kr/mushn,"2025 Future Food Asia Top10 선정, 해외 투자 유치 추진 중"
+17,꽃팜,Pre-A,Pre-A,변경 없음,medium,"2021.7 15억 규모 프리A 투자 유치 (플래텀), 이후 신규 라운드 보도 확인 안 됨",https://platum.kr/archives/149722,
+18,목장커머스,,알 수 없음,미반영(근거 부족),low,확인 불가,,"2017 플래텀 인터뷰 외 투자 유치 관련 정보 없음, 최근 활동 확인 불가"
+19,파이프트리스마트팜,Series A,Series A,변경 없음,high,"THE VC 기준 투자 유치 5건, 최근 단계 Series A, 총 21억원 이상 (투자자 4개사, 그린랩스 전략투자 포함)",https://thevc.kr/paiptreesmartfarm,
+20,클라이밋,Seed,Seed,변경 없음,low,확인 불가,,climeet 관련 신규 투자 보도 검색되지 않음. 동명 기관(임팩트클라이밋 등)과 혼동 주의
+23,팜커넥트,Pre-A,Pre-A,변경 없음,low,"ETRI홀딩스 기술출자·투자, 누적 투자금 3억원 확인되나 라운드 단계 명시 자료 없음 (넥스트유니콘)",https://thevc.kr/farmconnect,2024 이후 신규 라운드 보도 확인 안 됨
+27,마인드로직,Series B,Series B,변경 없음,high,"2024.3 시리즈B 70억 유치(이수만 프로듀서 참여), 누적 120억 (AI타임스/벤처스퀘어)",https://www.aitimes.com/news/articleView.html?idxno=158239,
+31,래블업,Series A,Series A,변경 없음,medium,"2023.4 시리즈A 105억 유치 (플래텀), 이후 시리즈B 등 신규 라운드 보도 확인 안 됨",https://platum.kr/archives/205678,
+35,사이오닉에이아이,Seed,Series A,반영,high,"2025.12 시리즈A 250억 유치(네이버클라우드·IBK 등), 누적 300억 돌파 (플래텀/와우테일/한국일보)",https://platum.kr/archives/275990,
+38,주식회사 더플레이토,Seed,Seed,변경 없음,high,2025.3 시드 8억 유치(스마일게이트인베스트먼트·매쉬업벤처스) — AI 노트테이커 '티로' 운영사 (플래텀/전자신문),https://platum.kr/archives/254067,
+39,클리카,Seed,Seed,변경 없음,high,2025.8 미국 플립 후 전략적 시드 유치(액센츄어 벤처스·IQT·마일마크캐피털 등) (와우테일/플래텀),https://wowtale.net/2025/08/22/245805/,본사 미국 플립 완료
+46,테파로보틱스,Pre-A,Pre-A,변경 없음,high,"2025.8 20억 규모 프리A 투자 유치, 퓨처플레이·IBK벤처투자·산은캐피탈 참여 (플래텀/한국경제)",https://platum.kr/archives/268027,
+47,르몽 주식회사,Pre-A,Pre-A,변경 없음,high,"2026.1 디캠프·블루포인트파트너스로부터 10억 규모 프리A 투자 유치, 누적 17억 (벤처스퀘어/스타트업투데이)",https://www.venturesquare.net/1033962,
+48,틸다,Pre-A,Pre-A,변경 없음,high,"2024.2 16억 규모 프리A 투자 유치, 우리벤처투자·신보·한국사회투자·디캠프·블루포인트 참여 (머니투데이)",https://news.mt.co.kr/mtview.php?no=2024022015401435869,2025년 일본 지사 설립 등 사업 확장 중이나 이후 신규 라운드 미확인
+49,와들,Pre-A,Pre-A,변경 없음,high,"카카오벤처스·본엔젤스·패스트벤처스로부터 20억 프리A 유치 (플래텀/AI타임스), 2026.2 미국 진출 기사에도 신규 라운드 언급 없음",https://platum.kr/archives/229365,
+58,MutoWorld,Seed,Seed,변경 없음,low,확인 불가,https://tracxn.com/d/companies/mutoworld/__Nt15EOrtv14HMu5k_9GS3oM4QGWJ53ckzudu8DTmj88,국내 언론 투자 기사 미발견. Tracxn에는 deadpooled(활동 중단)로 표기되나 웹사이트(mutoworld.bio)는 유지 중
+59,주식회사 라틀라스,Seed,Seed,변경 없음,high,"2022.1 프라이머 등으로부터 3억 시드 투자 유치, 이후 라운드 없음 (THE VC)",https://thevc.kr/lotlas,THE VC 기준 2024.12 폐업
+60,(주)깃플,M&A,M&A('21),반영,high,2021.8 마이데이터 사업자 한국금융솔루션이 깃플을 흡수합병 (플래텀/딜사이트),https://platum.kr/archives/170244,"단계는 동일(M&A), 연도('21)만 보완"
+62,바이오리서치에이아이,Pre-A,Pre-A,변경 없음,high,"2024.4 20억 규모 프리A 투자 유치, 누적 30억 (히트뉴스); 시리즈A는 추진 중으로 클로징 미확인",http://www.hitnews.co.kr/news/articleView.html?idxno=53701,
+65,더알파랩스,,Seed,"반영(공란 채움, medium)",medium,"AR 글래스 '알파글래스' 개발사로 네이버·HAX로부터 시드 투자 유치 (로켓펀치, 2016년경)",https://www.rocketpunch.com/companies/thealphalabs,2024년 이후 소식 없음. thealphalabs.com 도메인이 매물로 나와 있어 사실상 활동 중단 추정
+69,(주)컨트롤클로더,Series A,Series A,변경 없음,medium,"2020년 시리즈A 33억 마무리(누적 46억), 2022.1 클로버추얼패션 전략적 투자 (플래텀/한국섬유신문); 이후 신규 라운드 미확인",https://platum.kr/archives/150084,
+73,소리를보는통로,Pre-A,Series A,미반영(근거 부족),medium,2022.8 포스텍홀딩스·블루포인트 등으로부터 14억 규모 시리즈A 투자 유치 (플래텀/벤처스퀘어),https://platum.kr/archives/191053,2022년 기사 기반이나 복수 매체 및 THE VC에서 시리즈A 확인
+80,에임퓨처,Series B,Series B,변경 없음,medium,"공개 확인된 최근 라운드는 2023.7 시리즈A 50억 (ZDNet); 2024년말 시리즈B 150~200억 유치 착수, 2025 상반기 클로징 목표 (디일렉)",https://www.thelec.kr/news/articleView.html?idxno=28469,시리즈B 클로징 공식 보도는 미확인이나 기존 기재(Series B) 유지
+88,로아스,Pre-A,Pre-A,변경 없음,high,2025.4 IBK벤처투자·퓨처플레이 후속 10억 포함 프리A 총 40억 마무리 (ZDNet/와우테일),https://zdnet.co.kr/view/?no=20250428134814,
+91,웨이브덱,Seed,Seed,변경 없음,high,"THE VC 기준 2025년경 2억 규모 시드 투자 유치, 이후 라운드 없음",https://thevc.kr/wavedeck,
+94,룰루랩,Series C,Series C,변경 없음,medium,2022.7 200억 규모 시리즈C 마무리 (와우테일/더벨); 2024 IPO 추진 계획이었으나 상장 확인 안 됨,https://wowtale.net/2022/07/12/43279/,코스닥 상장 여부 검색 결과 미확인 — 시리즈C 유지
+101,써밋츠,Seed,Seed,변경 없음,high,"THE VC 기준 시드 라운드 8억원(약 2022~23년) 및 팁스 포함 누적 약 13억원, 이후 후속 라운드 확인 안 됨 (THE VC)",https://thevc.kr/summits,인도네시아 O2O 뷰티 시술 플랫폼 '마이비너스' 운영사로 동일성 확인
+102,시그니처레이블,Seed,Seed,변경 없음,high,2024.3 CJ인베스트먼트·에이티넘파트너스로부터 시드 투자 유치 (플래텀/머니투데이),https://platum.kr/archives/225026,
+103,오알엔피,Seed,Seed,변경 없음,medium,"2023.1 아모레퍼시픽그룹으로부터 4억원 투자 유치(케어드 운영사), 이후 신규 라운드 확인 불가 (THE VC/CEO스코어데일리)",https://thevc.kr/ornp,웰니스 스킨케어 브랜드 '케어드(kared)' 운영사로 동일성 확인
+113,문코퍼레이션,알 수 없음,알 수 없음,변경 없음,low,확인 불가,https://moneypin.biz/bizno/detail/1348730550/,"화장품 제조업 법인 등록 정보만 확인, 투자 유치 기사 없음"
+114,브로컬리컴퍼니,알 수 없음,알 수 없음,변경 없음,low,확인 불가,https://www.venturesquare.net/840417,"비건 스킨케어 'owndo°'·'어글리시크' 운영사. 크라우드펀딩 성공 이력만 확인, VC 투자 라운드 기사 없음"
+115,(주)헤이뷰티,Pre-A,Pre-A,변경 없음,medium,"시드(더벤처스·삼성벤처투자) 후 매쉬업엔젤스·디캠프 등 후속 투자가 마지막 라운드, THE VC 기준 2019.10 폐업 (THE VC/플래텀)",https://thevc.kr/heybeauty,2019년 10월 폐업 확인 — 최종 알려진 단계 유지
+117,콘스탄트,Series A,Series B,반영,high,2026.3 한국투자파트너스 주도 110억원 시리즈B 투자 유치(아모레퍼시픽·하나벤처스·디캠프 등 참여) (한국섬유신문/와우테일),https://www.ktnews.com/news/articleView.html?idxno=144337,탈모·두피케어 브랜드 '리필드(REFILLED)' 운영사
+118,레지에나,Seed,Series A,미반영(근거 부족),medium,"누적 25억원 투자 및 시리즈A 유치 언급(기업정보·인터뷰 자료), THE VC 투자 2건 기록",https://thevc.kr/REZIENA,시리즈A 명시 기사 원문 미확보 — 간접 근거로 medium. HIFU 홈뷰티 디바이스 기업으로 동일성 확인
+119,토브앤바나,Pre-A,Pre-A,변경 없음,low,2020 포스텍홀딩스 초기 투자 이후 신규 라운드 기사 확인 불가(2022년 시리즈A '준비 중' 언급만 존재) (매거진한경),https://magazine.hankyung.com/job-joy/article/202207199506d,화장품 샘플 플랫폼 '샘플로드' 운영사
+120,그레이웨일,알 수 없음,알 수 없음,변경 없음,low,확인 불가,https://ubiz.mt.co.kr/articleView.html?no=2023090417055040492,여성 이너케어 브랜드 '톡투허' 운영(개인사업자). 투자 유치 기사 없음
+121,베이직파이브,알 수 없음,알 수 없음,변경 없음,low,확인 불가,https://dcampletter.oopy.io/4b356fce-8e79-4f94-b24c-346332838c1a,"AI 헤어 컨설턴트 '헤어비' 운영, 2024년 1분기 디캠프·프론트원 입주기업. 투자 라운드 기사 없음"
+122,리퀴드네이션,Seed,Seed,변경 없음,high,"2023.6 베이스인베스트먼트·굿워터캐피탈 시드 투자 유치(소셜앱 ZELLU), 이후 신규 라운드 확인 안 됨 (플래텀/와우테일)",https://platum.kr/archives/209283,드리머리 운영사. 과거 드리머리 대상 프리A 언급도 있으나 최신 라운드(2023.6)는 시드로 보도됨
+126,(주)스페이스린텍,Series B,Series B,변경 없음,high,"2025.7 시리즈B 투자 유치(컴퍼니케이·스틱벤처스·신보·디캠프 등 참여, 약 50억 규모) (ZDNet Korea/더벨)",https://zdnet.co.kr/view/?no=20250712091336,
+128,제이앤피메디,Series A,Series A,변경 없음,high,"2022.11 파빌리온캐피탈 주도 140억원 시리즈A(누적 160억), 이후 네이버 D2SF·TBT 전략적 투자 있으나 시리즈B 명시 라운드 없음 (팜뉴스/THE VC)",https://www.pharmnews.com/news/articleView.html?idxno=214235,
+137,쓰리빌리언,Pre-IPO,IPO('24),반영,high,"2024.11.14 코스닥 상장 완료(공모가 4,500원, 시총 약 1,415억) (파이낸셜뉴스/회사 공지)",https://www.fnnews.com/news/202411141026352029,
+142,심플플래닛,Series A,Pre-A,미반영(근거 부족),medium,"2024.2 국내 VC로부터 80억원 프리시리즈A 유치, 누적 약 100억 (인베스트뉴스/이투뉴스)",https://www.investnews.co.kr/news/articleView.html?idxno=3001159,확인된 최신 공개 라운드는 2024.2 프리A(80억). 기록된 Series A는 공개 자료로 확인 불가.
+143,파이토리서치,Seed,Seed,변경 없음,low,"2024.2 설립 식물조직배양 스타트업, 2024 H-온드림 펠로 선발 외 공개 투자 라운드 확인 불가",https://www.nextunicorn.kr/company/39acd23e22284d47,누적 투자·단계 비공개.
+150,하이,Series B,Series B,변경 없음,high,"2022 시리즈B 75억 유치, 동화약품 전략적 투자자 참여, 누적 115억 (코메디닷컴)",https://kormedi.com/1545366/,이후 시리즈C 등 신규 라운드 확인 불가.
+174,슬로웨이브,Seed,Seed,변경 없음,medium,"2023.7 시드 투자 유치(스파크랩·킹슬리벤처스·디캠프·더벤처스), 이후 딥테크 팁스 선정 (벤처스퀘어)",https://www.venturesquare.net/887489,시드 이후 정식 후속 라운드 확인 불가.
+185,티알,Pre-A,Pre-A,변경 없음,medium,"2026.5 대웅제약·네이버 전략적 투자 유치, THE VC 최근 단계 Pre-A (와우테일/한경)",https://www.hankyung.com/article/202605158658i,2026.5 전략적 투자는 라운드 단계 비공개; THE VC상 최근 단계 Pre-A 유지.
+202,오션스바이오,Series A,IPO('25),반영,high,2025.1.14 한국거래소 코넥스(KONEX) 시장 신규 상장 (머니투데이/위키백과),https://news.mt.co.kr/mtview.php?no=2025011515590942855,"코넥스 상장. 상장 전 시리즈A(50억, 밸류 190억) 추진했으며 다음 목표 코스닥."
+209,블링커스,Pre-A,Pre-A,변경 없음,medium,2022.6 프리시리즈A 15억 유치(KB인베스트먼트·퓨처플레이·디캠프) (플래텀),https://platum.kr/archives/186848,2022 이후 신규 라운드 확인 불가.
+213,워시스왓,Series C,Series C,변경 없음,high,"2024.11 시리즈C 브릿지 70억 유치, 누적 510억 (와우테일/전자신문)",https://wowtale.net/2024/11/27/233821/,
+216,더클로젯컴퍼니,Series B,Series B,변경 없음,low,"공개 확인된 라운드는 2019.9 시리즈A 44억, 이후 누적 70억(카카오벤처스·롯데벤처스 등)",https://thevc.kr/theclozetcompany,시리즈B 명시 기사 미확인; 기록 단계 유지. 공개 최신은 시리즈A(2019)+후속 브릿지.
+223,엘알에이치알,Pre-A,Series A,반영,high,"2026.7 시리즈A 브릿지 투자 유치(스마일게이트·스파크랩), 패피스 운영사 (와우테일)",https://wowtale.net/2026/07/02/260991/,시리즈A 브릿지 라운드.
+224,바인드,Pre-A,Series B,반영,high,"2026.3 시리즈B 100억 유치, 남성패션 플랫폼 애슬러 운영사(컴퍼니케이 리드, 디캠프 후속) (플래텀/와우테일)",https://platum.kr/archives/283659,
+227,퍼스퍼트,알 수 없음,알 수 없음,변경 없음,low,펫테크(테일하이/요세미티펫) 스타트업; 공개 투자 라운드 확인 불가,https://www.rocketpunch.com/companies/firspurt,
+229,신발연구소,Pre-A,Pre-A,변경 없음,medium,"2018.9 UTC인베스트먼트 투자 유치(카카오인베스트먼트 기투자), 이후 2022.10 폐업 (THE VC/한국섬유신문)",https://thevc.kr/shoelab,2022.10 폐업.
+230,(주)멋집,Pre-A,Pre-A,변경 없음,low,"패션 스타트업 핫소스 운영사, THE VC 투자 2건(최근 단계 Pre-A), 2017.4 폐업 기록",https://thevc.kr/mutzip,THE VC상 2017.4 폐업 기록.
+231,텐시티,,알 수 없음,미반영(근거 부족),low,O2O 취미클래스(토마킷/공탐) 스타트업; 공개 투자 라운드 확인 불가,https://www.rocketpunch.com/companies/tencity,
+234,테일러타운,Series A,Series A,변경 없음,high,"2024.6 굿워터캐피탈 단독 54억원 시리즈A 유치, 누적 63억 (플래텀)",https://platum.kr/archives/230045,
+242,인에디트,Pre-A,Pre-A,변경 없음,medium,"2022.7 DCM벤처스·DG다이와벤처스 리드 프리시리즈A 유치, 이후 신규 라운드 보도 없음 (THE VC/원티드)",https://thevc.kr/inedit,YC 2021 배치 출신. 2024년 매출 40억 등 사업 지속 중
+251,비에이엠코퍼레이션,Seed,Seed,변경 없음,low,확인 불가 (투자 유치 관련 보도·THE VC 라운드 정보 미확인),https://bamcorp.oopy.io,이커머스 운영대행사로 사업 지속 중이나 외부 투자 라운드 뉴스 없음
+252,엔드앤드럭셔리,Seed,Seed,변경 없음,medium,"더벤처스·디캠프 시드 투자 (플래텀 2022), THE VC 투자 라운드 2건(Seed)이 최종",https://thevc.kr/endandluxury,B2B 중고 명품 거래 플랫폼 엔드앤드(ENDAND)
+253,사이클로이드,Seed,Seed,변경 없음,high,"2023.10 인포뱅크 시드 투자가 최종 라운드 (THE VC), 2025.4 신보 퍼스트펭귄 선정(보증 20억, 지분투자 아님)",https://thevc.kr/cycloid,"전기이륜차 플랫폼 '바드림' 운영, 사업 활발히 지속 중"
+258,트라이큐빅스코리아,Pre-A,Pre-A,변경 없음,low,THE VC 투자 3건(최근 단계 Seed 표기)이나 Pre-A 이후 신규 라운드 보도 미확인,https://thevc.kr/tricubicskorea,무인점포 AI 솔루션 '온더고'. 2021 씨엔티테크 TIPS 선정. 검색 노출되는 '큐빅(CUBIG)' 시리즈A(2025)는 동명이사 다른 회사
+259,누트컴퍼니,Pre-A,Pre-A,변경 없음,high,"2022.5 프리시리즈A 22억 이후 2023.9 굿노트 전략적 투자 25억(라운드 명칭 없는 SI 투자, 누적 57억) (플래텀/전자신문)",https://platum.kr/archives/214337,디지털 문구 플랫폼 '위버딩' 운영
+265,윤앤컴퍼니,Series A,Series A,변경 없음,low,타운어스 운영사 시절 디캠프·아이디어브릿지 10억 시리즈A(2016) 이후 신규 라운드 미확인 (이데일리/플래텀),https://www.edaily.co.kr/news/read?newsId=01597366612776184&mediaCodeNo=257,"구 법인 타운컴퍼니는 THE VC 기준 2020.4 폐업 처리, 윤앤컴퍼니 법인으로 타운어스 서비스 지속 중으로 추정"
+266,슈퍼갈땐슈퍼맨,Seed,Seed,변경 없음,medium,"2015.11 프라이머, 2016.1 SAZZE파트너스 시드 투자가 최종 (로켓펀치/THE VC)",https://thevc.kr/supermenz,2020.3.19 폐업
+267,이지앤모어,Seed,Seed,변경 없음,medium,"THE VC 투자 정보 1건(초기 임팩트 투자)뿐, 이후 라운드 보도 없음",https://thevc.kr/easeandmore,월경용품 소셜벤처. 최근 수년간 투자·사업 관련 신규 보도 없음
+268,(주)마켓공칠,M&A,M&A,변경 없음,low,창업자(김민준)의 크런치프라이스 매각 회고글로 매각 사실은 확인되나 인수 주체·연도 미확인,https://medium.com/@mjkim_54498/%ED%81%AC%EB%9F%B0%EC%B9%98-%ED%94%84%EB%9D%BC%EC%9D%B4%EC%8A%A4-%EC%83%88%EB%A1%9C%EC%9A%B4-%EB%8F%84%EC%A0%84%EC%9D%84-%EC%8B%9C%EC%9E%91%ED%95%98%EB%A9%B0-ba20c7ebb6db,크런치프라이스 쇼핑몰 서비스는 2022.3.17 종료. M&A 연도 특정 불가하여 연도 미기재
+269,원모먼트,Pre-A,Pre-A,변경 없음,medium,"2016 본엔젤스 4억 시드, 2018 캡스톤파트너스 5억 후속(누적 9억+) 이후 신규 라운드 보도 없음 (플래텀)",https://platum.kr/archives/92758,꽃배달 서비스 지속 운영 중(1moment.co.kr)
+275,마들렌메모리,Pre-A,Pre-A,변경 없음,high,2025.4 에이벤처스 리드 21억 프리A2 라운드 유치 (플래텀/바이라인네트워크),https://platum.kr/archives/257644,브랜드 리세일 솔루션 '릴레이' 운영
+279,남도마켓,Pre-A,Pre-A,변경 없음,high,2025.5 15억 추가 유치로 총 35억 규모 프리A 라운드 마무리 (와우테일),https://wowtale.net/2025/05/15/240881/,
+281,인플루디오,Series A,Series A,변경 없음,high,"2023.6 한국투자파트너스 리드 20억 시리즈A(누적 33억), 이후 신규 라운드 보도 없음 (플래텀)",https://platum.kr/archives/209243,K-pop 포토카드 플랫폼 '포카마켓' 운영
+290,인비저블아이디어,Pre-A,Pre-A,변경 없음,medium,"드라이브스루 앱 '스루' 운영사, 2022 시드 후 2023 하반기 프리A 라운드 유치 및 팁스 선정 (벤처스퀘어/넥스트라운드)",https://www.nextround.kr/startup/detail/2430,2024년 이후 후속 라운드 보도 없음
+295,인텔리시스,Pre-A,Pre-A,변경 없음,low,확인 불가 — AI 패션 큐레이션 '핏츠미' 운영사로 확인되나 2020년경 '프리A 유치 활동 중' 기사 외 최근 라운드 보도 없음,https://thevc.kr/intellisys,
+298,스튜디오랩,Pre-A,Pre-A,변경 없음,high,2025.2 SBI인베스트먼트 주도 33억 원 규모 프리A 라운드 마무리 (플래텀/머니투데이),https://platum.kr/archives/251656,"셀러캔버스→젠시(GENCY) 운영, CES 2년 연속 혁신상"
+307,주식회사 웨이브온,Seed,Seed,변경 없음,medium,"이놈들연구소(삼성 스핀오프 1호, 스마트밴드 Sgnl)에서 사명 변경한 회사로 확인, 2016.5 중국 창업방·DT캐피털 시드 이후 공개된 후속 라운드 없음 (THE VC)",https://thevc.kr/InnomdleLaboratory,노코드 툴 '웨이브온'(스카이링크)과 동명이인 주의
+308,커피팅,Seed,Seed,변경 없음,high,2024.3 프라이머로부터 시드 투자 유치 (플래텀/벤처스퀘어),https://platum.kr/archives/224538,
+309,닛픽,Seed,Seed,변경 없음,medium,"THE VC 기준 투자 라운드 Seed 1건이 전부, 이후 후속 라운드 없음",https://thevc.kr/nitpick,"'불편함' 앱 서비스는 인사이트랩에 양도(서비스 인수), 현재 icbox로 피벗한 것으로 보임"
+310,디에이엘컴퍼니,Seed,Seed,변경 없음,medium,"펨테크 '달채비' 운영사, 스마일게이트인베스트먼트 시드 투자 유치 (플래텀, 2022) 이후 후속 라운드 보도 없음",https://platum.kr/archives/182838,
+311,시놀,Seed,Seed,변경 없음,high,"2023.5 에이유엠벤처스 시드(3억) 등 시드 단계 투자만 확인, THE VC 기준 2026년 현재 Seed까지 유치 (머니투데이/THE VC)",https://thevc.kr/sinor,
+314,로쉬코리아,Pre-A,Pre-A,변경 없음,high,2024.5 유진자산운용·씨엔티테크·뉴본벤처스 프리A 투자 유치 (플래텀/와우테일),https://platum.kr/archives/228433,액티브시니어 브랜드 '오뉴' 운영
+318,팔루썸니,알 수 없음,알 수 없음,변경 없음,low,"확인 불가 — 김박사넷 운영사, 공개된 투자 라운드 정보 없음",https://www.rocketpunch.com/companies/palusomni,
+319,굳건,알 수 없음,알 수 없음,변경 없음,low,확인 불가 — 영어 커뮤니티 '던바이어스' 운영 중이나 공개된 투자 유치 정보 없음,https://www.rocketpunch.com/companies/gudgeon,
+320,"피움랩스 주식회사(Pium, Inc.)",Pre-A,Pre-A,변경 없음,medium,"THE VC 기준 총 5건 투자, 최근 단계 Pre-A (마지막 라운드 2019년경, 이후 신규 라운드 없음)",https://thevc.kr/PiumLabs,
+321,(주)이웃벤처,M&A,M&A('20),반영,high,2020.10 직방이 욕실·주방청소 서비스 '호텔리브' 운영사 이웃벤처 인수 (플래텀/전자신문),https://platum.kr/archives/149849,M&A 연도('20) 추가
+322,(주)노예스런,M&A,M&A,변경 없음,low,"확인 불가 — MEEFF(미프) 운영사, M&A 관련 보도·연도를 확인하지 못함 (THE VC에는 2020.5 영업종료로 표기되나 MEEFF 앱은 운영 지속)",https://thevc.kr/noyesrun,"M&A 연도 미확인으로 기존 표기 유지, 추가 확인 필요"
+323,로켓뷰(주),M&A,M&A('22),반영,high,2022.3 CJ올리브영이 '찍검' 운영사 로켓뷰 인수 (한국경제),https://www.hankyung.com/article/202203016077Y,M&A 연도('22) 추가. 법인은 2022.12 폐업 (THE VC)
+329,세븐픽쳐스,Pre-A,Pre-A,변경 없음,medium,"2022.9 넷플연가 운영사 세븐픽쳐스 14억 프리A 유치 (플래텀), 이후 신규 라운드 확인 안 됨",https://platum.kr/archives/193577,
+330,리브라이블리,Pre-A,Pre-A,변경 없음,medium,"2022.5 노리케어 운영사 시드 유치(디캠프·파인드어스), THE VC 투자 3건·2025년 프리A 후속 추진 언급 — 프리A 완료 기사 미확인",https://thevc.kr/livelively,"프리A 클로징 여부 명시 기사 없음, 기존 기록 유지"
+334,디스콰이엇,Pre-A,Pre-A,변경 없음,medium,"2022.11 프리A 유치(KB인베스트먼트·위벤처스·디캠프) (머니투데이), 이후 신규 라운드 확인 안 됨",https://news.mt.co.kr/mtview.php?no=2022110211210657834,
+338,콥틱,Series A,Series B,반영,high,"2025.4 시리즈B 80억 유치(헬리오스벤처스·KH벤처파트너스·산업은행), 2025.7 시리즈B 브릿지 20억 라운드 진행 (더벨)",https://www.thebell.co.kr/front/newsview.asp?code=0303&key=202507211514000440109463,
+339,몽가타,Pre-A,Pre-A,변경 없음,high,"THE VC 기준 투자 3건, 최근 단계 Pre-A (수면 솔루션 스웨이베드)",https://thevc.kr/mongata,
+345,나인투식스,Series A,Pre-A,미반영(근거 부족),medium,"THE VC/넥스트유니콘 기준 투자 3건, 최근 라운드 Pre-A(약 4년 전) — 시리즈A 유치 근거 미확인",https://thevc.kr/ninetosix,"기존 기록 Series A를 뒷받침하는 기사·DB 없음, THE VC 최신 단계 Pre-A로 정정"
+348,팩토리얼,Seed,Seed,변경 없음,medium,"소풍(sopoong)·SOPOONG 계열 초기(시드) 투자 이력만 확인, THE VC 기준 2026.1 폐업",https://thevc.kr/factoreal,2026년 1월 폐업 (THE VC)
+349,해브어,Seed,Seed,변경 없음,low,확인 불가,https://thevc.kr/havea,"2022.7 설립 하이엔드 홈퍼니싱 플랫폼, 공개된 투자 라운드 기사 없음"
+350,오렌지필드,Seed,Seed,변경 없음,high,"THE VC 기준 투자 1건, 최근 단계 Seed (여행·캠핑 분야, 2022.11 설립)",https://thevc.kr/orangefield,
+353,잇더컴퍼니,Pre-A,Pre-A,변경 없음,medium,"2021.2 뉴패러다임인베스트먼트 프리A 유치 (플래텀/딜사이트), 이후 신규 라운드 확인 안 됨",https://platum.kr/archives/157891,
+354,테이스트샵,Seed,Seed,변경 없음,medium,"매쉬업엔젤스 시드 후 SK플래닛·스프링캠프(2020.7) 투자, 누적 20.5억 — 시리즈A 명명 라운드 확인 안 됨",https://thevc.kr/tasteshop,저탄수 베이커리 '그림의빵(그림스브레드)' 운영
+356,리필리,Pre-A,Pre-A,변경 없음,high,"2022 시드 8억(블루포인트·롯데벤처스 등) 후 2024년 초 누적 18억 Pre-A 유치, THE VC 최근 단계 Pre-A",https://thevc.kr/refeely,
+358,리얼니즈,,알 수 없음,미반영(근거 부족),low,확인 불가,,"개인사업자(612-20-99018) 추정, 웹사이트 없음, 검색으로 동일 기업 식별 불가"
+359,포그라운드,,알 수 없음,미반영(근거 부족),low,확인 불가,,"성남 소재 인터랙티브 콘텐츠 개발사 포그라운드(주) 프로필만 확인, 투자 이력 정보 없음"
+365,파프리카데이터랩,Seed,Seed,변경 없음,medium,2023.2 한국투자액셀러레이터 시드1 유치 및 후속 시드 투자(폼빌더 '왈라' 운영사) (플래텀),https://platum.kr/archives/203253,"투자자에 스마일게이트인베스트먼트·더벤처스 포함, 시드 단계로 확인"
+369,(주)딥벨리데이션,Seed,Seed,변경 없음,medium,"2018.4 케이큐브벤처스·GS홈쇼핑·디캠프로부터 4.4억 시드 투자 유치 (플래텀), 이후 후속 라운드 보도 없음",https://platum.kr/archives/86594,2018년 시드 이후 투자·사업 관련 최신 보도가 확인되지 않음
+370,지와이네트웍스,M&A,M&A('21),반영,high,2021.10 OGQ가 지와이네트웍스 지분 100% 인수 (THE VC/언론 보도),https://thevc.kr/gynetworks,기존 M&A 기록에 인수 연도('21)만 보강
+371,디씨엑스코리아,,알 수 없음,미반영(근거 부족),low,확인 불가,,'디씨엑스코리아'/'클립채널' 관련 투자·기업 정보가 웹에서 확인되지 않음 (동명 타사만 검색됨)
+372,틱택코리아,알 수 없음,Series A,"반영(공란 채움, medium)",medium,"2024.7 싱가포르 본사 Tictag이 Telkomsel Ventures 주도 시리즈A 유치 (e27), 2022.6 프리A US$1.3M",https://e27.co/telkomsel-ventures-leads-data-and-ai-as-a-service-startup-tictags-series-a-round-20240716/,"틱택코리아는 싱가포르 Tictag Pte Ltd의 한국 법인, 라운드는 본사 기준"
+374,메이아이,Series A,Series A,변경 없음,high,"삼성벤처투자 주도 60억 시리즈A 유치(2023), 이후 시리즈B 보도 없음 (서울경제/THE VC)",https://thevc.kr/may-i,
+375,쿼리파이,Pre-A,Seed,미반영(근거 부족),medium,"2021.12 210억 규모 '프리퍼드 시리즈 시드' 라운드 (플래텀), 2024.3~5 세일즈포스벤처스·ZVC·신한벤처투자 전략투자로 누적 332억 (와우테일)",https://wowtale.net/2024/03/04/72838/,2024년 투자는 라운드명 없는 전략적 투자(SI)라 정식 시리즈 명칭은 Seed가 최신. 구 사명 체커(CHEQUER)
+380,스튜디오씨드,Series C,Series B,반영,high,"2025.1 LB인베스트먼트·산업은행 주도 300억 시리즈B 유치, 누적 500억 돌파 (한경/인베스트뉴스)",https://www.hankyung.com/article/202501223614i,"최신 라운드(2025.1, 300억)가 언론에 '시리즈B'로 명시되어 기존 기록 Series C가 과대 기재로 보임"
+384,비트바이트,Pre-A,Pre-A,변경 없음,medium,"2023.2 딜라이트룸 전략적 투자(라운드명 미공개)가 마지막, 누적 약 21.4억 (머니투데이/THE VC)",https://thevc.kr/bitbyte,
+389,탈잉,Series B,Series B,변경 없음,high,"THE VC 기준 최신 라운드 Series B(약 2021), 이후 신규 투자 유치 없음",https://thevc.kr/taling,마지막 투자 유치가 5년 이상 경과
+393,마블러스,Series A,Series A,변경 없음,medium,"2020.12 대교 등 시리즈A(누적 85억)가 최신, 이후 후속 라운드 보도 없음 (THE VC/기업 IR)",https://thevc.kr/marvrus,
+394,제로엑스플로우,Series A,Series A,변경 없음,high,"2023 하나벤처스 리드 35억 시리즈A 유치 (플래텀), 이후 후속 라운드 보도 없음",https://platum.kr/archives/218017,AI 영어 코스웨어 '원아워(1hour)' 운영사
+399,에피소든,Series A,Series A,변경 없음,high,2024.8 쿠팡 주도 45억 시리즈A 유치 (플래텀/머니투데이),https://platum.kr/archives/233509,
+401,한국교육파트너스 주식회사,Seed,Seed,변경 없음,high,2024.9 스마일게이트인베스트먼트·울산창조경제혁신센터 6억 시드 유치 (플래텀),https://platum.kr/archives/235311,"2025.9 입시컨설팅 '리베션'을 인수(피인수 아님, 와우테일)"
+402,더블유쓰리컴퍼니,Seed,Seed,변경 없음,high,"THE VC 기준 최신 라운드 Seed(약 2025), 이후 시리즈 라운드 보도 없음",https://thevc.kr/w3company,언어교환 앱 '모지(Moji)' 운영사
+403,미션드리븐,Seed,Seed,변경 없음,high,2025.2 MYSC로부터 두 번째 시드 투자 유치 (플래텀/와우테일),https://platum.kr/archives/252013,"중장년 커뮤니티 플랫폼 '큐리어스' 운영사, 프라이머 초기투자 포함 시드 단계"
+404,하와이컴퍼니,Seed,Seed,변경 없음,medium,2023.11 시드 유치(인포뱅크·경기창조경제혁신센터·파인드어스) 후 2023.12 그랜드벤처스 시드 추가 투자 (플래텀),https://platum.kr/archives/219987,"THE VC 기준 투자 3건·최근 라운드 존재 가능성 있으나 라운드명 미공개, 시리즈 라운드 근거 없음"
+405,더자람컴퍼니,Seed,Seed,변경 없음,medium,"그로우앤베터 운영사, 7억원 시드 투자 유치(미래과학기술지주·인포뱅크·마크앤컴퍼니·넥스트랜스) (데이터넷)",https://www.datanet.co.kr/news/articleView.html?idxno=171119,2024년 이후 추가 라운드 보도 확인 안 됨
+406,필로토,Seed,Seed,변경 없음,medium,"삼성전자 C랩 스핀오프, 삼성벤처투자(SVIC)로부터 첫 투자 유치, 2022.5 디캠프 디데이 우승 (서울경제/지디넷)",https://sedaily.com/NewsView/26DQL6923P,시리즈 라운드 유치 완료 보도 없음. 어린이 스마트기기 습관 교육 '타키' 운영
+407,문다,Seed,Seed,변경 없음,medium,"유초등 악기 레슨 O2O '문다', 디캠프·VNTG·부엉이벤처스 시드 투자 유치 (플래텀)",https://platum.kr/archives/179553,이후 추가 라운드 보도 확인 안 됨
+408,맞추다,Seed,Seed,변경 없음,medium,"자격증 CBT 에듀테크 '맞추다', 디캠프·문라이트파트너스 시드 투자 및 TIPS 선정 (인베스트뉴스)",https://www.investnews.co.kr/news/articleView.html?idxno=2677256,시드 이후 시리즈 라운드 보도 없음
+409,모킹버드,Seed,Seed,변경 없음,high,"AI 수능 모의고사 '모킹버드', 카이스트청년창업투자지주·한국투자액셀러레이터·디캠프 시드 투자 유치 (비석세스)",https://www.besuccess.com/ai-%EC%88%98%EB%8A%A5-%EB%8C%80%EB%B9%84-%EB%A7%9E%EC%B6%A4%ED%98%95-%EB%AA%A8%EC%9D%98%EA%B3%A0%EC%82%AC-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%AA%A8%ED%82%B9%EB%B2%84%EB%93%9C-%EC%8B%9C%EB%93%9C/,
+415,어브로딘,Pre-A,Pre-A,변경 없음,low,확인 불가 — THE VC에 투자 4건 기록되나 최근(2024~) 라운드명 공개 보도 없음,https://thevc.kr/Abroadin,"유학 플랫폼 '뉴학' 운영사, 현재 himeme 서비스 운영. Pre-A 이후 라운드 근거 없음"
+416,트이다,Pre-A,Series A,반영,high,2025년 JB인베스트먼트로부터 20억원 시리즈A 투자 유치 완료 (인베스트뉴스/매일일보),https://www.investnews.co.kr/news/articleView.html?idxno=3001730,"한국어 회화 앱 1위, 시리즈A로 글로벌 다국어 회화 앱 확장"
+417,아테나스랩,Pre-A,Pre-A,변경 없음,high,"2021.8 한국투자파트너스·스톤브릿지벤처스 등 7개사로부터 35억 프리시리즈A 유치, 이후 신규 라운드 보도 없음 (한국경제)",https://www.hankyung.com/article/202108260203i,'오늘학교' 운영사
+418,테스트뱅크,Pre-A,Pre-A,변경 없음,high,2024.3 신한캐피탈·퀀텀벤처스코리아 등으로부터 23억원 프리시리즈A 투자 유치 (와우테일),https://wowtale.net/2024/03/13/73455/,디지털 참고서 '쏠브' 운영사
+421,학생독립만세,M&A('21),M&A('21),변경 없음,high,"코드스테이츠가 소득공유(ISA) 교육 강화 위해 학생독립만세 100% 인수 (2021, 테크월드)",https://www.epnc.co.kr/news/articleView.html?idxno=212493,
+422,피스오브무드,Angel,Seed,미반영(근거 부족),low,"공개된 투자 이력 약 4,196만원+ 소규모 초기(엔젤/시드) 투자만 확인, 신규 라운드 보도 없음 (넥스트유니콘/질링크스)",https://www.nextunicorn.kr/company/b6fc6e8e7b754136,"택소노미상 Angel→Seed로 표기 정규화한 것으로, 새 라운드 발견은 아님. IT 프로젝트 플랫폼 '넘블' 운영"
+427,(주)티밸류와이즈,M&A,M&A,변경 없음,low,"확인 불가 — M&A 관련 보도 미발견, THE VC 기준 2023.11 폐업 처리 (THE VC)",https://thevc.kr/tvaluewise,"폐업(2023.11) 표기됨. 강사 리뷰 플랫폼 '별별선생' 운영사, 2019 카카오벤처스 10억 투자 이력. M&A 연도 확인 불가하여 연도 미기재"
+428,잼이지,,알 수 없음,미반영(근거 부족),low,확인 불가 — 2015 삼성 C랩 스핀오프 및 대구창조경제혁신센터 보육 지원 외 VC 라운드 보도 없음,https://www.venturesquare.net/747060,"바이올린 스마트 학습 디바이스 개발사, 최근 활동/투자 뉴스 부재"
+430,오누이,Series A,Series A,변경 없음,high,"2021.11 스트롱벤처스·KB인베스트먼트 등 140억 시리즈A 유치, 이후 시리즈B 보도 없음 (플래텀)",https://platum.kr/archives/175240,"온라인 과외 '설탭' 운영사, 누적 투자 약 160억"
+435,(주)베이비프렌즈,Pre-A,Pre-A,변경 없음,medium,"2017 카카오벤처스 등 6억·TIPS, 2018 신한카드·신한퓨처스랩 전략투자 이후 신규 라운드 확인 안 됨 (플래텀)",https://platum.kr/archives/100454,2024년 이후 투자 소식 없음
+437,하이퍼그로스,알 수 없음,알 수 없음,변경 없음,medium,"2022.9 '투자 유치 없이 3배 성장' 보도 — 무투자 부트스트랩 경영, 투자 라운드 없음 (전자신문)",https://www.etnews.com/20220901000224,"설립 첫해부터 흑자, 의도적으로 외부 투자 미유치"
+438,테이크원컴퍼니,Series D,Series D,변경 없음,medium,"누적 투자 500억(2024.12 추가 라운드 포함), 신영증권 주관 코스닥 상장 준비 중 — 상장 완료 확인 안 됨 (뉴스톱)",https://www.newstopkorea.com/news/articleView.html?idxno=23051,"IPO 예정(코스닥 준비 중), 2026.7 현재 상장 미확인"
+446,툰스퀘어,Series A,Series A,변경 없음,medium,"2022.7 시리즈A 유치(IPX·씨앤투스·앤파트너스, 기업가치 390억) 이후 시리즈B 미확인 (플래텀)",https://platum.kr/archives/192857,시리즈B는 목표 단계로만 언급됨 (2025 한국경제TV)
+447,오늘의웹툰,Series A,Pre-A,미반영(근거 부족),medium,"2022.8 프리시리즈A 21억 유치(캡스톤·라구나·크릿·디캠프·베이스, 누적 31억) — 이후 시리즈A 라운드 확인 안 됨 (플래텀)",https://platum.kr/archives/191475,"기존 기재 Series A의 근거를 찾지 못함, THE VC 최신 라운드도 프리A"
+455,티슈오피스,Seed,Seed,변경 없음,medium,"THE VC 기준 투자 유치 1건, 최근 라운드 Seed — 이후 라운드 확인 안 됨",https://thevc.kr/tissueoffice,메타버스 플랫폼 쿤트라(KUNTRA) 운영
+467,아들러,Pre-A,Pre-A,변경 없음,medium,2023.9 씨엔티테크로부터 투자 유치(금액 비공개) 이후 신규 라운드 확인 안 됨 (와우테일),https://wowtale.net/2023/09/22/63789/,
+468,스티팝,Pre-A,Pre-A,변경 없음,medium,2020.5 스냅·스트롱벤처스 등 130만달러 프리시리즈A 유치 이후 신규 라운드 확인 안 됨 (와우테일),https://wowtale.net/2020/05/27/13645/,
+469,리얼드로우,Pre-A,Series A,미반영(근거 부족),medium,"뉴스1 기사 '리얼드로우, 시리즈A 투자 유치' — 2023.12~2024.3 프리A(알토스벤처스 리드 22억) 이후 시리즈A 진행 (뉴스1)",https://www.news1.kr/industry/sb-founded/5338811,"기사 본문 접근 불가로 금액·일자 미확인, 제목상 시리즈A 명시"
+472,마이뮤직테이스트,M&A('22),M&A('22),변경 없음,high,2022.3 컴투스가 지분 58.47% 인수·경영권 확보 (ZDNet Korea),https://zdnet.co.kr/view/?no=20220328101440,
+474,핀즐,알 수 없음,Seed,"반영(공란 채움, medium)",medium,"2022.1 인터뷰 기준 엔젤투자 약 1억만 유치, 첫 기관(프리A) 라운드는 추진 중 단계 — 이후 기관 투자 확인 안 됨 (이코노미조선)",https://economychosun.com/site/data/html_dir/2022/01/17/2022011700011.html,엔젤투자만 확인되어 taxonomy상 Seed로 분류
+475,스트림뮤직,알 수 없음,알 수 없음,변경 없음,medium,"2024.9 인터뷰 — 투자 유치 없이 자체 자금으로 운영 중, 향후 유치 계획만 언급 (ZDNet Korea)",https://zdnet.co.kr/view/?no=20240913163948,"무투자 운영, 디캠프 디데이 본선 진출 이력"
+482,허니픽,,알 수 없음,미반영(근거 부족),low,확인 불가,,해외 스냅사진 촬영 매칭 서비스(honeypic.com)로 확인되나 투자 관련 보도 없음
+489,주식회사 필름플레이스코리아,알 수 없음,알 수 없음,변경 없음,low,확인 불가,,"2019년 싱가포르 설립 촬영지 예약 플랫폼의 한국법인, 투자 라운드 보도 없음"
+498,클레브레인,Seed,Seed,변경 없음,medium,"2023.10 국민대기술지주·디캠프 2.5억 시드 투자 및 팁스 협약, 프리시리즈A는 계획 단계 (와우테일)",https://wowtale.net/2023/10/24/65268/,프리A 유치 계획 언급 있었으나 완료 확인 안 됨
+499,렌지드,Seed,Seed,변경 없음,high,"THE VC 기준 투자 1건·최근 단계 Seed (2022.3 플레이리스트 전략투자, 지분 4%)",https://thevc.kr/lenged,"네이버제트 지분 8% 보유, 이후 신규 라운드 확인 안 됨"
+501,"Director Labs, Inc.",,알 수 없음,미반영(근거 부족),low,확인 불가,,미국 법인(EIN 형식 사업자번호)으로 추정되는 영상 프로덕션. 국내외 투자 유치 기록 검색되지 않음
+503,인쇼츠,Seed,Seed,변경 없음,medium,"2024.10 시드 2억원 투자 유치 (넥스트라운드/THE VC, AI 디지털 PPL 솔루션)",https://thevc.kr/inshorts,"쿠팡플레이·tvN 드라마에 AI PPL 적용(2025), 시드 이후 신규 라운드 확인 안 됨"
+504,브이피피랩,Series A,Series A,변경 없음,high,2024.12 시리즈A 투자 유치 - 제주창경센터·MYSC·스마일게이트인베스트먼트 (와우테일/유니콘팩토리),https://wowtale.net/2024/12/26/235244/,
+507,아헤스,Seed,Series A,반영,high,"2026.5 시리즈A 총 110억 클로징 - 스틱벤처스 리드, 프렌드투자·패스파인더에이치 후속 (더벨/딜사이트)",https://www.thebell.co.kr/front/newsview.asp?key=202605151121509720103165,디캠프도 시리즈A 1차(60억)에 참여
+510,(주)갭텍,알 수 없음,알 수 없음,변경 없음,low,확인 불가,https://wowtale.net/2025/09/15/247151/,"2025.9 디캠프 배치 4기 선발(최대 15억 투자 기회), 확정된 투자 라운드 기사 없음"
+511,코코액션클럽,,알 수 없음,미반영(근거 부족),low,확인 불가,,투자 유치 관련 기사·DB 기록 검색되지 않음
+513,(주)고퍼소프트,Seed,Seed,변경 없음,high,2024 스프링캠프 시드 투자 유치 및 TIPS 선정 (판교테크노밸리/THE VC 투자자 1개사),https://thevc.kr/gophersoft,
+515,코워크위더스(주),Pre-A,Pre-A,변경 없음,high,2025.11 프리A 투자 유치 - 본엔젤스·알로이스벤처스 (머니투데이),https://www.mt.co.kr/future/2025/11/13/2025111313492949683,
+516,메멘토,,알 수 없음,미반영(근거 부족),low,확인 불가,,"웰다잉 플래닝 서비스(개인사업자 추정), 투자 유치 기록 검색되지 않음"
+517,주식회사 고이장례연구소,Series A,Series A,변경 없음,high,"2025.11 시리즈A 90억 유치(누적 119억) - 신한벤처투자 리드, 디캠프 참여 (전자신문/플래텀)",https://www.etnews.com/20251126000450,
+519,이십사점오,Pre-A,Pre-A,변경 없음,high,2024.4 카이스트청년창업투자지주 프리A 후속투자 및 TIPS 선정 (디지털투데이),https://www.digitaltoday.co.kr/news/articleView.html?idxno=533004,슥삭/슈퍼패스 운영사
+520,이벤터스,Pre-A,Pre-A,변경 없음,medium,"2019.7 스트롱벤처스 프리시리즈A 투자 유치 (플래텀), 이후 신규 라운드 확인 안 됨",https://platum.kr/archives/125078,2024년 BEP 달성하며 투자 없이 운영 중으로 보임
+521,에스트데이,알 수 없음,알 수 없음,변경 없음,low,확인 불가,https://www.crunchbase.com/organization/est-day,"셀프웨딩 준비 서비스 EST.DAY(2017 설립)로 추정, Crunchbase 기준 영업종료(Closed) 표기. DB의 웹사이트(estaid.ai)는 상장사 이스트에이드로 동명이인 주의"
+524,패션을부탁해,Seed,Seed,변경 없음,medium,스타일쉐어 4억 시드 전략투자 유치 (THE VC/로켓펀치),https://thevc.kr/pleasefashion,2019.10 폐업 상태로 확인됨
+525,(주)위클리셔츠0529,Seed,Seed,변경 없음,medium,"2017년 케이큐브벤처스·디캠프 등 5억 시드 유치가 마지막, 2019년말경 서비스 종료 (플래텀/THE VC)",https://thevc.kr/Weeklyshirts0529,셔츠 정기배송 서비스 2019년말 폐업/서비스 종료로 확인됨
+527,한국신용데이터,Series E ~,Series E ~,변경 없음,high,"2023.8 모간스탠리 택티컬밸류 1,000억 유치, 기업가치 1.3조 유니콘 — 이후 신규 라운드 없음 (플래텀)",https://thevc.kr/koreacreditdata,"2025년 연결매출 1,620억, IPO 준비 단계 언급"
+530,에잇퍼센트,Series D,Series D,변경 없음,medium,"2024~2026년 신규 지분 라운드 확인 안 됨, 온투업 기관투자 연계 확장 중 (THE VC/이코노미스트)",https://thevc.kr/eightpercent,
+532,자비스앤빌런즈,Series C,Series C,변경 없음,medium,"2022.3 300억 시리즈C 이후 완료된 신규 라운드 없음, 1,500억 프리IPO 유치 추진 중 (녹색경제신문)",https://www.greened.kr/news/articleView.html?idxno=340932,"Pre-IPO 추진 중(미완료), 2~3년 내 IPO 계획 보도(아시아투데이 2026.3)"
+533,핀다,Series C,Series C,변경 없음,high,"2023.7 JB금융그룹·500글로벌 470억 시리즈C 유치, 이후 신규 라운드 없음 (핀다 뉴스룸)",https://www.post.finda.co.kr/news230727,
+536,모인,Series B,Series B,변경 없음,high,"2022.3 172억 시리즈B 유치(누적 260억), 이후 신규 라운드 확인 안 됨 (플래텀)",https://platum.kr/archives/181806,
+537,올라핀테크,Series B,Series B,변경 없음,high,"2025.1 KB국민카드 등 120억 시리즈B 유치, KB국민카드 2대주주 (플래텀/머니투데이)",https://platum.kr/archives/251384,
+542,트레져러,Series A,Series A,변경 없음,high,2023 두나미스자산운용 참여 시리즈A 유치가 최신 (플래텀/THE VC),https://platum.kr/archives/205556,2026.4 창업도약패키지 선정 등 영업 지속 중
+543,캐시멜로,Series A,Series A,변경 없음,high,"THE VC 기준 최근 라운드 Series A(투자 5건), 이후 신규 라운드 확인 안 됨",https://thevc.kr/cashmallow,
+544,인포플러스,Series A,Series A,변경 없음,high,2022.10 60억 시리즈A + 2023.3 20억 시리즈A 브릿지(IBK기업은행 등)가 최신 (와우테일/플래텀),https://wowtale.net/2022/10/21/47537/,
+555,바이올렛페이 주식회사,Seed,Pre-A,반영,high,"2025.12 SJ투자파트너스 프리시리즈A 투자 유치 (한경 매거진 2026.2, THE VC 투자자 6개사)",https://thevc.kr/violetpay,"온라인 계좌결제 'point3' 운영, 디캠프 배치 5기 선정"
+556,유동산,Seed,Seed,변경 없음,medium,"프라이머 시드팁스 데모데이 참여 등 시드 단계 확인, 이후 시리즈 라운드 보도 없음 (THE VC/프라이머)",https://thevc.kr/youdongsan,"선순위 부동산 투자자문 플랫폼, 2022.12 설립"
+557,어드바이저로렌,Seed,Seed,변경 없음,high,"THE VC 기준 투자 라운드 Seed 1건(약 2024년)이 전부, 이후 신규 라운드 없음",https://thevc.kr/advisorlauren,"AI 주식투자 정보 서비스 '돌핀' 운영, 2026.3 기준 임직원 11명"
+558,비트로봇,Seed,Seed,변경 없음,medium,"THE VC 기준 Seed 라운드(2018년경)가 마지막, 이후 신규 라운드 확인 안 됨",https://thevc.kr/bitrobot,"가상자산 커스터디 '커스토디움' 운영. 해외 동명 프로젝트 BitRobot(FrodoBots, $8M)와 별개 회사"
+559,타임퍼센트,Seed,Seed,변경 없음,high,"2022.10 퓨처플레이·디캠프 등 11.5억 시드 유치, 2026.2 씨엔티테크 후속 투자도 시드 단계 (플래텀/와우테일)",https://wowtale.net/2026/02/12/254545/,
+560,아이씨,Seed,Seed,변경 없음,low,확인 불가 (2023 TIPS 선정·디캠프 디데이 선정 외 별도 라운드 보도 없음),https://thevc.kr/aicy,AI 재무관리 솔루션 '파이넥스(finex)' 운영사
+577,위즈페이스,Pre-A,Pre-A,변경 없음,medium,"2022 프리시리즈A 240만 달러(약 31억원) 유치, C3 VC 리드 (더구루); 이후 라운드 보도 없음",https://theguru.co.kr/news/article.html?no=37870,가상자산 소셜트레이딩 '리그오브트레이더스' 운영
+578,모두의회계,Pre-A,Pre-A,변경 없음,medium,에버그린투자파트너스 Pre-A 투자 + TIPS 포함 약 12억원 확보 (벤처스퀘어); 이후 라운드 확인 안 됨,https://www.venturesquare.net/854792/,세금신고 서비스 '머니핀' 운영
+579,네이앤컴퍼니,Pre-A,Pre-A,변경 없음,high,"THE VC 최근 단계 Pre-A (총 4건, 12억원+); 2023.4 NBH캐피탈·MYSC 8억 브릿지 투자 (플래텀)",https://thevc.kr/neincompany,대중교통 리워드 앱 '네이버스' 운영
+580,오프널,Pre-A,Pre-A,변경 없음,medium,2022.8 신한캐피탈·인포뱅크 등 프리A 유치 (플래텀); 이후 신규 라운드 보도 없음,https://platum.kr/archives/190304,BNPL 서비스 '소비의미학(SSOMEE)' 운영
+581,에이엠매니지먼트,Pre-A,Series A,반영,high,"2024.12 시리즈A 유치, 2025.3 루스벤처스·일본 J-CAM 시리즈A 추가 투자 (디지털데일리), 2025.9 우리금융 디노랩 펀드 투자 (와우테일)",https://www.ddaily.co.kr/page/view/2025031210452134950,퀀트 기반 디지털자산 투자솔루션 '퀀트나우'
+592,에이셀테크놀로지스,M&A('21),M&A('24),반영,high,"2024.11 한경미디어그룹이 인수, 2025.1 사명 '한경에이셀'로 변경 (한국경제); 앞서 2022.8 피스컬노트 인수 완료",https://www.hankyung.com/article/2025020304371,"대체데이터 기업. 피스컬노트 인수(계약 '21.12, 완료 '22.8) 후 2024년 한경미디어그룹에 재매각"
+595,코인매니저,알 수 없음,Seed,"반영(공란 채움, medium)",medium,"해시드(HASHED) 투자 유치 (라운드명 미상, 2018년경 회사 채용글 언급)",https://medium.com/coinmanager/%EC%BD%94%EC%9D%B8%EB%A7%A4%EB%8B%88%EC%A0%80-%ED%8C%80%EC%97%90%EC%84%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EB%A5%BC-%EA%B5%AC%ED%95%A9%EB%8B%88%EB%8B%A4-3fdc4bbac183,라운드 명칭 미공개 초기(엔젤/시드성) 투자로 판단. 2024년 이후 활동 뉴스 확인 안 됨
+596,이오스노드원,알 수 없음,알 수 없음,변경 없음,low,확인 불가,,EOS 블록프로듀서(노드 운영) 관련 기업으로 추정되나 투자 유치 정보 없음
+597,아이벡스랩,알 수 없음,알 수 없음,변경 없음,low,확인 불가,,"이현석 대표, 직원 5명 규모(질링크스/혁신의숲 등재)이나 투자 라운드 정보 없음"
+598,이노밧,알 수 없음,Seed,"반영(공란 채움, medium)",medium,"2025.9 매거진한경 인터뷰: 소수 전략적 투자자로부터 초기 투자 유치, 사우디 투자 유치 마무리 단계",https://magazine.hankyung.com/job-joy/article/202509056315d,여행객 부가세 디지털 환급 서비스. 라운드 명칭 미공개 초기 투자 → Seed로 분류
+601,COOLMINT,Seed,Seed,변경 없음,low,확인 불가,,"사업자번호·웹사이트 부재로 동명이인 검증 불가, 관련 뉴스 검색 결과 없음"
+602,(주)파봇,Seed,Seed,변경 없음,low,"확인 불가 (Caple·KB인베스트먼트 약 250만불, 2018 SBCN 지분투자 이력 있으나 라운드 명칭·시기 불명확)",https://thevc.kr/FABOT,로보어드바이저 플랫폼. 2024년 이후 신규 투자 보도 없음
+603,거북선컴퍼니,Seed,Seed,변경 없음,medium,"투자 유치 1건, 최근 단계 Seed (THE VC/넥스트유니콘); 이후 라운드 보도 없음",https://thevc.kr/turtleship,동대문 B2B 정산 SaaS '터틀체인' 운영
+604,주식회사 한국금융솔루션,M&A,M&A('21),반영,high,2021.9 클라우드 기업 깃플과 합병(현 사명 깃플); 앞서 2021.5 시리즈A 75억 클로징 (더벨),https://www.thebell.co.kr/free/content/ArticleView.asp?key=202103231246526040104849&lcode=00,대출비교 서비스 '핀셋N'. 기존 'M&A'에 연도만 보강
+605,코인덱스,,알 수 없음,미반영(근거 부족),low,"확인 불가 (가상자산 지표/지수 제공 기업으로만 확인, 투자 유치 이력 미발견)",https://www.rocketpunch.com/companies/coindex,
+607,디에이그라운드,Series A,Series A,변경 없음,high,"2022.6 시리즈A 25억 유치, 한국정보인증 주도 (파이낸셜뉴스/와우테일)",https://www.fnnews.com/news/202206031013321254,이후 추가 라운드 확인 안 됨
+608,오픈에셋,Seed,Seed,변경 없음,high,"2024.2 시드 23억 유치, 하나벤처스·한국투자파트너스·매쉬업벤처스 참여 (플래텀)",https://platum.kr/archives/223143,
+612,씨즈데이터,알 수 없음,Seed,"반영(공란 채움, medium)",medium,"THE VC 기준 최근 라운드 Seed (약 2023년, KB인베스트먼트·우리벤처파트너스 등 7개 기관), 2023 TIPS 선정",https://thevc.kr/seizedata,
+613,(주)스마트포캐스트,Seed,Seed,변경 없음,low,"확인 불가 (THE VC에 투자 1건 이력만 확인, 라운드 단계·최근 유치 기사 미발견)",https://thevc.kr/SmartForecast,
+617,레몬트리,Pre-A,Pre-A,변경 없음,high,"2024.7 프리시리즈A 23억 유치(카카오인베스트먼트 등), 누적 108억 (유니콘팩토리)",https://www.unicornfactory.co.kr/article/2024070911195383985,용돈관리 서비스 '퍼핀' 운영
+622,브릿지코드,Series A,Series A,변경 없음,low,"확인 불가 (2년간 6회 투자 유치 언급만 확인, 최근 라운드 단계 명시 기사 미발견)",https://www.startuptoday.kr/news/articleView.html?idxno=47147,
+624,로랩스,Series A,Series A,변경 없음,low,"공개 확인되는 최근 라운드는 2022.1 프리시리즈A(트랜스링크·더벤처스·스파크랩·마크앤컴퍼니, 플래텀); 시리즈A 기사 미발견",https://platum.kr/archives/179739,기록된 Series A를 뒷받침하는 공개 기사 없음 — 재확인 권장
+627,고피자,Series D,Series D,변경 없음,high,"2024.6 태국 CP ALL로부터 1,000만 달러 시리즈D 유치, 누적 600억+ (더벨/THE VC)",https://thevc.kr/gopizza,
+630,오늘식탁,Series B,Series B,변경 없음,high,"2021 시리즈B 120억 유치(하나벤처스 등, 플래텀)가 최종 라운드",https://platum.kr/archives/156805,"'오늘회' 운영사, 2026.2 폐업 확인"
+637,메디프레소,Series A,Series A,변경 없음,high,"2023.6 로이투자파트너스로부터 시리즈A 15억 조달, 누적 약 70억 (THE VC/뉴스톱)",https://thevc.kr/medipresso,이후 크라우드펀딩 추진 언급
+642,테이스팅앨범,Seed,Seed,변경 없음,low,"확인 불가 (공명파트너즈·롯데벤처스 포트폴리오로만 확인, 라운드 단계 기사 미발견)",https://thevc.kr/gongmyeongpartners,
+648,달리셔스,Pre-A,Pre-A,변경 없음,medium,"씨엔티테크·로아인벤션랩·시너지아이비 등 초기(프리A) 투자 확인, 2019년 시리즈A '진행 중' 보도 이후 완료 기사 미발견 (더벨)",https://thevc.kr/daliciouscompany,커런트(커런트밀) 운영사
+652,플레이팅코퍼레이션,M&A('24),M&A('24),변경 없음,high,2024 회생절차 중 푸드테크 기업구조혁신 투자조합(구름인베스트먼트)이 지분 100%를 5.4억에 인수 (유니콘팩토리),https://www.unicornfactory.co.kr/article/2024051415591684102,2024.4 회생절차 종결
+656,프레시고메이,알 수 없음,알 수 없음,변경 없음,low,"확인 불가 (스마트스토어/자사몰 운영 식품 판매사로만 확인, 투자 유치 이력 미발견)",https://freshgourmet1.shop.blogpay.co.kr/,
+762,메디띵스,Series A,Series A,변경 없음,high,"THE VC 기준 최근 투자 라운드 Series A (총 5건), 2023.3 카카오벤처스 등 브릿지 투자 이후 신규 라운드 확인 안 됨",https://thevc.kr/medithings,
+763,삼분의일,Series A,Series A,변경 없음,medium,"2021 알토스벤처스·DSC 등 120억 시리즈A 유치 (플래텀), 이후 시리즈B 소식 없음",https://platum.kr/archives/168188,
+764,알고케어,Series A,Series A,변경 없음,high,2024.3 스타셋인베스트먼트 리드 150억 시리즈A 유치 (플래텀),https://platum.kr/archives/224089,
+765,프록시헬스케어,Series A,Series B,미반영(근거 부족),medium,"기업DB(THE VC/혁신의숲) 기준 2026년 현재 시리즈B까지 총 5회 투자 유치, 2022.8 82억 시리즈A 이후 라운드",https://thevc.kr/proxihealthcare,"시리즈B 금액·투자사 상세 보도 미확인, 재확인 권장"
+766,이노바이드,Series A,Series B,반영,high,2026.6 SBVA 리드 120억 시리즈B 유치 (와우테일),https://wowtale.net/2026/06/23/260501/,2025.3 50억 시리즈A 후 시리즈B
+784,엠지솔루션스,Seed,Seed,변경 없음,low,확인 불가,https://thevc.kr/mgsolutions,"투자 라운드 보도 없음, 2025.12 Moti Physio Med FDA 등재 등 사업은 활발"
+785,똑똑의사,Seed,Seed,변경 없음,high,"THE VC 기준 현재 라운드 Seed, 투자자 1개사(프라이머)",https://thevc.kr/knockdoctor,
+786,핑거앤,Seed,Seed,변경 없음,medium,"THE VC 기준 Seed 1건(2016.5)이 유일한 투자 기록, 이후 라운드 없음",https://thevc.kr/fingern,
+787,헤세드릿지,Seed,Pre-A,반영,high,2025.7 마그나인베스트먼트로부터 프리A 후속 투자 유치 완료 (지디넷코리아),https://zdnet.co.kr/view/?no=20250729101534,2025.1 교보생명 전략적 투자 포함 프리A 라운드
+788,브레디스헬스케어,Seed,Seed,변경 없음,medium,"2023.5 카이스트청년창업투자지주 등 시드, 2023.8~9 디캠프 등 브릿지 유치 (블로터/THE VC), 이후 신규 라운드 없음",https://thevc.kr/bredishealthcare,
+789,메디노드,Seed,Seed,변경 없음,high,2024.2 엔슬파트너스 리드 시드 투자 유치 (한국경제),https://www.hankyung.com/article/202402016389i,
+804,캥스터즈 주식회사,Pre-A,Pre-A,변경 없음,medium,"12억 규모 프리A 투자 유치 후 미국·유럽 진출 준비 (비석세스, 한국투자액셀러레이터 투자기업 소개)",https://www.besuccess.com/%ED%95%9C%EA%B5%AD%ED%88%AC%EC%9E%90%EC%95%A1%EC%85%80%EB%9F%AC%EB%A0%88%EC%9D%B4%ED%84%B0-24%EB%85%84-%ED%95%9C-%ED%95%B4-35%EA%B1%B4%EC%97%90-%EC%B4%9D-104%EC%96%B5-%EC%9B%90-%ED%88%AC%EC%9E%90/,시리즈A 라운드 진행 중이라는 언급 있으나 완료 확인 안 됨
+805,메디아크,Pre-A,Pre-A,변경 없음,high,2025.5 JB인베스트먼트 30억 프리시리즈A 유치 (플래텀/머니투데이),https://platum.kr/archives/259249,
+806,알피,Pre-A,Pre-A,변경 없음,medium,"2023.5 HB인베스트먼트·카카오벤처스 등 Pre-Series A 유치, 2025 인터뷰에서 시리즈A '마무리 단계' 언급이나 완료 보도 없음 (더메디컬)",https://www.themedical.kr/news/articleView.html?idxno=1259,시리즈A 클로징 여부 추후 재확인 권장
+807,랜식,Pre-A,Pre-A,변경 없음,high,"2024.2 본엔젤스 리드 12억 프리A 유치 (전자신문), THE VC 투자 2건 중 최신",https://www.etnews.com/20240227000404,
+808,무니스,Pre-A,Pre-A,변경 없음,high,"22억 원 규모 프리 시리즈 A2 투자 유치, 슈미트·Z벤처캐피탈·삼성넥스트 참여 (스타트업투데이); THE VC 최근 단계 Pre-A",https://www.startuptoday.kr/news/articleView.html?idxno=49871,디지털 수면솔루션 앱 '미라클나잇' 운영사
+821,유머스트알엔디,알 수 없음,알 수 없음,변경 없음,low,확인 불가,,소프트엑스선 관절염 치료기기 개발사. 자사 홈페이지에서 IR/투자 문의는 확인되나 투자 라운드 기사 없음
+824,메텔,Seed,Seed,변경 없음,high,"THE VC 기준 투자 3건, 최근 단계 Seed (스마트베개 '제레마' 운영사)",https://thevc.kr/maetel,2023년 6월 폐업 (THE VC). 2024년 설립 동명 B2B 세일즈 스타트업 '메텔'과 혼동 주의
+825,피트메디,Seed,Seed,변경 없음,high,"2021.1 하나벤처스 시드 2억 유치, THE VC 최근 단계 Seed ('위너스해빗' 운영사)",https://thevc.kr/fitmedi,2024년 8월 폐업 (THE VC)
+826,바디온,,알 수 없음,미반영(근거 부족),low,확인 불가,,개인사업자(사업자번호 113-23-59107). 동명 피트니스센터/마사지기 제품만 검색되고 투자 이력 없음
+827,두빗,,알 수 없음,미반영(근거 부족),low,확인 불가,,3회 검색에도 투자 이력·기업 뉴스 미확인 (웹사이트는 bdci.co.kr 내 프로젝트 페이지)
+828,(주)바이앤어스,,Seed,"반영(공란 채움, medium)",medium,"2019.3 인라이트벤처스 3억, 2019.4 서울투자파트너스 추가 투자, 2020.11 어센도벤처스 후속 투자 — 모두 시드 단계 (플래텀/벤처스퀘어)",https://platum.kr/archives/117328,병원 찾기·리뷰 앱 '찾았닥' 운영사. 2021년 이후 후속 라운드 미확인
+829,(주)온헬스넷,,알 수 없음,미반영(근거 부족),low,확인 불가,,"웹사이트 없음, 검색에서 기업 정보·투자 이력 미확인"
+830,주식회사 젤리랩,Seed,Seed,변경 없음,medium,"DHP(디지털헬스케어파트너스) 투자 유치 등 THE VC 기준 2건, 시드 단계 (플래텀)",https://thevc.kr/Jellylab,환자케어 챗봇. 2024년 이후 신규 라운드 미확인
+838,뷰니브랩,Seed,Seed,변경 없음,medium,"쿼드벤처스(스마트 대한민국 KT 넥스트 투자조합 등)로부터 시드 투자 유치, THE VC 등재 (체킷 운영사)",https://thevc.kr/3j,STD 자가검사 키트 '체킷'. 이후 후속 라운드 미확인
+845,센시,Pre-A,Series B,반영,high,"2024년 시리즈B 약 300억 유치(ATP인베스트먼트·한국투자증권 등), 2026년 IPO 추진 중이었음 (비즈중앙/서울경제)",https://www.bizjoongang.co.kr/news/articleView.html?idxno=50887,"2025년 대표 횡령(약 230억 해외 이체)·해외 도피 사건 발생, IPO 중단 및 경찰 수사 중"
+850,딥메트릭스,Series A,Series A,변경 없음,high,"2025.8 시리즈A 50억 유치, 미래에셋벤처투자 리드·스틱벤처스·본엔젤스 참여 (유니콘팩토리/머니투데이)",https://www.unicornfactory.co.kr/article/2025080614453630749,인공호흡기 자율주행 AI 솔루션 개발사
+852,파인유얼뷰티,Seed,Seed,변경 없음,high,"THE VC 기준 투자 1건, 최근 단계 Seed (홈필라테스 '뷰릿' 운영사)",https://thevc.kr/findyourbeauty,흑자 경영 중으로 추가 투자 유치 계획 없음 밝힘 (한국일보 2023.11 인터뷰)
+867,다이나메딕,Pre-A,Pre-A,변경 없음,low,확인 불가 — 2024 팁스밋업 IR 참여 확인되나 신규 라운드 기사 없음,https://thevc.kr/dynamedic,의료용 전동 핸드피스 제조사. CE MDR·FDA 인증 보유
+876,니더,Series B,Series B,변경 없음,high,"시리즈B 70억(플래텀) 이후 2025.7 일본 타이미 전략투자, 2025.8 80억 규모 브릿지 투자 유치 (전자신문)",https://www.etnews.com/20250826000181,알바 매칭 플랫폼 '급구' 운영사. 2025.8 80억은 브릿지 라운드로 시리즈C 아님
+878,소프트스퀘어드,Series A,Series A,변경 없음,high,"2022.12 '그릿지' 15억 시리즈A 유치 (뉴스와이어), 2026.1 기준 시리즈A-B 사이 브릿지 라운드 진행 중",https://www.newswire.co.kr/newsRead.php?no=956964,브릿지 라운드 진행 중이나 시리즈B 클로징 확인 안 됨
+879,이지메이션,Seed,Seed,변경 없음,medium,"THE VC 기준 투자 라운드 1건(Seed)만 기록, 이후 라운드 확인 안 됨",https://thevc.kr/eazymation,
+880,진지한컴퍼니,Seed,Seed,변경 없음,medium,"2020.12 슈미트·블루포인트파트너스 시드 3.5억 유치 (플래텀), 이후 2021 팁스 선정 외 신규 라운드 없음",https://platum.kr/archives/154481,
+881,커리어데이,Seed,Pre-A,반영,high,2025.8 그랜드벤처스 리드 프리A 투자 유치 (와우테일),https://wowtale.net/2025/08/08/245175/,2023.6 시드 11억 마무리 후 2025.8 프리A
+882,스페이스와이,Seed,Seed,변경 없음,medium,"2022.2 패스트벤처스·퓨처플레이 시드 투자 유치 (플래텀), 이후 라운드 확인 안 됨",https://platum.kr/archives/180844,
+888,디플에이치알,Pre-A,Pre-A,변경 없음,medium,"2023.6 KB인베스트먼트·디캠프·원티드랩 등 프리시리즈A 유치 (플래텀), 이후 라운드 확인 안 됨",https://platum.kr/archives/209635,
+889,하이어엑스,Pre-A,Pre-A,변경 없음,medium,"2022.11 프리A 브릿지 유치 (플래텀), 2023 인포뱅크·IBK캐피탈 추가 투자 (벤처스퀘어)",https://www.venturesquare.net/868060/,
+894,스타셸,알 수 없음,알 수 없음,변경 없음,low,확인 불가,https://starshellstudio.com/,웹/앱 외주 개발 스튜디오로 외부 투자 유치 이력 확인 안 됨
+901,유니테이크홀딩스,Seed,Seed,변경 없음,medium,"'더팀스' 운영사로 윤민창의재단·더벤처스 시드 1억 유치 (벤처스퀘어), 이후 라운드 확인 안 됨",https://www.venturesquare.net/760205,
+904,지로,Pre-A,Series A,반영,high,"2024.12 시리즈A 20억 유치, 누적 투자금 32억 (THE VC)",https://thevc.kr/jiro,2022.11 프리A 10억(블루포인트 리드) 이후 시리즈A 진행
+908,스윙비,Series A,Series A,변경 없음,medium,2019 시리즈A 약 84억(삼성벤처투자 등) 이후 2024.1 한컴 12.3억 전략투자·시프티 투자는 별도 라운드명 없음 (이데일리),https://m.edaily.co.kr/News/Read?newsId=03211126635710272&mediaCodeNo=257,2024년 한컴·시프티의 전략적 투자 있었으나 시리즈B로 명명된 라운드 확인 안 됨
+912,겟링크스 (GetLinks),알 수 없음,Series A,"반영(공란 채움, medium)",medium,"2018 SEEK·알리바바 홍콩기금 참여 시리즈A (TechCrunch/Crunchbase), 2021.12 $10M 유치 후 시리즈B 준비 발표했으나 클로징 미확인",https://techcrunch.com/2018/04/26/getlinks-alibaba-fund-seek-group/,태국 기반 채용 플랫폼. 2021 $10M 라운드가 시리즈B로 확정 보도된 근거 없음
+913,어라운드어스,Seed,Seed,변경 없음,medium,"2019.7 신한캐피탈·디캠프 등 시드 8.8억 유치 (플래텀), 이후 라운드 없음",https://platum.kr/archives/124159,THE VC 기준 2021.6 폐업
+914,신의직장,Seed,Seed,변경 없음,medium,"2017 카이스트청년창업투자지주 시드 1억 + 팁스 선정 (beSUCCESS), 이후 라운드 없음",https://thevc.kr/sinicompany,2025.3 폐업으로 기록됨
+916,제제미미,Series A,Series A,변경 없음,high,"2023.10 하나벤처스 시리즈A 20억(총 42억 규모) 유치 (와우테일), 2025년 기준 현재 라운드 Series A",https://wowtale.net/2023/10/13/64590/,
+917,놀잇,Seed,Seed,변경 없음,medium,"2023년 서울대기술지주로부터 시드 투자 유치, 이후 후속 라운드 보도 없음 (플래텀)",https://platum.kr/archives/202309,
+922,해빛,Pre-A,Pre-A,변경 없음,low,확인 불가,https://thevc.kr/havit,THE VC 검색 스니펫상 최근 단계 Seed(다날 전략투자 1건)로 표시되나 최신 라운드 보도를 찾지 못해 기존 기재 유지
+923,카이헬스,Pre-A,Pre-A,변경 없음,high,"2024.2 IMM인베스트먼트·SBVA 등 참여 프리시리즈A 투자 유치, 이후 신규 라운드 미확인 (와우테일)",https://wowtale.net/2024/02/06/71358/,
+926,(주)어픽스,Series A,Series A,변경 없음,medium,"중고거래 플랫폼 '픽셀' 운영사로 13억 후속투자 이력, 2022.8 폐업 기록 (로켓펀치/플래텀)",https://www.rocketpunch.com/companies/affix,2022년 8월 폐업으로 기재됨 — 기존 최고 단계 유지
+927,(주)티켓플레이스,Series A,Pre-A,미반영(근거 부족),medium,2022.8 유하 부스트 기반 pre-A 라운드 유치가 최신 확인 라운드 (넥스트라운드 프로필),https://www.nextround.kr/startup/detail/2794,기존 기재 Series A와 달리 공개 자료상 최신 라운드는 2022년 Pre-A — 재확인 권장
+928,자란다,Series B,Series B,변경 없음,high,"2022.4 한국투자파트너스 주도 310억 시리즈B 유치, 시리즈C 보도 없음 (전자신문)",https://www.etnews.com/20220429000207,
+930,에이치투케이,Pre-A,Pre-A,변경 없음,medium,"2022.4 카카오-SKT ESG펀드 등에서 10억 프리시리즈A 유치, 이후 라운드 미확인 (와우테일)",https://wowtale.net/2022/04/11/37615/,
+934,앨리스헬스케어,Seed,Seed,변경 없음,medium,"시드 투자(컴패노이드랩스 2021 등) 및 TIPS 선정 이력만 확인, 후속 라운드 보도 없음 (와우테일/THE VC)",https://thevc.kr/alycehealthcare,
+936,맘편한세상,Series B,Series B,변경 없음,high,2021.9 100억 시리즈B 유치 후 2026.3 기준 50억 시리즈B 브릿지 추진 중 (더벨),https://www.thebell.co.kr/front/newsview.asp?key=202603171148574160106719,
+944,디버,Series A,Series A,변경 없음,medium,"2023 시리즈A 브릿지 30억 유치(누적 75억), 시리즈B는 준비 중 단계로 보도 (플래텀/이투데이)",https://platum.kr/archives/187071,
+945,콜로세움코퍼레이션,Series A,Series B,반영,high,"2025.6 270억 규모 시리즈B 투자 유치, 2027 IPO 추진 (플래텀/ZDNet)",https://platum.kr/archives/263624,"대신증권 IPO 대표주관 선정, 상장 추진 중"
+951,주식회사 루트릭스,Pre-A,Series A,반영,high,2026.2 스마일게이트인베스트먼트·CJ인베스트먼트 등 45억 시리즈A 유치 (서울경제/바이라인네트워크),https://byline.network/2026/02/rootrix/,2024.8 프리A 12억 이후 시리즈A로 단계 상승
+952,내이루리,Pre-A,Pre-A,변경 없음,medium,"2022.12 11.8억 프리A 유치, 2025.9 MYSC 투자는 라운드 미표기 (플래텀/와우테일)",https://wowtale.net/2025/09/26/247728/,
+956,(주)커넥트히어로,Seed,Seed,변경 없음,medium,"라스트마일 플랫폼 '바통' 운영, THE VC 기준 2023.6.30 폐업 기록 (THE VC/로켓펀치)",https://thevc.kr/connecthero,2023년 6월 폐업으로 기재됨 — 기존 단계 유지
+958,브이아이코리아,Seed,Seed,변경 없음,medium,"2021 케이즈 런칭 후 스파크랩 시드 유치, 2022 TIPS 선정, 후속 라운드 미확인 (머니투데이/THE VC)",https://thevc.kr/vikorea,
+967,뷰전,Series A,Series A,변경 없음,high,"50억원 시리즈A 투자 유치, 누적 70억원 (파이낸스투데이/THE VC)",https://www.fntoday.co.kr/news/articleView.html?idxno=340795,
+977,테솔로,Pre-A,Series B,반영,high,"2026.6 시리즈B 투자 유치, KB증권 주관사로 IPO 준비 착수 (와우테일)",https://wowtale.net/2026/06/29/260790/,"2025.6 시리즈A 60억(ZDNet) 후 2026.6 시리즈B 클로징, 누적 약 85억원"
+978,딥스마텍,Pre-A,Pre-A,변경 없음,high,2024.7 43억원 프리시리즈A 투자 유치 (플래텀),https://platum.kr/archives/230478,
+980,코엠고,알 수 없음,Seed,"반영(공란 채움, medium)",medium,"CB Insights 기준 최신 라운드 Seed, $100K, TIPS 참여 (2017년 설립, 서울, 전자부품/필름 가공)",https://www.cbinsights.com/company/koemgo,"국내 언론 보도 없음, 해외 DB 기반"
+986,앰버로드,Seed,Pre-A,반영,high,2025.1 스톤브릿지벤처스·스파크랩에서 20억원 프리시리즈A 유치 (유니콘팩토리/뉴스1),https://www.unicornfactory.co.kr/article/2025010909523342755,"포스코 사내벤처 스핀오프, 2023.12 시드 9억"
+987,한국정밀소재산업,Series A,Series A,변경 없음,high,"2024.10 105억원 시리즈A 투자 유치, 포스트밸류 440억 (한경/와우테일)",https://wowtale.net/2024/10/22/231583/,
+988,메이크포유,Seed,Seed,변경 없음,medium,"2023.3 본엔젤스 시드 투자 유치, 이후 후속 라운드 보도 없음 (플래텀)",https://platum.kr/archives/203400,TIPS 선정(본엔젤스 추천)
+993,포스코어,Seed,Seed,변경 없음,high,"2024.11 캡스톤파트너스 등에서 시드 9억원 추가 유치, 누적 시드 약 19억 (와우테일)",https://wowtale.net/2024/11/15/233089/,"포스코 사내벤처 출신, 2023년 법인 설립"
+1009,에스프레소북,알 수 없음,알 수 없음,변경 없음,low,확인 불가,,셀프출판 플랫폼 '하루북' 운영 중이나 투자 라운드 보도 없음
+1010,(주)하비풀,Series A,Series A,변경 없음,high,"시리즈A 41억원 유치(누적 55억), 2024.6 폐업 (THE VC)",https://thevc.kr/hobbyful,2024년 6월 폐업
+1011,셰프뉴스,,알 수 없음,미반영(근거 부족),low,확인 불가,,"외식업 미디어/구인구직(셰프잡스) 운영, 투자 라운드 보도 없음"
+1012,펠루,,알 수 없음,미반영(근거 부족),low,확인 불가,,"2014년경 음성 지식 서비스 day.ly 운영, 투자 유치 보도 없음, 이후 활동 확인 안 됨"
+1013,(주)팀아일랜드,,알 수 없음,미반영(근거 부족),low,확인 불가,,회사 관련 검색 결과 자체가 거의 없음
+1014,부루다콘서트,,Seed,"반영(공란 채움, medium)",medium,"케이큐브벤처스에서 3억원 투자 유치(2015년경, 플래텀 인터뷰), 이후 라운드 미확인",https://platum.kr/archives/81014,2024년 이후 활동/투자 소식 없음
+1015,캡슐코퍼레이션(주),Seed,Seed,변경 없음,low,확인 불가 (THE VC에 투자 2건 기록만 있고 라운드 미상),https://thevc.kr/capsulecorporation,동인 이벤트 플랫폼 '오타카츠' 운영
+1068,펫팜,Series B,Series B,변경 없음,high,"2025.5 시리즈B 65억 유치, 누적 105억 (와우테일/플래텀)",https://wowtale.net/2025/05/08/240699/,"2025.2 크릿벤처스 15억 포함 시리즈B 라운드, 디캠프도 참여"
+1069,도그메이트,Series A,M&A('25),반영,high,2025.6 커넥팅더닷츠가 도그메이트 인수 (와우테일/플래텀),https://wowtale.net/2025/06/10/242228/,회생 인가전 M&A 절차를 거쳐 인수됨 (2025.3 더벨 보도)
+1078,핏펫,Series C,Pre-IPO,반영,high,"2026.5 프리IPO 라운드 막바지, 기업가치 1000억 인정 (더벨)",https://v.daum.net/v/20260511090115291,"NH투자증권 주관 코스닥 상장 추진 중, 아직 상장 전"
+1088,더치트,Series A,Series A,변경 없음,medium,"2022.7 카카오페이 전략적 투자 유치, 라운드명 미공개 (플래텀)",https://platum.kr/archives/189770,카카오페이 투자 이후 2024-2026 신규 라운드 확인 안 됨
+1089,오내피플,Series A,Series A,변경 없음,medium,"2022 파이오링크로부터 시리즈A 투자 유치 (플래텀), 이후 신규 라운드 미확인",https://platum.kr/archives/199437,THE VC 기준 투자 유치 2건 (시드+시리즈A)
+1092,큐비트시큐리티,Seed,Seed,변경 없음,medium,"THE VC 기준 최근 라운드 Seed (약 2023-2024), 이후 신규 라운드 미확인",https://thevc.kr/qubitsecurity,2025.8 더벨 VC 투자기업 소개(일본 진출) 있으나 라운드 변경 근거 없음
+1093,크리밋,Seed,Seed,변경 없음,high,2023.9 프라이머 배치 23기 시드 1억 유치 (머니투데이),https://news.mt.co.kr/mtview.php?no=2023091809593481276,
+1101,(주)시큐그래프,Series A,Series A,변경 없음,medium,"Crunchbase/THE VC 기준 East Gate Partners 시리즈A 1건, 이후 라운드 미확인",https://thevc.kr/secugraph,"DNS 기반 봇넷 탐지 솔루션 'Ferret' 개발사, 최근 투자 뉴스 없음"
+1108,캐스팅엔,Series B,Series B,변경 없음,high,"2024.7 시리즈B 52억 유치, 누적 150억 (와우테일/플래텀)",https://wowtale.net/2024/07/08/79287/,
+1112,비자플로,Seed,Seed,변경 없음,low,"Tracxn 기준 최근 라운드 Incubator/Accelerator(프라이머), 이후 라운드 미확인",https://tracxn.com/d/companies/visaflo/__Z5IwiEJF32rwD8PgZuAv-CmKsBW8rqSQyyzV0MQuq4Y,"캐나다 이민 서류 자동화 SaaS(vflo.app), 한국 언론 투자 보도 없음"
+1115,마이스터즈,Pre-A,Pre-A,변경 없음,medium,"혁신의숲/THE VC 기준 최근 라운드 Pre-A (약 2023), 이후 신규 라운드 미확인",https://www.innoforest.co.kr/company/CP00015071/%EB%A7%88%EC%9D%B4%EC%8A%A4%ED%84%B0%EC%A6%88,"가전 설치/수리 '기술자들' 운영, 2025년 매출 268억 보도 (벤처스퀘어)"
+1120,스탠바이랩,Seed,Seed,변경 없음,medium,THE VC 기준 2020.6 Seed 1건이 유일한 투자 유치,https://thevc.kr/standbylab,
+1122,한달어스,Seed,Seed,변경 없음,low,확인 불가 — '유니콘하우스 시즌1 이후 투자 유치 성공' 보도만 있고 라운드명 미상,https://thevc.kr/handalus,
+1123,노벨라스튜디오,Seed,Seed,변경 없음,medium,"THE VC 기준 Seed 1건 (약 2023), 이후 신규 라운드 미확인",https://thevc.kr/novelastudio,
+1124,플라이북,Seed,Seed,변경 없음,low,"2023.3 인터뷰에서 프리시드 유치 후 시리즈A 진행 중 언급, 이후 라운드 확정 보도 없음",https://www.startuptoday.kr/news/articleView.html?idxno=46456,"시리즈A 클로징 여부 미확인, 2026년에도 서비스 운영 중 (AI 독서 멤버십)"
+1128,북아이피스,Series A,Series A,변경 없음,high,"2023.7 시리즈A 58억 유치 (플래텀), 이후 신규 라운드 없이 2025년 포스트팁스 최우수 과제 선정 (테크42)",https://platum.kr/archives/211075,
+1130,윌림,Pre-A,Pre-A,변경 없음,medium,"2020.3 스트롱벤처스 리드 프리시리즈A 유치 (플래텀), 이후 신규 라운드 확인 안 됨",https://platum.kr/archives/139918,최근 투자 소식 없음
+1136,집토스,Series B,Series B,변경 없음,high,"2020.8 시리즈B 65억 유치 (플래텀), THE VC 기준 시리즈B가 마지막 라운드",https://platum.kr/archives/146774,2021년 시리즈C 추진 보도(더벨) 있었으나 완료 확인 안 됨
+1142,데이터노우즈,Series A,Series A,변경 없음,high,"2022.1 시리즈A 50억 유치 후 2023.12 브릿지 30억, 2024.12 브릿지 15억(누적 125억) — 여전히 시리즈A 단계 (플래텀/사람인)",https://platum.kr/archives/179914,2023~2024 브릿지 라운드는 시리즈A 후속
+1149,주식회사 넥스트그라운드,Seed,Seed,변경 없음,medium,"2022.9 본엔젤스·씨엔티테크 등 시드 투자 유치 (플래텀), 이후 신규 라운드 확인 안 됨",https://platum.kr/archives/192467,
+1150,오더체크,Seed,Seed,변경 없음,high,"2023.7 프라이머 시드 투자 유치, THE VC 기준 투자 라운드 Seed 단계",https://thevc.kr/ordercheck,
+1151,코티에이블,Seed,Seed,변경 없음,medium,"2017.2 디캠프 디데이 우승으로 시드급 투자 유치 (플래텀), 이후 VC 라운드 확인 안 됨",https://platum.kr/archives/116808,최근 투자 소식 없음
+1152,다섯시삼십분,Seed,Seed,변경 없음,medium,"2015년 빅뱅엔젤스 등 엔젤(시드) 투자 유치 (아이티비즈), 이후 신규 라운드 확인 안 됨",http://www.it-b.co.kr/news/articleView.html?idxno=5193,장기간 투자 소식 없음
+1153,홈디,Seed,Seed,변경 없음,medium,"2017.6 프라이머, 2018.7 SBA 시드 투자 유치 (THE VC/플래텀), 이후 신규 라운드 확인 안 됨",https://thevc.kr/homed,최근 투자 소식 없음
+1154,리얼라이저블,Seed,Seed,변경 없음,high,2025.11 MYSC 시드 브릿지 투자 유치 (와우테일) — 시드 단계 유지,https://wowtale.net/2025/11/04/249656/,
+1162,한국부동산데이터연구소,Pre-A,Pre-A,변경 없음,medium,"2022.6 프라이머 시드 후 설립 1년 만에 Pre-A 유치 (한경/그룹바이 Pre-A 표기), 이후 신규 라운드 확인 안 됨",https://thevc.kr/korearealestatedatalab,
+1163,루북,Pre-A,Series A,반영,high,2025.5 현대투자파트너스·스트롱벤처스 참여 시리즈A 유치 (플래텀/와우테일),https://platum.kr/archives/259294,
+1167,프롭웨이브,알 수 없음,알 수 없음,변경 없음,low,확인 불가,,부동산 데이터 플랫폼(집톡) 운영 확인되나 투자 라운드 정보 없음
+1170,패션프루트,,Seed,"반영(공란 채움, medium)",medium,"매시업엔젤스 등 시드 투자 확인, 2019년 시리즈A '진행 중' 보도만 있고 완료 확인 안 됨 (이데일리 2019.1)",https://m.edaily.co.kr/news/read?newsid=01144726622360016,"베트남 렌트익스프레스 운영사, 2024~2026 최신 소식 없음"
+1173,집펀드,Pre-A,Pre-A,변경 없음,medium,"2018년 SJ투자파트너스·우미건설 투자로 누적 12.5억, THE VC 기준 Pre-A 단계",https://thevc.kr/zipfund,이후 신규 라운드 확인 안 됨
+1177,이프비,알 수 없음,알 수 없음,변경 없음,low,확인 불가,https://wowtale.net/2022/06/17/41856/,"벽 공유 플랫폼 '월디' 운영. 2022 인터뷰에서 '투자 유치 중'이라고만 밝힘, 공개된 라운드 없음. 2025년에도 일본 등 해외 확장 중으로 영업 지속"
+1178,오아시스비즈니스,Series A,Series A,변경 없음,medium,"2023.5 시리즈A 50억 유치(누적 70~80억), 이후 신규 라운드 미확인 (뉴시스)",https://www.newsis.com/view/NISX20230524_0002315115,
+1184,오피스,Seed,Seed,변경 없음,medium,프라이머 시드 및 2022.3 마이리얼트립 전략투자 이후 신규 라운드 미확인 (플래텀),https://platum.kr/archives/183216,제주 워케이션 사업 2025년에도 운영 중
+1189,드랩,Series A,Series A,변경 없음,low,"확인 불가 (2022.5 프리시드 10억 KB인베스트먼트만 기사 확인, 시리즈A 보도 미확인)",https://platum.kr/archives/186131,"쿠팡·CJ올리브영·BGF리테일 등 고객사 확보하며 성장 중, 기존 기재된 Series A 유지"
+1190,누리하우스,Series A,Series A,변경 없음,high,2024 시리즈A 20억에 이어 2025.6 해시드 등 시리즈A 브릿지 35억 추가 유치 (와우테일),https://wowtale.net/2025/06/12/242374/,
+1191,문리버,Series A,Series A,변경 없음,medium,"2021.7 DSC인베스트먼트 시리즈A 10억 유치, 이후 신규 라운드 미확인 (테크M)",https://www.techm.kr/news/articleView.html?idxno=88201,아이템스카우트 운영사
+1194,픽셀릭,Seed,Pre-seed,미반영(근거 부족),medium,"2022.4 추가 프리시드 19억(누적 약 $2.6M) 유치, 이후 라운드 미확인 (와우테일)",https://wowtale.net/2022/04/29/39127/,보도상 라운드 명칭이 명시적으로 '프리시드'. Y Combinator 참여 이력 있어 Seed로 볼 여지도 있음
+1195,클로저랩스,Seed,Seed,변경 없음,high,2025.1 스프링캠프 리드·프라이머 후속 시드 투자 유치 (네이트뉴스),https://news.nate.com/view/20250107n25581,AI 의사결정 플랫폼 '데스크룸' 운영
+1196,코디미,Seed,Seed,변경 없음,medium,"2024.10 팁스(TIPS) 선정 확인, 별도 신규 투자 라운드 보도 미확인 (와우테일)",https://wowtale.net/2024/10/02/230572/,"AI 패션 모델컷 SaaS '포투(Potoo)' 운영, 후속 투자 유치 추진 중"
+1197,페어리,Seed,Seed,변경 없음,medium,"2022.9 스프링캠프 시드, 2023 스트롱벤처스 시드 브릿지 유치 (플래텀)",https://platum.kr/archives/202163,세일즈클루 운영사
+1198,스페이스비전에이아이,Seed,Series A,반영,high,2025.6 롯데벤처스·바인벤처스 등 시리즈A 40억 유치 (와우테일),https://wowtale.net/2025/06/23/242867/,
+1199,프롬서울,Seed,Seed,변경 없음,high,2024.6 디캠프·더벤처스 시드 투자 유치 (와우테일),https://wowtale.net/2024/06/11/78037/,아바타 플랫폼 '에덴월드' 운영
+1200,그레이박스,Seed,Pre-A,반영,high,2025.5 슈미트·매쉬업벤처스 프리시리즈A 투자 유치 (뉴스1),https://www.news1.kr/industry/sb-founded/5788082,CRM 마케팅 솔루션 '노티플라이' 운영
+1201,아웃컴,Seed,Seed,변경 없음,medium,"2024.8 더벤처스 투자 유치(디캠프 포함 누적 2.5억, 시드 단계) (와우테일)",https://wowtale.net/2024/08/29/228803/,
+1215,주식회사 펄스애드,Pre-A,Pre-A,변경 없음,high,2025.1 스마일게이트인베스트먼트 리드 프리시리즈A 20억 유치 (와우테일),https://wowtale.net/2025/01/06/235565/,
+1216,도비스튜디오,Pre-A,Pre-A,변경 없음,high,2024.10 매쉬업벤처스·슈미트 참여 프리시리즈A 투자 유치 (플래텀),https://platum.kr/archives/236086,B2B 잠재고객 발굴 플랫폼 '하이퍼세일즈' 운영
+1217,원셀프월드,Pre-A,Pre-A,변경 없음,high,2025.9 크릿벤처스 20억원 프리A 브릿지 투자 유치 (와우테일),https://wowtale.net/2025/09/02/246345/,2025.3 프리시리즈A 15억(크릿벤처스)에 이은 브릿지 라운드
+1218,디지털네이티브스,Pre-A,Pre-A,변경 없음,low,확인 불가,https://thevc.kr/digitalnatives,"2021 블루포인트 시드+2022 팁스 선정만 확인, 프리A 클로징 기사 미확인 (2023.4 프리A 유치 진행중 보도)"
+1219,래티스,Pre-A,Pre-A,변경 없음,high,2024.4 어센도벤처스·스프링캠프 등 20억 프리시리즈A 유치 (한국경제),https://www.hankyung.com/article/202404053306i,계약관리 솔루션 '프릭스' 운영
+1225,(주)프랑코지,Seed,Seed,변경 없음,medium,"THE VC 기준 Seed 1건(약 2015), 2020.9 폐업 (THE VC)",https://thevc.kr/francosy,"폐업(2020.9) - 팝업스토어 매칭 O2O '팝업리테일' 운영사, 디캠프 디엔젤 투자기업"
+1226,안드로메다,Seed,Seed,변경 없음,medium,"현대HCN·현대미디어 등 4억원 시드 투자 유치, 이후 라운드 없음 (데이터넷)",https://www.datanet.co.kr/news/articleView.html?idxno=96477,"폐업(2019.12, THE VC 기준) - 모바일 음성광고 '애드링' 운영사"
+1227,넥스트메이커스,Seed,Seed,변경 없음,low,"2015.5 스파크랩 6기 시드(2,700만원) 외 후속 라운드 확인 불가 (로켓펀치)",https://www.rocketpunch.com/companies/bigbang,"콘텐츠 창작·유통 스타트업, 2024년 이후 투자 뉴스 없음"
+1228,주식회사 플러스티브이,M&A,M&A('21),반영,high,2021.9 카카오모빌리티가 구주 100%를 약 60억원에 인수 완료 (더벨),https://www.thebell.co.kr/free/content/ArticleView.asp?key=202110191629172560107880&lcode=00,기존 기록 M&A에 인수연도('21)만 보강
+1229,(주)텐디,,알 수 없음,미반영(근거 부족),low,확인 불가,https://www.rocketpunch.com/en/companies/tand,"행동분석 솔루션 '스피어(Sphere)' 운영, 대홍기획 공동개발 협력만 확인되고 공개된 투자 라운드 기사 없음"
+1232,메이즈,Seed,Pre-A,반영,high,"페이스메이커스가 프리시리즈A 투자 집행, 2026.4 일본 진출 3자 MOU 기사에서 확인 (와우테일)",https://wowtale.net/2026/04/06/256653/,"THE VC·그룹바이도 Pre-A 단계로 표기, 와우파트너스 시드 브릿지 이후 프리A 진행"
+1233,어웨이크코퍼레이션,Seed,Seed,변경 없음,medium,"2022.4 팁스 포함 11억원 시드 투자 유치(서울대기술지주 등), 이후 라운드 미확인 (와우테일)",https://wowtale.net/2022/04/12/37713/,"누적 15억, 최근 '초원AI'로 피봇 성장 중이나 신규 라운드 기사 없음"
+1236,로플랫,Series B,Series B,변경 없음,medium,"2020 LG CNS 참여 시리즈B로 누적 90억, 이후 시리즈C 기사 없음 (플래텀/THE VC)",https://platum.kr/archives/149503,THE VC 기준 최근 라운드 Series B(약 2020)
+1238,헤드리스,Pre-A,Pre-A,변경 없음,low,확인 불가,https://platum.kr/archives/185800,"2022 현대기술투자·디캠프 7억 시드만 확인, 프리A 라운드 기사 미확인. 2025 '오모플레이' 출시로 영업 지속 중"
+1248,유니컨,Series A,Series A,변경 없음,high,2024.6 두산인베스트먼트 주도 100억원 시리즈A 투자 유치 (플래텀),https://platum.kr/archives/229666,무선통신 시스템 반도체(초고속 커넥티비티) 팹리스
+1249,세이프틱스,Series A,Series A,변경 없음,high,2024.8 제이비인베스트먼트·어니스트벤처스 20억원 시리즈A 유치 (ZDNet Korea),https://zdnet.co.kr/view/?no=20240806134012,협동로봇 안전성 검증 SW
+1256,코스모비 주식회사,Seed,Seed,변경 없음,high,"THE VC 기준 투자 라운드 2건, 최근 단계 Seed(약 2025년 초); 2025.9 디캠프 배치 4기 선정",https://thevc.kr/cosmobee,"카이스트 창업 위성용 홀추력기 기업, 누리호 4차 발사 참여"
+1257,디에스,Seed,Pre-A,반영,high,2025.11 신용보증기금·서울경제진흥원·에버그린투자파트너스로부터 프리시리즈A 투자 유치 (와우테일/플래텀),https://wowtale.net/2025/11/14/250316/,AI 반도체 검사 솔루션 '딥시어스(DeepSeers)'
+1258,우주로테크,Seed,Seed,변경 없음,high,"THE VC 기준 투자 2건, 최근 단계 Seed(2023.9 에트리홀딩스, 11월 하나벤처스)",https://thevc.kr/uzurotech/fundings,
+1259,디하이브,Seed,Seed,변경 없음,medium,"THE VC 기준 투자 유치 2건, 최근 단계 Seed (자율주행 로봇 '로바' 개발사)",https://thevc.kr/dhive/fundings,"후속 라운드 보도 없음, 정부 과제 위주"
+1268,(주)아이디어오션,Pre-A,Pre-A,변경 없음,high,"프리시리즈A 15억원 유치 (와우테일 2024.9, 메커니즘 자율설계 AI '메테우스')",https://wowtale.net/2024/09/13/229568/,2023.11 퓨처플레이 시드 이후 프리A까지 진행
+1269,로닉,Pre-A,Pre-A,변경 없음,low,확인 불가 — 2024 호반그룹 투자(호반혁신기술공모전) 확인되나 라운드 단계 명시 보도 없음,https://thevc.kr/ronik,"조리로봇 '큐브' 개발사, THE VC 투자자 3개사"
+1274,이노스페이스,IPO,IPO('24),반영,high,"2024.7.2 코스닥 기술특례상장 (A462350, 공모액 약 484~606억, 미래에셋증권 주관)",https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?gicode=A462350,연도 표기만 보정 (IPO → IPO('24))
+1276,메타맵,알 수 없음,알 수 없음,변경 없음,low,확인 불가,,"동명 기업 다수(공간정보/핸드드라이어 등), 투자 이력 보도 없음. 개인사업자(사업자번호 508-15)"
+1279,(주)픽스나우,Seed,Seed,변경 없음,medium,"2016 프라이머 시드 및 사제파트너스·스트롱벤처스 후속 시드 투자 (플래텀), 이후 라운드 없음",https://platum.kr/archives/60054,Crunchbase 기준 폐업(permanently closed) 상태로 표시됨
+1281,링크플릭스,Seed,Seed,변경 없음,medium,"2022 부산창조경제혁신센터 직접투자 및 TIPS 선정, THE VC 투자자 4개사 (서울경제)",https://thevc.kr/linkflix/fundings,"생분해 접착제 'AD-CONI' 개발사, 시리즈 라운드 보도 없음"
+1291,이플로우,Seed,Pre-A,반영,high,2026.5 프리시리즈A 65억원 라운드 클로징 (더벨),https://www.thebell.co.kr/front/newsview.asp?code=0201&key=202605061350472880101614,AFPM 모터 기술기업
+1296,코뱃,M&A('23),M&A('23),변경 없음,high,2023.5 코스닥 상장사 소니드가 코뱃 인수 (뉴시스/아시아경제),https://www.newsis.com/view/NISX20230515_0002303650,
+1303,모두싸인,Series C,Series C,변경 없음,high,"2024.4 시리즈C 177억 유치 (SBVA 주도, 와우테일); 이후 시리즈D/프리IPO 보도 없음",https://wowtale.net/2024/04/29/75886/,
+1312,주식회사 임팩티브에이아이,Series A,Series A,변경 없음,high,"2025.8 시리즈A 82억원 유치, 누적 108억 (머니투데이/와우테일)",https://wowtale.net/2025/08/12/245283/,AI 수요예측 '딥플로우'
+1313,비즈니스캔버스,Series A,Series A,변경 없음,high,"2023.1 시리즈A2 50억 유치 (머니투데이), THE VC 최근 단계 Series A, 시리즈B 보도 없음",https://thevc.kr/businesscanvas,타입드/리캐치 운영사
+1314,자버,Series A,Pre-A,미반영(근거 부족),medium,"2021.4 스트롱벤처스·하나은행·디캠프 프리시리즈A 투자 유치 (와우테일/플래텀), 이후 시리즈A 유치 보도 확인 불가",https://wowtale.net/2021/04/15/jober-raised-pre-series-a-funding/,기록된 Series A를 뒷받침하는 기사 없음. 확인 가능한 최신 라운드는 2021년 프리A
+1324,주식회사 앵커노드,Seed,Seed,변경 없음,high,"퓨처플레이 시드 투자에 이어 2025.3 네이버 D2SF 신규 투자 유치, 라운드 단계 미공개 (플래텀/와우테일)",https://platum.kr/archives/254641,"2025.3 네이버 D2SF 투자는 단계 미공개, 시리즈A 도달 근거 없음"
+1325,네트로피 주식회사,Seed,Pre-seed,반영,high,2024.11 스프링캠프 프리시드 투자 유치 및 팁스 선정 (와우테일),https://wowtale.net/2024/11/29/233938/,"2024.8 설립, 확인된 유일한 라운드는 프리시드. 이후 시드 라운드 보도 없음"
+1326,애디터,Seed,Seed,변경 없음,medium,"시드(메가인베스트먼트·윤민창의투자재단) 및 실리콘밸리 6억원 엔젤 투자, 테크스타즈 투자 (플래텀/KB이노베이션허브)",https://platum.kr/archives/151198,2024년 이후 신규 라운드 보도 없음
+1327,꾸러기수비대,Seed,Seed,변경 없음,medium,"10억원 규모 시드 투자 유치(BNK부산은행·AC패스파인더·KDB캐피탈 등), CES 2025 참가 (넘버스/THE VC)",https://thevc.kr/k-rangers/fundings,
+1328,스냅볼트,Seed,Seed,변경 없음,high,"THE VC 최근 단계 Seed(연세대·알토란벤처스 투자), 2025.12 가톨릭관동대 초기창업패키지 선정 (한경)",https://thevc.kr/snapvault/fundings,
+1329,루모스,Seed,Seed,변경 없음,high,"THE VC 기준 투자 2건, 최근 라운드 Seed (THE VC)",https://thevc.kr/llumos/fundings,
+1330,라이즈이엔엠,Seed,Seed,변경 없음,high,"트랜스링크인베스트먼트 3억원 시드 투자, THE VC 최근 단계 Seed (THE VC)",https://thevc.kr/riseenm/fundings,
+1331,플리퍼코퍼레이션,Seed,Seed,변경 없음,high,"서울대기술지주·스마일게이트인베스트먼트 투자, THE VC 기준 투자 2건 모두 Seed (THE VC/신아일보)",https://thevc.kr/flippercorporation,
+1332,익스토리,Seed,Seed,변경 없음,medium,"2023.9 프라이머 시드 투자 유치, 이후 한국투자액셀러레이터 투자 및 팁스 선정 (LinkedIn/THE VC)",https://thevc.kr/extory,시드 이후 상위 라운드 보도 없음
+1333,텍스트웨이,Seed,Seed,변경 없음,high,"2025.9 MYSC 시드 익스텐션 투자 유치, 2025.11 딥테크 팁스 선정 (와우테일)",https://wowtale.net/2025/11/06/249861/,
+1334,허슬러즈,Seed,Seed,변경 없음,high,2024.9 컴퍼니엑스 시드 투자 유치 및 팁스 선정 (벤처스퀘어),https://www.venturesquare.net/956835,"2026.4 산리오 협업 등 사업 활발, 시드 이후 상위 라운드 보도 없음"
+1335,쿠쿠닥스,Seed,Seed,변경 없음,medium,"2014 본엔젤스 시드·2016 지란지교소프트 투자 후 신규 라운드 확인 불가, 시리즈A는 추진 단계 보도만 존재 (THE VC/혁신의숲)",https://thevc.kr/kukudocs,"투자 이력이 오래됨(2014~2016), 시리즈A 완료 근거 없음"
+1346,주식회사 위드포인츠,Pre-A,Pre-A,변경 없음,high,"2025년 크릿벤처스 주도 40억원 규모 프리시리즈A 투자 유치(퓨처플레이·위벤처스·디캠프 참여, 누적 52억) (이넷뉴스/벤처스퀘어)",https://www.enetnews.co.kr/news/articleView.html?idxno=45206,
+1347,주식회사 클라이원트,Pre-A,Pre-A,변경 없음,high,"2024.8 본엔젤스·블루코너 주도 20억원 프리시리즈A 유치, THE VC 최근 단계 Pre-A (더프론티어/THE VC)",https://thevc.kr/cliwant,2025년 시리즈A 유치 목표 보도 있으나 완료 확인 불가
+1348,세샤트,Pre-A,Pre-A,변경 없음,medium,"2023.9 스트롱벤처스 브릿지 투자 유치, THE VC 기준 최신 라운드 Pre-A이며 이후 시리즈A 완료 보도 없음 (와우테일)",https://wowtale.net/2023/09/20/63672/,2024년 시리즈A 추진 계획 언급 있었으나 완료 확인 안 됨
+1349,피큐레잇,Pre-A,Pre-A,변경 없음,medium,"2022.4 프리A 5억 유치 후 추가 라운드 없음, THE VC 최신 단계 Pre-A",https://thevc.kr/pikurate,추가 투자 유치 실패로 인력 80% 감축 보도 있음
+1350,펑션투웰브,Pre-A,Pre-A,변경 없음,high,2023.5 모비딕벤처스 주도 12억 규모 프리A 투자 유치 (머니투데이/유니콘팩토리),https://news.mt.co.kr/mtview.php?no=2023051509041110363,
+1351,씨지인사이드,Pre-A,Pre-A,변경 없음,medium,"2023년말 타임웍스·비하이 등으로부터 프리A 13억 완료, 시리즈A 40~50억 유치는 진행 중 (딜사이트)",https://dealsite.co.kr/articles/124006,시리즈A 라운드 진행 중이나 완료 확인 안 됨
+1352,레드윗,Pre-A,Pre-A,변경 없음,medium,2021 KB인베스트먼트·디캠프 등 8억 프리A 유치 이후 시리즈A 완료 보도 없음 (플래텀/THE VC),https://platum.kr/archives/143463,2025년 대전 D-유니콘 프로젝트 선정 등 활동 중
+1363,(주)무토월드,,알 수 없음,미반영(근거 부족),low,확인 불가,https://tracxn.com/d/companies/mutoworld/__Nt15EOrtv14HMu5k_9GS3oM4QGWJ53ckzudu8DTmj88,"AI 뇌동맥류 진단 메드테크(2021 설립), Tracxn 기준 'not active anymore'로 비활성 추정, 투자 이력 미확인"
+1366,(주)파트너,Seed,Seed,변경 없음,medium,"케이스타트업 시드 이후 본엔젤스·디캠프 투자(2016, 금액 비공개) 외 후속 라운드 확인 안 됨 (플래텀)",https://platum.kr/archives/76696,
+1374,포휠즈,Series A,Series A,변경 없음,medium,"2018.7 카카오벤처스 10억 투자가 최근 라운드, THE VC 최신 단계 Series A",https://thevc.kr/fourwheels,
+1376,두닷두,Seed,Seed,변경 없음,medium,"투자 2건, 누적 약 7.3억, 최근 단계 Seed (THE VC)",https://thevc.kr/dodotdo,
+1378,팀워크,Seed,Seed,변경 없음,low,확인 불가,https://thevc.kr/timwork,"2021 설립 건설 협업 플랫폼, 라운드 관련 공개 보도 없음, GS건설 등과 협업 활동 중"
+1379,채널코퍼레이션,Series C,Series D,반영,high,"2025.1 본엔젤스 주도·알토스·라구나 참여 110억 유치, 누적 약 510억, THE VC 최신 단계 Series D (AI타임스)",https://thevc.kr/channelcorporation,
+1386,슬릭코퍼레이션,Series A,Series A,변경 없음,medium,2020.5 프리시리즈A 35억 이후 2022.3 35억 유치가 최근이며 이후 라운드 없음 (THE VC/플래텀),https://thevc.kr/sleek,
+1387,김캐디,Series A,Series A,변경 없음,high,"2022.4 78억 시리즈A(아주IB투자 등)가 최신 라운드, 2026년 현재도 시리즈A 단계 (더벨 2026.4)",https://m.thebell.co.kr/m/newsview.asp?newskey=202604221402325760108456,2026년 대규모 감원 및 AI 무인화 솔루션으로 체질 개선 중
+1389,위스피온,Seed,Seed,변경 없음,medium,"프라이머 시드 1억 유치, THE VC 최신 단계 Seed, 팁스 선정",https://thevc.kr/wespion,
+1390,플랜핏,Seed,Seed,변경 없음,medium,"스프링캠프 시드 및 후속 투자 유치, 2024년부터 외부 투자 없이 흑자 운영 (벤처스퀘어)",https://www.venturesquare.net/846053,
+1393,투이스코,,알 수 없음,미반영(근거 부족),low,확인 불가 (복싱용품 브랜드로 자사몰 운영 중이나 투자 유치 기사 없음),https://www.tuisco.co.kr/,커머스 브랜드로 VC 투자 이력 미확인
+1395,스매시,Seed,Seed,변경 없음,medium,"킹슬리벤처스 시드 투자 유치, 2023 팁스 선정, 현재 프리A 라운드 유치 중 (로켓펀치/더비비드)",https://www.rocketpunch.com/en/companies/smaxhcorp,"테니스 매칭 플랫폼, 프리A는 아직 클로징 미확인"
+1400,어썸레이,Series B,Series B,변경 없음,high,"2022.11~2023 시리즈B 170억 유치, 누적 270억 (와우테일/플래텀), 이후 시리즈C 기사 없음",https://wowtale.net/2022/11/23/48970/,
+1408,주식회사 엔츠,Series A,Series A,변경 없음,high,"2025.11 시리즈A 35억 마무리, 누적 62억 (더벨)",https://www.thebell.co.kr/free/content/ArticleView.asp?key=202511280622038880106440,탄소회계 SaaS 엔스코프 운영
+1409,후즈굿,Series A,Series A,변경 없음,high,"THE VC 기준 투자 6건, 최근 단계 Series A (지속가능발전소/후즈굿)",https://thevc.kr/isd,
+1410,나인와트,Series A,Series A,변경 없음,high,"THE VC 최근 단계 Series A, 누적 약 50억·LS일렉트릭 전략투자 포함 (전자신문 2025.12)",https://thevc.kr/ninewatt,
+1411,제이엠웨이브,Series A,Series A,변경 없음,high,"시리즈A 30억 유치, 누적 50억 (전기신문/위클리오늘)",https://www.electimes.com/news/articleView.html?idxno=332945,
+1416,아크론에코,Seed,Seed,변경 없음,low,"확인 불가 (디캠프 투자 이력 외 신규 라운드 기사 없음; OI마켓의 'M&A·6,107억' 표기는 집계 오류로 판단)",https://www.nextround.kr/startup/detail/2634,폐플라스틱 열분해·폐어망 세척기 개발사
+1417,비욘드캡처,Seed,Seed,변경 없음,high,"소풍벤처스·블루포인트·슈미트 시드 투자, 2024.12 딥테크 팁스 선정 (머니투데이)",https://www.mt.co.kr/future/2024/12/10/2024121009463988980,"전기화학 기반 탄소포집(DAC) 스타트업, 2024년 설립"
+1424,어글리랩,Pre-A,Pre-A,변경 없음,high,2024.8 프리시리즈A 25억 유치 - 스트롱벤처스·어센도벤처스·MYSC (더벨),https://www.thebell.co.kr/free/content/ArticleView.asp?key=202408130814561200105442,생활폐기물 문전수거 '오늘수거' 운영
+1425,이노마드,Pre-A,Pre-A,변경 없음,low,"확인 불가 (초기 VC 투자·와디즈 펀딩 이력만 확인, 2024 이후 신규 라운드 기사 없음)",https://www.newstree.kr/newsView/ntr202405300014,"휴대용 수력발전기 제조, 2014년 설립"
+1426,브이젠,Pre-A,Pre-A,변경 없음,low,"퓨처플레이·신한캐피탈 투자(2021), 2022.4 중진공 성장공유형 투자 유치 - 라운드 명칭 미공개",https://platum.kr/archives/158297,가상발전소(K-VPP) 솔루션 기업
+1427,커널로그,Pre-A,Series A,반영,high,"2025.12 스마일게이트인베스트먼트·디쓰리쥬빌리 시리즈A 20억 유치, 누적 40억 (한국금융신문)",https://www.fntimes.com/html/view.php?ud=202512091448456641957e88cdd5_18,AIoT 태양광 O&M 솔루션
+1428,카본사우루스,Pre-A,Pre-A,변경 없음,high,2024.6 그랜드벤처스·프라이머사제파트너스 프리A 투자 유치 (플래텀),https://platum.kr/archives/230159,프리A2 라운드 진행 예정 언급(2024)
+1440,코코베리,알 수 없음,알 수 없음,변경 없음,low,"확인 불가 (2021년 시리즈A 유치 '목표' 인터뷰만 확인, 클로징 기사 없음)",https://www.startuptoday.kr/news/articleView.html?idxno=43120,농산부산물 업사이클 화장품 '리원'
+1442,마이셀,Pre-A,Pre-A,변경 없음,high,"2022.8 Pre-A 130억 유치(산업은행·위벤처스 등), 2024년 브릿지 3건(20억·50억·20억)으로 라운드 명칭은 Pre-A 유지 (THE VC)",https://thevc.kr/mycel,"현대차 사내벤처 분사, 누적 150억+"
+1458,와그,Series C,Series C,변경 없음,high,"2019.4 시리즈C 115억 유치(플래텀), 2021.11 프리시리즈C 브릿지 120억, 2026.3 하나투어 전략적 투자(지분 최대 15%, 2대주주)로 라운드 명칭 미공개",https://zdnet.co.kr/view/?no=20260309084242,2026.3 하나투어 SI 유치 — 신규 라운드명 미확인이라 Series C 유지
+1466,유니드컴퍼니,Seed,Seed,변경 없음,medium,"THE VC 기준 투자 라운드 1건(Seed, 약 2023년), 이후 후속 라운드 확인 안 됨",https://thevc.kr/unidcompany,숙박 통합관리 솔루션 '김실장' 운영
+1471,스테이빌리티,Pre-A,Pre-A,변경 없음,medium,"2022 프리A 투자 유치(수이제네리스 리드, 인포뱅크·제노인베스트먼트아시아 참여, 플래텀), 이후 라운드 확인 안 됨",https://platum.kr/archives/190164,
+1472,넥스트에디션,Pre-A,Pre-A,변경 없음,medium,2022.1 프리A 유치(베이스인베스트먼트·패스트벤처스·스프링캠프) 후 2023 한국투자파트너스 브릿지 투자(플래텀) — 시리즈A 확인 안 됨,https://platum.kr/archives/209987,캠핑 플랫폼 '캠핏' 운영
+1478,스테이스윗,,알 수 없음,미반영(근거 부족),low,확인 불가,,"펜션 예약 플랫폼, 투자 유치 이력 검색으로 확인 안 됨(한인텔 관련 서비스로 추정)"
+1492,브라이튼코퍼레이션,Seed,Seed,변경 없음,medium,"엔슬파트너스·스파크랩 초기(시드) 투자 및 팁스 선정, 누적 약 8.3억 (와우테일/플래텀) — 이후 라운드 확인 안 됨",https://wowtale.net/2022/04/08/37552/,영상 협업툴 '윕샷' 운영
+1493,폼즈,Seed,Seed,변경 없음,medium,"디캠프(은행권청년창업재단) 시드 브릿지 2억 포함 총 4건 유치, Pre-A 이상 라운드 확인 안 됨 (THE VC)",https://thevc.kr/forms,AI 버추얼 휴먼 솔루션
+1496,이미지블,Pre-A,Pre-A,변경 없음,medium,"2021.8 씨엔티테크·CKD 투자 유치 후 Pre-A 단계, 최근 투자 약 4.5년 전 (THE VC/그룹바이)",https://thevc.kr/impossible,
+1497,구루미,Pre-A,Pre-A,변경 없음,medium,"2020.8 프리시리즈A 20억 유치(이노폴리스파트너스 등, 플래텀), 2023년 시리즈B 추진 언급 있으나 성사 확인 안 됨",https://platum.kr/archives/146506,화상회의 '구루미 비즈'·'캠스터디' 운영
+1498,플라스크,Pre-A,Pre-A,변경 없음,medium,"프리시리즈A 30억 유치(스마일게이트인베스트먼트 리드, 네이버 D2SF·KT인베스트먼트 등, 플래텀), 이후 시리즈A 확인 안 됨",https://platum.kr/archives/173456,
+1499,비브리지,Pre-A,Pre-A,변경 없음,medium,"2022 프리시리즈A 25억 유치(마그나인베스트먼트·블루포인트·디티앤인베스트먼트, 플래텀), 이후 라운드 확인 안 됨",https://platum.kr/archives/189732,동영상 필기 툴 '슬리드' 운영
+1500,플루언티,Pre-A,Pre-A,변경 없음,high,"2024.1 프리시리즈A 1차 투자 유치(스파크랩·한국투자액셀러레이터, 누적 약 10억, 와우테일)",https://wowtale.net/2024/01/22/69933/,아바타 모션 생성 AI '스피치모션'
+1501,플룸디,Pre-A,Pre-A,변경 없음,low,"공개 확인되는 라운드는 2022 퓨처플레이 시드 단독투자뿐(벤처스퀘어) — Pre-A 라운드 기사 확인 불가, 기존 기재 유지",https://www.venturesquare.net/861758,공개 소스상 최종 확인 라운드는 Seed
+1504,에벤에셀케이,알 수 없음,Seed,"반영(공란 채움, medium)",medium,"2016.10 본엔젤스벤처파트너스 시드 투자 유치 (THE VC), 이후 후속 라운드 확인 안 됨",https://thevc.kr/abenecel,이미지/파일 압축 솔루션 '클라우드프레소'·'파일프레소' 운영
+1505,지디에프랩,알 수 없음,알 수 없음,변경 없음,low,"확인 불가 — Tracxn/Crunchbase에 1건 투자 기록만 있고 단계 미공개, 국내 언론 라운드 보도 없음",https://tracxn.com/d/companies/gdflab/__ZXz-GsuA50Pp_8rVT8LCrxOG84v9LzMFQIMqPhpBqiQ,"AI 업스케일링(pikaVue) 기업, 2026년 기준 직원 8명으로 운영 중"
+1507,블루비커,Pre-A,Pre-A,변경 없음,medium,"THE VC 기준 투자 4건, 최근 단계 Pre-A (소풍벤처스 시드 이후 프리A) — 2024년 이후 신규 라운드 보도 없음",https://thevc.kr/bluebeaker,
+1508,인베트,Seed,Seed,변경 없음,medium,"THE VC 기준 투자 1건, 최근 단계 Seed (롯데액셀러레이터 시드) — 이후 신규 라운드 확인 안 됨, 2025.2 리얼패킹 v3.0 출시로 영업 지속",https://thevc.kr/inbet,
+1509,하이퍼클라우드,Pre-A,Pre-A,변경 없음,medium,2022.5 SPC 섹타나인·ETRI홀딩스 등 Pre-A 전략 투자 (전자신문) — 이후 시리즈A 등 신규 라운드 보도 없음,https://www.etnews.com/20220519000151,
+1510,코발트,Seed,Seed,변경 없음,medium,"2024년 70만 달러 시드 투자 및 REALIZER 출시 후 70만 달러 후속 투자 유치 (회사/Clay 프로필), 2025 GITEX 세미파이널 선정",https://www.clay.com/dossier/cobalt-funding,동명 해외기업(Cobalt.io 등) 다수 존재 — REALIZER 제품명 기준으로 식별
