@@ -120,70 +120,14 @@ TRUSTED_SOURCES = [
 GENERIC_NAME_MAX_LEN = 2
 
 # ================================================================ 모니터링 공통
-# (monitor.py — 500 Global 프로그램 추적 + AC 업체 동향 감시)
-OUTPUT_DIR = BASE_DIR / "output"                    # 리포트 저장 위치
+# 두 모니터가 함께 쓰는 경로/모델 설정만 여기 둔다. 모니터별 설정은 각 폴더의
+# config.py 에 분리되어 있다:
+#   ① 500 Global 프로그램 추적  → monitors/global500/config.py (실행: monitor_500global.py)
+#   ② AC 업체 동향 감시        → monitors/ac_watch/config.py  (실행: monitor_ac.py)
+OUTPUT_DIR = BASE_DIR / "output"                    # 리포트 저장 위치 (모니터별 하위 폴더)
 SNAPSHOT_DIR = CHECKPOINT_DIR / "snapshots"         # 페이지 스냅샷 (변경 감지용)
 MONITOR_LOG_PATH = CHECKPOINT_DIR / "monitor_log.jsonl"
 PAGE_MAX_CHARS = int(os.environ.get("PAGE_MAX_CHARS", "12000"))  # 페이지당 수집 상한
-
-# ---------------------------------------------------------------- 500 Global
-# 공식 사이트 크롤링 대상 페이지 (JS 렌더링 페이지는 본문이 부족할 수 있어
-# 뉴스 검색·grounding 모드로 보완한다)
-GLOBAL500_PAGES = {
-    "flagship":     "https://500.co/founders/flagship",       # 플래그십 AC 요강·마감일
-    "founders":     "https://500.co/founders",                # 프로그램 목록
-    "companies":    "https://500.co/companies",               # 포트폴리오 리스트
-    "accelerator_blog": "https://500.co/blog/tag/accelerator", # 배치 발표 블로그
-}
-# 지원 접수 페이지 (rolling admission — 배치별 마감일 존재)
-GLOBAL500_APPLY_URL = "https://flagship.aplica.500.co"
-
-# 뉴스 교차 검색 쿼리 (구글 뉴스 RSS + 네이버 병행)
-GLOBAL500_NEWS_QUERIES = [
-    '"500 Global" flagship accelerator batch',
-    '"500 Global" accelerator deadline',
-    '"500 글로벌" 액셀러레이터 선발',
-    '"500 Global" 배치 스타트업',
-]
-
-# 마감일 추적 기록 (변경 감지 시 리포트에 알림 표기)
-GLOBAL500_DEADLINE_LOG = CHECKPOINT_DIR / "global500_deadline.jsonl"
-
-# ---------------------------------------------------------------- AC 업체 감시
-# 비교 시트의 액셀러레이터/컨설팅 업체. pages 의 URL을 직접 보강/수정해서 쓴다.
-# (Long Story Short 는 공식 도메인 미확인 — homepage 를 채워 넣으면 페이지 감시 활성화,
-#  비워 두면 뉴스 검색만 수행)
-# data/ac_targets.json 이 있으면 이 기본값 대신 그 파일을 사용한다 (같은 구조의 배열).
-AC_TARGETS = [
-    {
-        "name": "Long Story Short",
-        "slug": "long-story-short",
-        "pages": {},  # 예: {"home": "https://...", "services": "https://.../services"}
-        "news_queries": ['"롱스토리숏" 스타트업', '"Long Story Short" 액셀러레이터 한국'],
-        "watch_hints": "前 500 Global APAC 총괄 스카우트 예정 언급 있음 — 인력 영입 소식 중점 확인",
-    },
-    {
-        "name": "업라이트컨설팅 (Upright)",
-        "slug": "upright",
-        "pages": {
-            "home": "http://upright.co.kr/",
-        },
-        "news_queries": ['"업라이트컨설팅"', '"업라이트" IR 컨설팅 스타트업'],
-        "watch_hints": "IR 컨설팅 서비스 구성·가격 변경 여부",
-    },
-    {
-        "name": "Intralink",
-        "slug": "intralink",
-        "pages": {
-            "home": "https://www.intralinkgroup.com/ko-kr/",
-            "services": "https://www.intralinkgroup.com/ko-kr/corporate-services",
-            "news": "https://www.intralinkgroup.com/ko-kr/latest",
-        },
-        "news_queries": ['"인트라링크" 스타트업 해외진출', '"Intralink" Korea startup'],
-        "watch_hints": "해외진출 BD 서비스 범위·가격, 한국 오피스 인력 변동",
-    },
-]
-AC_TARGETS_JSON = DATA_DIR / "ac_targets.json"
 
 # 모니터링에 사용할 Gemini 모델 (스크리닝 모델 재사용)
 MODEL_MONITOR = os.environ.get("MODEL_MONITOR", MODEL_SCREEN)

@@ -1,4 +1,4 @@
-"""500 Global 프로그램 최신 정보 크롤러.
+"""① 500 Global 프로그램 최신 정보 크롤러 (실행: monitor_500global.py).
 
 500.co 공식 사이트(플래그십 AC 요강·프로그램·포트폴리오·블로그)를 수집해
 - 지원 요건 / 다음 배치 지원 마감일 / 배치 일정
@@ -11,21 +11,20 @@
   유료 티어라면 --search-mode grounding 으로 Gemini 검색을 직접 쓴다.
 
 마감일은 checkpoints/global500_deadline.jsonl 에 이력을 남겨
-이전 실행과 달라지면 리포트 상단에 변경 알림을 표기한다.
+새 마감일 발견/변경 시 리포트 상단에 알림을 표기한다.
 """
 from __future__ import annotations
 
 import datetime as dt
 import logging
 
-import config
+import config as root_config
 from collectors import naver_search, news_search
 from extractors.investment_extractor import extract_json
 from monitors import common
+from monitors.global500 import config as cfg
 
 log = logging.getLogger(__name__)
-
-SLUG = "global500"
 
 # ---------------------------------------------------------------- 프롬프트
 PROGRAM_PROMPT = """\
@@ -96,7 +95,7 @@ Search for the most recent 500 Global Flagship Accelerator batch announcements
 
 def _search_news() -> list[dict]:
     results = []
-    for q in config.GLOBAL500_NEWS_QUERIES:
+    for q in cfg.NEWS_QUERIES:
         results.append(news_search.search_news(q, max_items=6))
         results.append(naver_search.search_news(q, max_items=6))
     return news_search.merge_results(*results, cap=20)
@@ -112,29 +111,36 @@ def _pages_block(pages: list[dict], per_page: int = 5000) -> str:
 
 # ---------------------------------------------------------------- 마감일 추적
 def track_deadline(deadline: str, note: str) -> dict:
-    """마감일 이력 기록 + 이전 값과 비교. 반환: {deadline, d_day, changed, prev}."""
-    history = common.read_jsonl(config.GLOBAL500_DEADLINE_LOG)
+    """마감일 이력 기록 + 이전 값과 비교.
+
+    반환: {deadline, d_day, changed, first_found, prev}
+    - first_found: 이전 기록이 없거나 빈 값이었는데 이번에 마감일이 확인됨
+    - changed: 이전에 확인된 마감일과 다른 값이 확인됨 (둘 다 비어있지 않을 때만)
+    """
+    history = common.read_jsonl(cfg.DEADLINE_LOG)
     prev = history[-1]["deadline"] if history else ""
-    changed = bool(history) and prev != deadline
+    first_found = bool(deadline) and not prev
+    changed = bool(prev) and bool(deadline) and prev != deadline
     d_day = None
     if deadline:
         try:
             d_day = (dt.date.fromisoformat(deadline) - dt.date.today()).days
         except ValueError:
             pass
-    common.append_jsonl(config.GLOBAL500_DEADLINE_LOG, {
+    common.append_jsonl(cfg.DEADLINE_LOG, {
         "checked_at": common.today(), "deadline": deadline,
         "d_day": d_day, "note": note,
     })
-    return {"deadline": deadline, "d_day": d_day, "changed": changed, "prev": prev}
+    return {"deadline": deadline, "d_day": d_day, "changed": changed,
+            "first_found": first_found, "prev": prev}
 
 
 # ---------------------------------------------------------------- 실행
 def run(client=None, use_ai: bool = True):
     """수집 → (AI 추출) → 리포트 저장. 리포트 경로 반환."""
-    log.info("[500 Global] 공식 페이지 %d개 수집", len(config.GLOBAL500_PAGES))
-    pages = [common.check_page(SLUG, label, url)
-             for label, url in config.GLOBAL500_PAGES.items()]
+    log.info("[500 Global] 공식 페이지 %d개 수집", len(cfg.PAGES))
+    pages = [common.check_page(cfg.SLUG, label, url)
+             for label, url in cfg.PAGES.items()]
     changed_pages = [p for p in pages if p["changed"]]
     if changed_pages:
         log.info("[500 Global] 변경 감지: %s", ", ".join(p["label"] for p in changed_pages))
@@ -144,37 +150,29 @@ def run(client=None, use_ai: bool = True):
 
     program, portfolio = {}, {}
     if use_ai and client is not None:
-        grounding = config.SEARCH_MODE == "grounding"
+        grounding = root_config.SEARCH_MODE == "grounding"
         try:
+            prompt = PROGRAM_PROMPT.format(
+                today=common.today(), apply_url=cfg.APPLY_URL,
+                pages_block=_pages_block(pages), news_block=news_block)
             if grounding:
-                ans1 = client.grounded(GROUNDING_PROGRAM_QUERY.format(today=common.today())
-                                       + "\n\n" + PROGRAM_PROMPT.format(
-                                           today=common.today(),
-                                           apply_url=config.GLOBAL500_APPLY_URL,
-                                           pages_block=_pages_block(pages),
-                                           news_block=news_block),
-                                       model=config.MODEL_MONITOR)
+                prompt = GROUNDING_PROGRAM_QUERY.format(today=common.today()) + "\n\n" + prompt
+                ans = client.grounded(prompt, model=root_config.MODEL_MONITOR)
             else:
-                ans1 = client.plain(PROGRAM_PROMPT.format(
-                    today=common.today(), apply_url=config.GLOBAL500_APPLY_URL,
-                    pages_block=_pages_block(pages), news_block=news_block),
-                    model=config.MODEL_MONITOR)
-            program = extract_json(ans1.text)
+                ans = client.plain(prompt, model=root_config.MODEL_MONITOR)
+            program = extract_json(ans.text)
         except Exception as e:
             log.warning("[500 Global] 프로그램 정보 추출 실패: %s", e)
         try:
-            port_pages = [p for p in pages if p["label"] in ("companies", "accelerator_blog")]
+            port_pages = [p for p in pages if p["label"] in cfg.PORTFOLIO_PAGE_LABELS]
+            prompt = PORTFOLIO_PROMPT.format(
+                pages_block=_pages_block(port_pages), news_block=news_block)
             if grounding:
-                ans2 = client.grounded(GROUNDING_PORTFOLIO_QUERY + "\n\n"
-                                       + PORTFOLIO_PROMPT.format(
-                                           pages_block=_pages_block(port_pages),
-                                           news_block=news_block),
-                                       model=config.MODEL_MONITOR)
+                prompt = GROUNDING_PORTFOLIO_QUERY + "\n\n" + prompt
+                ans = client.grounded(prompt, model=root_config.MODEL_MONITOR)
             else:
-                ans2 = client.plain(PORTFOLIO_PROMPT.format(
-                    pages_block=_pages_block(port_pages), news_block=news_block),
-                    model=config.MODEL_MONITOR)
-            portfolio = extract_json(ans2.text)
+                ans = client.plain(prompt, model=root_config.MODEL_MONITOR)
+            portfolio = extract_json(ans.text)
         except Exception as e:
             log.warning("[500 Global] 포트폴리오 분석 실패: %s", e)
 
@@ -193,17 +191,26 @@ def run(client=None, use_ai: bool = True):
         "news": news,
         "fetch_failed": [p["label"] for p in pages if p["fetch_failed"]],
     }
-    common.write_json("global500_status", data)
-    common.append_jsonl(config.MONITOR_LOG_PATH, {
+    common.write_json("global500_status", data, subdir=cfg.REPORT_SUBDIR)
+    common.append_jsonl(root_config.MONITOR_LOG_PATH, {
         "monitor": "global500", "checked_at": common.today(),
         "deadline": deadline_info["deadline"], "changed_pages": len(changed_pages),
     })
-    path = common.write_report("global500_report", render_report(data))
+    path = common.write_report("global500_report", render_report(data),
+                               subdir=cfg.REPORT_SUBDIR)
     log.info("[500 Global] 리포트 저장: %s", path)
     return path
 
 
 # ---------------------------------------------------------------- 리포트
+def _dday_label(d_day: int | None) -> str:
+    if d_day is None:
+        return ""
+    if d_day >= 0:
+        return f" (D-{d_day})"
+    return f" (마감 지남 {-d_day}일)"
+
+
 def render_report(data: dict) -> str:
     dl = data["deadline"]
     program = data.get("program") or {}
@@ -213,16 +220,16 @@ def render_report(data: dict) -> str:
     # 마감일
     lines.append("## 다음 배치 지원 마감일")
     if dl["deadline"]:
-        dday = f" (D{dl['d_day']:+d})".replace("+", "-") if dl["d_day"] is not None and dl["d_day"] >= 0 \
-            else (f" (마감 지남 {abs(dl['d_day'])}일)" if dl["d_day"] is not None else "")
-        lines.append(f"- **{dl['deadline']}**{dday}")
+        lines.append(f"- **{dl['deadline']}**{_dday_label(dl['d_day'])}")
     else:
         lines.append("- 확인 불가 (rolling admission 이거나 페이지에서 미확인)")
     if program.get("next_deadline_note"):
         lines.append(f"- 근거: {program['next_deadline_note']}")
     if dl["changed"]:
-        lines.append(f"- ⚠️ **마감일 변경 감지**: 이전 기록 `{dl['prev'] or '(없음)'}` → `{dl['deadline'] or '(없음)'}`")
-    lines.append(f"- 지원 접수: {config.GLOBAL500_APPLY_URL}")
+        lines.append(f"- ⚠️ **마감일 변경 감지**: `{dl['prev']}` → `{dl['deadline']}`")
+    elif dl.get("first_found"):
+        lines.append("- 🆕 **새 마감일 확인** (이전 실행까지는 미확인)")
+    lines.append(f"- 지원 접수: {cfg.APPLY_URL}")
     lines.append("")
 
     # 배치 일정

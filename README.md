@@ -3,10 +3,10 @@
 스타트업 DB 엑셀(`data/Startup_DB.xlsx`)의 G열(투자 스테이지)을 Gemini **Google Search
 grounding** 웹 검색으로 최신화하는 파이프라인. 비용 절약을 위해 2단계 깔때기 구조를 쓴다.
 
-> **모니터링 도구 추가** — 같은 인프라(Gemini 래퍼·뉴스 검색·체크포인트)를 재사용하는
-> 두 가지 크롤러가 `monitor.py` 로 실행된다. 아래 [모니터링](#모니터링-monitorpy--500-global--ac-업체) 섹션 참고.
-> ① 500 Global 프로그램 최신 정보(지원 요건·마감일·배치 일정·포트폴리오·선발 공통점 분석)
-> ② AC 업체(Long Story Short·Upright·Intralink 등) 서비스/가격 변경·멘토 영입 동향
+> **모니터링 도구 추가** — 같은 인프라(Gemini 래퍼·뉴스 검색·체크포인트)를 재사용하되
+> 폴더·실행 파일·리포트가 완전히 분리된 두 개의 크롤러. 아래 모니터링 섹션 참고.
+> ① `monitor_500global.py` — 500 Global 프로그램 최신 정보(지원 요건·마감일·배치 일정·포트폴리오·선발 공통점 분석)
+> ② `monitor_ac.py` — AC 업체(Long Story Short·Upright·Intralink 등) 서비스/가격 변경·멘토 영입 동향
 
 ## 흐름 (pipeline.py)
 
@@ -117,24 +117,40 @@ IPO('YY), M&A('YY), 알 수 없음` — IPO/M&A는 2자리 연도 필수. Pre-A=
 - 연도 없는 `M&A`/`IPO` 값은 연도를 찾아 `M&A('YY)` 형식으로 보정
 - 동명 기업은 업종·웹사이트·서비스명 일치 확인 후에만 채택
 
-## 모니터링 (monitor.py) — 500 Global / AC 업체
+## 모니터링 — 500 Global / AC 업체 (별도 실행 파일 2개)
 
 투자 스테이지 파이프라인과 같은 인프라(`ai/gemini.py`, `collectors/news_search.py`,
-`collectors/naver_search.py`)를 재사용하는 별도 CLI. 리포트는 `output/`에
-마크다운+JSON으로 저장되고, 페이지 스냅샷은 `checkpoints/snapshots/`에 남아
+`collectors/naver_search.py`)를 재사용하되, 두 모니터는 **폴더·설정·실행 파일·리포트가
+완전히 분리**되어 있다. 페이지 스냅샷은 `checkpoints/snapshots/`에 남아
 **다음 실행 때 무엇이 바뀌었는지(diff)** 자동 감지한다.
 
-```bash
-python monitor.py 500                        # ① 500 Global 프로그램 리포트
-python monitor.py ac                         # ② AC 업체 동향 리포트
-python monitor.py ac --target intralink      #    특정 업체만
-python monitor.py all                        # 둘 다
-python monitor.py 500 --no-ai                # Gemini 없이 수집·스냅샷·뉴스만 (키 불필요)
-python monitor.py 500 --search-mode grounding # 유료 티어: Gemini 검색 직접 사용 (권장)
-python test_monitor_offline.py               # 오프라인 검증 (API 키/네트워크 불필요)
+```
+monitor_500global.py            ① 실행 파일 — 500 Global 프로그램
+monitor_ac.py                   ② 실행 파일 — AC 업체 동향
+monitors/
+  common.py                     공용 유틸 (페이지 수집·스냅샷 diff·리포트 저장)
+  global500/                    ① 전용 폴더
+    config.py                     크롤링 페이지·뉴스 쿼리·마감일 로그 경로
+    crawler.py                    수집·분석·리포트 로직
+  ac_watch/                     ② 전용 폴더
+    config.py                     감시 대상 업체 목록 (TARGETS)
+    watcher.py                    수집·diff·분석·리포트 로직
+output/
+  global500/                    ① 리포트 (md + json)
+  ac_watch/                     ② 리포트 (md + json)
 ```
 
-### ① 500 Global 프로그램 (`monitors/global500.py`)
+```bash
+python monitor_500global.py                          # ① 500 Global 리포트
+python monitor_500global.py --search-mode grounding  #    유료 티어: Gemini 검색 직접 사용 (권장)
+python monitor_ac.py                                 # ② AC 업체 동향 리포트
+python monitor_ac.py --target intralink              #    특정 업체만
+python monitor_500global.py --no-ai                  # 공통: Gemini 없이 수집·스냅샷·뉴스만 (키 불필요)
+python test_500global_offline.py                     # ① 오프라인 검증 (API 키/네트워크 불필요)
+python test_ac_watch_offline.py                      # ② 오프라인 검증
+```
+
+### ① 500 Global 프로그램 (`monitors/global500/`)
 
 500.co 공식 페이지(Flagship 요강·프로그램 목록·포트폴리오·블로그) + 뉴스 교차 검색으로:
 
@@ -147,7 +163,7 @@ python test_monitor_offline.py               # 오프라인 검증 (API 키/네�
 주의: 500.co는 JS 렌더링 페이지가 많아 단순 크롤링으로는 본문이 빈약할 수 있다.
 유료 티어 키가 있으면 `--search-mode grounding`이 가장 정확하다.
 
-### ② AC 업체 동향 (`monitors/ac_watch.py`)
+### ② AC 업체 동향 (`monitors/ac_watch/`)
 
 비교 시트의 액셀러레이터/컨설팅 업체 웹사이트를 크롤링해:
 
@@ -157,7 +173,7 @@ python test_monitor_offline.py               # 오프라인 검증 (API 키/네�
   (예: "前 500 Global APAC 총괄 스카우트" 같은 영입 시그널 중점 확인)
 - 비교 시트 갱신이 필요한 변경이면 리포트 상단에 ⚠️ alert 표기
 
-대상 목록은 `config.py`의 `AC_TARGETS` 기본값(Upright·Intralink는 URL 확인됨,
+대상 목록은 `monitors/ac_watch/config.py`의 `TARGETS` 기본값(Upright·Intralink는 URL 확인됨,
 Long Story Short는 도메인 미확인이라 뉴스 검색만) 대신 `data/ac_targets.json`이
 있으면 그 파일을 우선 사용한다 — `data/ac_targets.sample.json`을 복사해 URL을 채우면 된다.
 일부 사이트는 봇 차단(403)이 있을 수 있다 — 그 페이지는 "수집 실패"로 표기되고

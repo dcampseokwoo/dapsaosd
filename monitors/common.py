@@ -149,16 +149,33 @@ def read_jsonl(path) -> list[dict]:
     return out
 
 
-def write_report(name: str, text: str):
-    """output/{name}_{YYMMDD}.md 저장, 경로 반환."""
-    config.OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    path = config.OUTPUT_DIR / f"{name}_{dt.date.today().strftime('%y%m%d')}.md"
+def _output_dir(subdir: str):
+    d = config.OUTPUT_DIR / subdir if subdir else config.OUTPUT_DIR
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def write_report(name: str, text: str, subdir: str = ""):
+    """output/{subdir}/{name}_{YYMMDD}.md 저장, 경로 반환 (모니터별 폴더 분리)."""
+    path = _output_dir(subdir) / f"{name}_{dt.date.today().strftime('%y%m%d')}.md"
     path.write_text(text, encoding="utf-8")
     return path
 
 
-def write_json(name: str, data) -> None:
-    config.OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    path = config.OUTPUT_DIR / f"{name}_{dt.date.today().strftime('%y%m%d')}.json"
+def write_json(name: str, data, subdir: str = ""):
+    """output/{subdir}/{name}_{YYMMDD}.json 저장, 경로 반환."""
+    path = _output_dir(subdir) / f"{name}_{dt.date.today().strftime('%y%m%d')}.json"
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     return path
+
+
+def make_gemini_client(max_calls: int | None = None, no_ai: bool = False):
+    """(client, use_ai) — 키가 없거나 --no-ai 면 AI 없이 수집만 진행."""
+    if no_ai:
+        return None, False
+    try:
+        from ai.gemini import GeminiClient
+        return GeminiClient(max_calls=max_calls), True
+    except RuntimeError as e:
+        log.warning("%s — AI 분석 없이 수집만 진행합니다 (--no-ai 와 동일).", e)
+        return None, False

@@ -1,23 +1,26 @@
-"""AC/컨설팅 업체(Long Story Short, Upright, Intralink 등) 최신 동향 감시.
+"""② AC/컨설팅 업체(Long Story Short, Upright, Intralink 등) 최신 동향 감시
+(실행: monitor_ac.py).
 
 비교 시트에 있는 업체들의 웹사이트를 주기적으로 크롤링해
 - 서비스/가격 변경 여부 (이전 실행 스냅샷과 diff 비교)
 - 새로운 멘토/인력 영입 소식 (뉴스 검색 + 페이지 변경 내용)
 을 감지하고 Gemini 로 요약해 마크다운 리포트를 만든다.
 
-대상 목록은 config.AC_TARGETS 기본값을 쓰되, data/ac_targets.json 이 있으면
-그 파일이 우선한다 (같은 구조의 JSON 배열 — URL 보강/추가는 그 파일에서).
-페이지 URL 이 비어 있는 업체(예: Long Story Short)는 뉴스 검색만 수행한다.
+대상 목록은 monitors/ac_watch/config.py 의 TARGETS 기본값을 쓰되,
+data/ac_targets.json 이 있으면 그 파일이 우선한다 (같은 구조의 JSON 배열 —
+URL 보강/추가는 그 파일에서). 페이지 URL 이 비어 있는 업체(예: Long Story Short)는
+뉴스 검색만 수행한다.
 """
 from __future__ import annotations
 
 import json
 import logging
 
-import config
+import config as root_config
 from collectors import naver_search, news_search
 from extractors.investment_extractor import extract_json
 from monitors import common
+from monitors.ac_watch import config as cfg
 
 log = logging.getLogger(__name__)
 
@@ -54,16 +57,16 @@ ANALYSIS_PROMPT = """\
 
 
 def load_targets() -> list[dict]:
-    """data/ac_targets.json 이 있으면 우선, 없으면 config.AC_TARGETS."""
-    if config.AC_TARGETS_JSON.exists():
+    """data/ac_targets.json 이 있으면 우선, 없으면 config 의 TARGETS."""
+    if cfg.TARGETS_JSON.exists():
         try:
-            targets = json.loads(config.AC_TARGETS_JSON.read_text(encoding="utf-8"))
+            targets = json.loads(cfg.TARGETS_JSON.read_text(encoding="utf-8"))
             if isinstance(targets, list) and targets:
-                log.info("대상 목록 로드: %s (%d개)", config.AC_TARGETS_JSON.name, len(targets))
+                log.info("대상 목록 로드: %s (%d개)", cfg.TARGETS_JSON.name, len(targets))
                 return targets
         except Exception as e:
             log.warning("ac_targets.json 파싱 실패(%s) — 기본값 사용", e)
-    return config.AC_TARGETS
+    return cfg.TARGETS
 
 
 def _search_news(target: dict) -> list[dict]:
@@ -109,7 +112,7 @@ def check_target(target: dict, client=None, use_ai: bool = True) -> dict:
                 watch_hints=target.get("watch_hints", "-"),
                 diff_block=_diff_block(page_results),
                 news_block=news_search.format_block(news),
-            ), model=config.MODEL_MONITOR)
+            ), model=root_config.MODEL_MONITOR)
             analysis = extract_json(ans.text)
         except Exception as e:
             log.warning("[AC 감시] %s 분석 실패: %s", name, e)
@@ -123,7 +126,7 @@ def check_target(target: dict, client=None, use_ai: bool = True) -> dict:
         "news": news,
         "analysis": analysis,
     }
-    common.append_jsonl(config.MONITOR_LOG_PATH, {
+    common.append_jsonl(root_config.MONITOR_LOG_PATH, {
         "monitor": "ac_watch", "checked_at": common.today(), "name": name,
         "changed_pages": len(changed), "alert": bool(analysis.get("alert")),
     })
@@ -139,8 +142,9 @@ def run(client=None, use_ai: bool = True, only_slug: str | None = None):
             raise SystemExit(f"대상 slug 없음: {only_slug} "
                              f"(가능: {', '.join(t['slug'] for t in load_targets())})")
     records = [check_target(t, client, use_ai) for t in targets]
-    common.write_json("ac_watch_status", records)
-    path = common.write_report("ac_watch_report", render_report(records))
+    common.write_json("ac_watch_status", records, subdir=cfg.REPORT_SUBDIR)
+    path = common.write_report("ac_watch_report", render_report(records),
+                               subdir=cfg.REPORT_SUBDIR)
     log.info("[AC 감시] 리포트 저장: %s", path)
     return path
 
@@ -163,14 +167,14 @@ def render_report(records: list[dict]) -> str:
             lines.append("")
 
         sections = [
-            ("서비스 변경", a.get("service_changes") or [], ("what", "evidence")),
-            ("가격/조건 변경", a.get("pricing_changes") or [], ("what", "evidence")),
+            ("서비스 변경", a.get("service_changes") or []),
+            ("가격/조건 변경", a.get("pricing_changes") or []),
         ]
-        for title, items, keys in sections:
+        for title, items in sections:
             if items:
                 lines.append(f"### {title}")
                 for it in items:
-                    lines.append(f"- {it.get(keys[0], '')} — _{it.get(keys[1], '')}_")
+                    lines.append(f"- {it.get('what', '')} — _{it.get('evidence', '')}_")
                 lines.append("")
         people = a.get("people_changes") or []
         if people:
