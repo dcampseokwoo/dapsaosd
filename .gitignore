@@ -5,3 +5,7 @@ checkpoints/
 data/*.xlsx
 !data/*.csv
 output/
+
+# AI PMO — Drive 원본·캐시·토큰·소스 지정 파일 (외부 문서 내용이므로 커밋 금지)
+data/pmo/
+
