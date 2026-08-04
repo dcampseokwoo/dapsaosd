@@ -190,10 +190,21 @@ class TestValidity(unittest.TestCase):
     def setUp(self):
         self.v = backtest.validity(backtest.run())
 
-    def test_no_confirmed_rejections_in_dataset(self):
-        """확정 불합격이 0건임을 명시 — 정밀도·특이도 주장 금지의 근거."""
-        self.assertEqual(self.v["n_confirmed_rejected"], 0)
+    def test_confirmed_rejections_are_tracked(self):
+        """확정 불합격 표본 수를 지표에 노출 — 정밀도 주장의 근거이자 한계."""
+        self.assertEqual(self.v["n_confirmed_rejected"],
+                         sum(1 for c in dataset.COMPANIES
+                             if c.ground_truth.startswith("rejected")))
+        self.assertGreater(self.v["n_confirmed_rejected"], 0)
+
+    def test_precision_claim_is_still_blocked(self):
+        """표본 2개사로는 정밀도·특이도를 주장할 수 없음을 명시해야 한다."""
         self.assertTrue(any("정밀도" in m for m in self.v["not_measurable"]))
+        self.assertTrue(any("근접 탈락" in m for m in self.v["not_measurable"]))
+
+    def test_known_false_positive_is_surfaced(self):
+        """SaaSMetrics(500 탈락)를 v2 가 추천하는 오탐 — 숨기지 말고 노출."""
+        self.assertIn("SaaSMetrics", self.v["false_positives"])
 
     def test_in_sample_companies_are_flagged(self):
         """규칙 수정으로 구제된 기업은 반드시 in-sample 로 표기돼야 한다."""

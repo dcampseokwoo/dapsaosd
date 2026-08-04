@@ -450,6 +450,67 @@ COMPANIES: list[Company] = [
         has_working_product=True,
         product_note="CES 전시 = 프로토타입 존재 추정",
     ),
+    # ============================================================ 확정 불합격군
+    # 불합격은 원리적으로 공개되지 않는다(AC 는 합격자만 발표한다). 창업자가
+    # 스스로 공개한 사례만 확보 가능 — 아래 2건이 검색으로 찾은 전부다.
+    Company(
+        key="saasmetrics", name="SaaSMetrics", track="500",
+        sector_key="pure_sw", sector_note="구독 비즈니스 지표·리텐션 분석 SaaS",
+        stage_band="프리시드", ground_truth="rejected_500",
+        facts=[
+            ("창업자 Leo Faria 가 500 Startups·Techstars 탈락을 직접 공개(2016)", "문서 명시(보도)"),
+            ("지원 시점: 44개국 500개 이상 기업 가입", "문서 명시(보도)"),
+            ("유료 고객 수십 곳(a couple dozen)", "문서 명시(보도)"),
+            ("월 성장률 30% MoM", "문서 명시(보도)"),
+            ("같은 시기 Y Combinator 는 인터뷰 초청 — 약한 회사가 아니었다", "문서 명시(보도)"),
+            ("팀 규모·공동창업자 구성", "확인 필요"),
+        ],
+        levels={
+            "traction": (4, "유료 고객 수십 곳 + 30% MoM. v1 절대표에서도 상위"),
+            "team": (3, "SaaS 도메인 적합, 연쇄창업·스케일업 이력 미확인 → L3"),
+            "market": (None, "구독 분석 시장 규모 논증 미확인"),
+            "moat": (2, "구독 지표 대시보드 — 경쟁 밀집·전환비용 낮음. 방어자산 근거 없음 → L2"),
+        },
+        unstable={"traction": 5},
+        credibility=_cred(CRED_OK, CRED_OK),
+        needs_confirm=["팀 구성", "리텐션·이탈률", "30% MoM 의 기저 규모"],
+        fit="", fit_reason="",
+        sources=[
+            "https://lhfaria.medium.com/lessons-learned-from-a-startup-rejected-by-500-startups-techstars-and-ycombinator-667529a297f6",
+            "https://e27.co/lessons-learned-from-a-startup-rejected-by-500-startups-techstars-and-ycombinator-20160503/",
+            "https://www.startups.com/articles/lessons-learned-from-a-startup-rejected-by-500-startups-techstars-and-y-combinator",
+        ],
+        note="정답=500 탈락. 트랙션이 강한 하드 네거티브 — 엔진의 정밀도를 시험한다.",
+        product_note="유료 고객 보유 SaaS 운영 중",
+        english_ok=True, english_note="영문 지원·해외 고객 기반",
+    ),
+    Company(
+        key="helpdocs", name="HelpDocs", track="500",
+        sector_key="pure_sw", sector_note="고객지원 지식베이스(문서화) SaaS",
+        stage_band="시드 초기", ground_truth="rejected_multi",
+        facts=[
+            ("공동창업자 Jarratt Isted 가 복수 액셀러레이터 탈락을 공개(2018)", "문서 명시(보도)"),
+            ("탈락 피드백: 'too early', 'not a good fit'", "문서 명시(보도)"),
+            ("창업 약 1년, 공동창업 2인, 부트스트랩", "문서 명시(보도)"),
+            ("창업자 자평: 고객지원 업계 인적 네트워크가 없었다", "문서 명시(보도)"),
+            ("지원 시점 매출·유료 고객 수", "확인 필요"),
+        ],
+        levels={
+            "traction": (3, "제품 운영·외부 사용자 존재. 지원 시점 유료 규모는 미확인 → L3"),
+            "team": (2, "창업자 스스로 도메인 네트워크 부재를 인정 — 도메인 연결 약함 → L2"),
+            "market": (3, "지식베이스 SaaS 시장은 크나(Zendesk·Intercom 등) 상향식 논증 미확인 → L3"),
+            "moat": (2, "문서화 SaaS — 전환비용 낮고 경쟁 밀집 → L2"),
+        },
+        credibility=_cred(CRED_OK, CRED_OK),
+        needs_confirm=["지원 시점 MRR", "리텐션"],
+        fit="", fit_reason="",
+        sources=[
+            "https://medium.com/helpdocs/how-being-rejected-by-multiple-startup-accelerators-actually-helped-us-86b0fa54f457",
+        ],
+        note="정답=복수 AC 탈락(500 명시 아님). 부트스트랩 선택 = VC 트랙 그래머 아님.",
+        product_note="제품 운영 중",
+        english_ok=True, english_note="영문 서비스",
+    ),
 ]
 
 
@@ -532,6 +593,19 @@ LEVELS_V2: dict[str, dict[str, tuple[int | None, str]]] = {
     "kkureogi": {
         "trl": (None, "CES 전시만으로 TRL 특정 불가"), "team": (None, "정보 없음"),
         "manufacturing": (None, "정보 없음"), "customer": (None, "정보 없음"),
+    },
+    # 확정 불합격군 — 밴드별 레벨표 적용
+    "saasmetrics": {
+        "traction": (4, "프리시드 밴드표: 유료 고객 수십 곳 + 30% MoM → L4 이상 확실"),
+        "team": (3, "SaaS 도메인 적합, 스케일업 이력 미확인"),
+        "market": (None, "구독 분석 시장의 상향식 논증 미확인"),
+        "moat": (2, "구독 지표 대시보드 — 전환비용 낮고 경쟁 밀집(보도로 확인 가능한 성격)"),
+    },
+    "helpdocs": {
+        "traction": (3, "시드 초기 밴드표: 외부 사용자 존재. 유료 규모 미확인 → L3"),
+        "team": (2, "창업자 스스로 도메인 네트워크 부재 인정 → 도메인 연결 약함"),
+        "market": (3, "지식베이스 SaaS — 대형이나 상향식 논증 미확인"),
+        "moat": (2, "문서화 SaaS — 전환비용 낮음"),
     },
 }
 
@@ -623,6 +697,22 @@ FIT: dict[str, dict[str, str]] = {
         "vc_track_grammar": "no",         # 지역은행·정책금융 중심
         "sales_cycle_fit": "unknown",
         "momentum": "yes",                # CES 2025
+    },
+    "saasmetrics": {
+        "stage_band_fit": "yes",          # 프리시드
+        "sector_theme_match": "yes",      # SaaS = 500 공개 주력 섹터
+        "similar_admitted_case": "unknown",
+        "vc_track_grammar": "yes",        # 복수 AC 지원 = VC 트랙 지향
+        "sales_cycle_fit": "yes",         # 셀프서브 SaaS
+        "momentum": "yes",                # 30% MoM
+    },
+    "helpdocs": {
+        "stage_band_fit": "yes",
+        "sector_theme_match": "yes",      # B2B SaaS
+        "similar_admitted_case": "unknown",
+        "vc_track_grammar": "no",         # 부트스트랩 선택 — VC 트랙 아님
+        "sales_cycle_fit": "yes",
+        "momentum": "yes",
     },
 }
 

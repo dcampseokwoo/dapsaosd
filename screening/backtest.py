@@ -177,6 +177,7 @@ def render_table(results: list[dict]) -> str:
         "|---|---|---|---|---|---|---|---|---|",
     ]
     gt = {"admitted_500": "합격(500)", "admitted_hax": "합격(HAX)",
+          "rejected_500": "**탈락(500)**", "rejected_multi": "**탈락(복수AC)**",
           "unknown": "미확인", "probe": "게이트 검증"}
     for r in results:
         c = r["company"]
@@ -325,6 +326,7 @@ RESCUED_BY = {
 def validity(results: list[dict]) -> dict:
     """이 백테스트로 무엇을 주장할 수 있고 무엇을 주장할 수 없는가."""
     adm = [r for r in results if r["company"].ground_truth.startswith("admitted")]
+    rej = [r for r in results if r["company"].ground_truth.startswith("rejected")]
     unk = [r for r in results if r["company"].ground_truth == "unknown"]
 
     def _rec(g):
@@ -333,23 +335,37 @@ def validity(results: list[dict]) -> dict:
     independent = [r["company"].name for r in adm
                    if r["company"].key not in RESCUED_BY
                    and "추천 진행" in r["action"]]
+    fp = [r["company"].name for r in rej if "추천 진행" in r["action"]]
     return {
         "n_admitted": len(adm),
-        "n_confirmed_rejected": 0,        # 확정 불합격 데이터가 데이터셋에 없다
+        "n_confirmed_rejected": len(rej),
         "n_unknown": len(unk),
         "admit_recommended": f"{len(_rec(adm))}/{len(adm)}",
         "admit_rejected": sum(1 for r in adm if rejected(r, "v2")),
         "control_recommended": f"{len(_rec(unk))}/{len(unk)}",
+        # 확정 불합격군에 대한 특이도 — 표본 2개사이므로 지표가 아니라 사례다
+        "specificity": f"{len(rej) - len(fp)}/{len(rej)}",
+        "false_positives": fp,
+        "fp_detail": [
+            {"name": r["company"].name,
+             "v1": r["scores"]["strict"].tier, "v2": r["scores"]["v2"].tier,
+             "fit": r["fit"]}
+            for r in rej
+        ],
         "separation": (round(len(_rec(adm)) / len(adm), 3),
                        round(len(_rec(unk)) / len(unk), 3)),
         "in_sample": {dataset.by_key(k).name: v for k, v in RESCUED_BY.items()},
         "out_of_sample_pass": independent,
-        "measurable": ["재현율(합격사를 떨어뜨리지 않는가)",
-                       "합격군 대 대조군 추천율 격차"],
+        "measurable": [
+            "재현율(합격사를 떨어뜨리지 않는가) — 표본 4개사",
+            "합격군 대 대조군 추천율 격차",
+            "확정 불합격 2개사에 대한 판정 — 지표가 아니라 사례 수준",
+        ],
         "not_measurable": [
-            "정밀도·특이도 — 확정 불합격 데이터가 0건",
+            "정밀도·특이도 — 확정 불합격 표본이 2개사뿐(통계적 추정 불가)",
             "일반화 성능 — 합격 표본 4개사, 그중 3개사는 규칙 설계에 사용됨(in-sample)",
             "컷오프 타당성 — 4.00/3.25/2.50 을 검증할 합불 분포가 없음",
+            "근접 탈락(지원 후 아깝게 떨어진 기업) — 표본 0건. 정밀도가 실제로 결정되는 구간",
         ],
     }
 
@@ -375,7 +391,28 @@ def render_reevaluation(results: list[dict], mt: dict) -> str:
     L.append(f"- 합격군 추천율 **{v['separation'][0]:.0%}** ({v['admit_recommended']}) "
              f"vs 대조군 추천율 **{v['separation'][1]:.0%}** ({v['control_recommended']})")
     L.append(f"- 합격군 오탈락: **{v['admit_rejected']}개사**")
+    L.append(f"- 확정 불합격군 정탐: **{v['specificity']}** "
+             + (f"— 오탐(탈락 기업을 추천): **{', '.join(v['false_positives'])}**"
+                if v["false_positives"] else "— 오탐 없음"))
     L.append("")
+    if v["fp_detail"]:
+        L.append("### 확정 불합격군 판정 (v1 대 v2)")
+        L.append("")
+        L.append("| 기업 | v1 strict | v2 | Fit | 판정 |")
+        L.append("|---|---|---|---|---|")
+        for d in v["fp_detail"]:
+            ok = "❌ 오탐" if d["name"] in v["false_positives"] else "✅ 정탐"
+            L.append(f"| {d['name']} | {d['v1']} | {d['v2']} | {d['fit']} | {ok} |")
+        L.append("")
+        L.append("불합격은 원리적으로 공개되지 않는다 — 액셀러레이터는 합격자만 발표하고, "
+                 "탈락한 94~97% 는 기록으로 남지 않는다. 위 2건은 **창업자가 스스로 공개한** "
+                 "사례로, 검색으로 확보 가능한 전부다.")
+        L.append("")
+        L.append("**이 표가 말하는 것**: v1 은 SaaSMetrics 를 C 로 올바르게 걸렀고, v2 는 "
+                 "B(추천)로 통과시킨다. 재현율을 올린 수정이 정밀도를 깎았다는 직접 증거다. "
+                 "특히 Moat 가중치 10% 는 '트랙션은 빠르나 방어자산이 없는' 프로필을 "
+                 "막지 못한다 — SaaSMetrics 가 정확히 그 프로필이고, 500 은 실제로 탈락시켰다.")
+        L.append("")
     L.append("**측정 가능한 것**")
     for m in v["measurable"]:
         L.append(f"- {m}")
@@ -427,6 +464,7 @@ def render_reevaluation(results: list[dict], mt: dict) -> str:
     L.append("| 기업 | 트랙 | 밴드 | 정답 | 게이트 | Tier | Fit(점수) | 조치 |")
     L.append("|---|---|---|---|---|---|---|---|")
     gt = {"admitted_500": "합격(500)", "admitted_hax": "합격(HAX)",
+          "rejected_500": "**탈락(500)**", "rejected_multi": "**탈락(복수AC)**",
           "unknown": "미확인", "probe": "게이트 검증"}
     for r in results:
         c = r["company"]
