@@ -311,6 +311,49 @@ def render_report(results: list[dict], mt: dict) -> str:
     return "\n".join(L)
 
 
+# ---------------------------------------------------------------- 검증 타당성
+# v2 규칙은 "어느 합격사가 왜 떨어졌는지" 를 본 뒤에 만들었다. 즉 이 4개사에 대해
+# v2 는 in-sample(표본 내) 이다. 어느 판정이 규칙 수정에 의해 구제된 것이고
+# 어느 판정이 수정과 무관하게 독립적으로 나온 것인지 구분해 기록한다.
+RESCUED_BY = {
+    "cardmonster": "수정1 스테이지 밴드별 레벨표 (Traction L2→L3)",
+    "stillbright": "수정4 강등 축 트랙별 분리 (고객 L1 강등 면제)",
+    "allsale": "수정3 커버리지 규칙 (오탈락 → 보류)",
+}
+
+
+def validity(results: list[dict]) -> dict:
+    """이 백테스트로 무엇을 주장할 수 있고 무엇을 주장할 수 없는가."""
+    adm = [r for r in results if r["company"].ground_truth.startswith("admitted")]
+    unk = [r for r in results if r["company"].ground_truth == "unknown"]
+
+    def _rec(g):
+        return [r for r in g if "추천 진행" in r["action"]]
+
+    independent = [r["company"].name for r in adm
+                   if r["company"].key not in RESCUED_BY
+                   and "추천 진행" in r["action"]]
+    return {
+        "n_admitted": len(adm),
+        "n_confirmed_rejected": 0,        # 확정 불합격 데이터가 데이터셋에 없다
+        "n_unknown": len(unk),
+        "admit_recommended": f"{len(_rec(adm))}/{len(adm)}",
+        "admit_rejected": sum(1 for r in adm if rejected(r, "v2")),
+        "control_recommended": f"{len(_rec(unk))}/{len(unk)}",
+        "separation": (round(len(_rec(adm)) / len(adm), 3),
+                       round(len(_rec(unk)) / len(unk), 3)),
+        "in_sample": {dataset.by_key(k).name: v for k, v in RESCUED_BY.items()},
+        "out_of_sample_pass": independent,
+        "measurable": ["재현율(합격사를 떨어뜨리지 않는가)",
+                       "합격군 대 대조군 추천율 격차"],
+        "not_measurable": [
+            "정밀도·특이도 — 확정 불합격 데이터가 0건",
+            "일반화 성능 — 합격 표본 4개사, 그중 3개사는 규칙 설계에 사용됨(in-sample)",
+            "컷오프 타당성 — 4.00/3.25/2.50 을 검증할 합불 분포가 없음",
+        ],
+    }
+
+
 def render_reevaluation(results: list[dict], mt: dict) -> str:
     """새 평가구조(v2)로 전 기업을 다시 평가한 리포트."""
     d = mt["modes"]["v2"]
@@ -321,6 +364,53 @@ def render_reevaluation(results: list[dict], mt: dict) -> str:
     L.append(f"- 추천 진행/조건부: **{d['pass_rate']:.0%}** · "
              f"판정 보류(설문 요청): {d['n_hold']}개사 · "
              f"실제 합격 기업 오탈락: **{len(d['admit_rejected'])}개사**")
+    L.append("")
+
+    v = validity(results)
+    L.append("## 0. 이 결과로 무엇을 주장할 수 있는가 (먼저 읽을 것)")
+    L.append("")
+    L.append(f"- 실제 합격 확인: **{v['n_admitted']}개사** / "
+             f"**확정 불합격: {v['n_confirmed_rejected']}개사** / "
+             f"합불 미확인 대조군: {v['n_unknown']}개사")
+    L.append(f"- 합격군 추천율 **{v['separation'][0]:.0%}** ({v['admit_recommended']}) "
+             f"vs 대조군 추천율 **{v['separation'][1]:.0%}** ({v['control_recommended']})")
+    L.append(f"- 합격군 오탈락: **{v['admit_rejected']}개사**")
+    L.append("")
+    L.append("**측정 가능한 것**")
+    for m in v["measurable"]:
+        L.append(f"- {m}")
+    L.append("")
+    L.append("**측정 불가능한 것 — 이 데이터셋으로는 검증되지 않았다**")
+    for m in v["not_measurable"]:
+        L.append(f"- {m}")
+    L.append("")
+    L.append("### 표본 내(in-sample) 경고")
+    L.append("")
+    L.append("v2 규칙은 *어느 합격사가 왜 떨어졌는지 본 뒤에* 만들었다. "
+             "따라서 아래 판정은 규칙 수정에 의해 구제된 것이며, "
+             "독립 검증이 아니다.")
+    L.append("")
+    L.append("| 기업 | 어느 수정이 구제했는가 |")
+    L.append("|---|---|")
+    for name, fix in v["in_sample"].items():
+        L.append(f"| {name} | {fix} |")
+    L.append("")
+    L.append(f"- 수정과 **무관하게** 추천으로 나온 합격사: "
+             f"**{', '.join(v['out_of_sample_pass']) or '없음'}** "
+             f"({len(v['out_of_sample_pass'])}/{v['n_admitted']})")
+    L.append("- 즉 '합격사를 맞춘다'는 주장의 독립적 근거는 현재 "
+             f"{len(v['out_of_sample_pass'])}개사뿐이다.")
+    L.append("")
+    L.append("### 타당성을 확보하려면 (우선순위순)")
+    L.append("")
+    L.append("1. **확정 불합격 데이터** — 디캠프가 500/HAX 에 추천했거나 500 Korea Seed 에 "
+             "지원했다가 탈락한 기업 목록. 이것이 없으면 정밀도·특이도는 영구히 측정 불가다.")
+    L.append("2. **합격 표본 확대** — 현재 4개사. HAX 졸업 257개사, 500 포트폴리오 "
+             "2,900여 개사가 모집단이므로 확보 가능하다(포트폴리오 페이지 접근 문제 해결 필요).")
+    L.append("3. **홀드아웃 분리** — 표본이 20개사 이상 되면 절반으로 규칙을 보정하고 "
+             "나머지 절반으로만 검증할 것. 지금은 표본이 작아 불가능하다.")
+    L.append("4. **컷오프 재계산** — 1~3 이 확보된 뒤 4.00/3.25/2.50 과 Fit +4/+1 을 "
+             "실제 합불 분포로 다시 맞출 것.")
     L.append("")
 
     L.append("## 조치별 요약")

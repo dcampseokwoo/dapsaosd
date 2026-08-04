@@ -184,6 +184,28 @@ class TestActionMapping(unittest.TestCase):
                     f"{r['company'].name}: {r['action']}")
 
 
+class TestValidity(unittest.TestCase):
+    """이 백테스트가 무엇을 주장할 수 있는지 자체를 고정한다."""
+
+    def setUp(self):
+        self.v = backtest.validity(backtest.run())
+
+    def test_no_confirmed_rejections_in_dataset(self):
+        """확정 불합격이 0건임을 명시 — 정밀도·특이도 주장 금지의 근거."""
+        self.assertEqual(self.v["n_confirmed_rejected"], 0)
+        self.assertTrue(any("정밀도" in m for m in self.v["not_measurable"]))
+
+    def test_in_sample_companies_are_flagged(self):
+        """규칙 수정으로 구제된 기업은 반드시 in-sample 로 표기돼야 한다."""
+        for key in backtest.RESCUED_BY:
+            self.assertIn(dataset.by_key(key).name, self.v["in_sample"])
+
+    def test_separation_admits_over_controls(self):
+        """합격군 추천율이 대조군보다 높아야 한다 (판별력의 최소 조건)."""
+        adm, ctl = self.v["separation"]
+        self.assertGreater(adm, ctl)
+
+
 class TestGates(unittest.TestCase):
     def test_bio_is_routed_not_scored(self):
         r = backtest.evaluate(dataset.by_key("bredis"))
