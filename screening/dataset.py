@@ -536,6 +536,97 @@ LEVELS_V2: dict[str, dict[str, tuple[int | None, str]]] = {
 }
 
 
+# ---------------------------------------------------------------- Fit 신호
+# rules_v2.FIT_SIGNALS 의 6개 신호를 기업별로 yes/no/unknown 으로 분류.
+# 근거 없는 항목은 반드시 unknown — 여기서도 '모르는 것'을 no 로 바꾸지 않는다.
+FIT: dict[str, dict[str, str]] = {
+    "cardmonster": {
+        "stage_band_fit": "yes",          # 시드 초기
+        "sector_theme_match": "no",       # 게임 스튜디오는 500 공개 주력 섹터 아님
+        "similar_admitted_case": "yes",   # 500 Global 이 직접 프리시드 투자
+        "vc_track_grammar": "yes",        # 500·매쉬업벤처스
+        "sales_cycle_fit": "yes",         # B2C 게임 — 빠른 출시·성장 사이클
+        "momentum": "yes",                # 2024.08 라운드, 2026 인원 10명
+    },
+    "allsale": {
+        "stage_band_fit": "yes",
+        "sector_theme_match": "unknown",  # Step 6.5 실패 — 500 커머스 테마 확인 불가
+        "similar_admitted_case": "unknown",
+        "vc_track_grammar": "yes",        # CJ온스타일 전략적 투자
+        "sales_cycle_fit": "yes",         # 미국 진출이 사업의 본질
+        "momentum": "yes",
+    },
+    "stillbright": {
+        "stage_band_fit": "yes", "sector_theme_match": "yes",
+        "similar_admitted_case": "yes", "vc_track_grammar": "yes",
+        "sales_cycle_fit": "yes",        # HAX 는 성장 프로그램이 아니라 개발 프로그램
+        "momentum": "yes",
+    },
+    "neptune": {
+        "stage_band_fit": "yes", "sector_theme_match": "yes",
+        "similar_admitted_case": "yes", "vc_track_grammar": "yes",
+        "sales_cycle_fit": "yes", "momentum": "yes",
+    },
+    "safetics": {
+        "stage_band_fit": "no",           # 시리즈A 완료
+        "sector_theme_match": "yes",      # B2B SW — 500 주력 섹터
+        "similar_admitted_case": "unknown",
+        "vc_track_grammar": "yes",
+        "sales_cycle_fit": "no",          # 엔터프라이즈 안전 인증 = 긴 사이클
+        "momentum": "yes",
+    },
+    "dhive": {
+        "stage_band_fit": "yes",
+        "sector_theme_match": "yes",      # 로보틱스 = HAX 최다 투자 분야
+        "similar_admitted_case": "yes",
+        "vc_track_grammar": "no",         # 국비·규제샌드박스 중심
+        "sales_cycle_fit": "no",          # 지자체 조달
+        "momentum": "yes",
+    },
+    "bitbyte": {
+        "stage_band_fit": "yes", "sector_theme_match": "yes",
+        "similar_admitted_case": "unknown", "vc_track_grammar": "yes",
+        "sales_cycle_fit": "yes", "momentum": "yes",
+    },
+    "nthing": {
+        "stage_band_fit": "no", "sector_theme_match": "yes",
+        "similar_admitted_case": "yes", "vc_track_grammar": "yes",
+        "sales_cycle_fit": "no", "momentum": "yes",
+    },
+    "jobis": {
+        "stage_band_fit": "no", "sector_theme_match": "no",
+        "similar_admitted_case": "no", "vc_track_grammar": "yes",
+        "sales_cycle_fit": "unknown", "momentum": "yes",
+    },
+    "palussmny": {
+        "stage_band_fit": "unknown", "sector_theme_match": "unknown",
+        "similar_admitted_case": "unknown",
+        "vc_track_grammar": "no",         # 공개 라운드 없음 — VC 트랙 신호 부재
+        "sales_cycle_fit": "unknown",
+        "momentum": "no",                 # 최근 24개월 신호 없음
+    },
+    "wavedeck": {
+        "stage_band_fit": "yes", "sector_theme_match": "unknown",
+        "similar_admitted_case": "unknown", "vc_track_grammar": "yes",
+        "sales_cycle_fit": "unknown", "momentum": "yes",
+    },
+    "aroundus": {
+        "stage_band_fit": "yes", "sector_theme_match": "unknown",
+        "similar_admitted_case": "unknown",
+        "vc_track_grammar": "yes",        # 신한캐피탈·디캠프 (2019)
+        "sales_cycle_fit": "unknown",
+        "momentum": "no",                 # 7년 공백
+    },
+    "kkureogi": {
+        "stage_band_fit": "yes", "sector_theme_match": "unknown",
+        "similar_admitted_case": "unknown",
+        "vc_track_grammar": "no",         # 지역은행·정책금융 중심
+        "sales_cycle_fit": "unknown",
+        "momentum": "yes",                # CES 2025
+    },
+}
+
+
 def levels_v2_of(c: Company) -> dict[str, int | None]:
     return {a: v[0] for a, v in LEVELS_V2.get(c.key, {}).items()}
 

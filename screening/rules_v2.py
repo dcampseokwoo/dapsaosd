@@ -105,6 +105,72 @@ BAND_TRL = {
 }
 
 
+# ---------------------------------------------------------------- Fit 규칙표
+# v1 의 마지막 결정성 구멍: Fit(높음/중간/낮음)이 정성 판단만으로 규정돼 있었다.
+# 프롬프트가 Fit 판단 근거로 열거한 항목을 그대로 신호로 만들고 가중치를 고정한다.
+#   yes → +w / no → -w / unknown → 0
+FIT_SIGNALS = {
+    "stage_band_fit":      (1, "프로그램 대상 스테이지 밴드(프리시드~시드) 이내인가"),
+    "sector_theme_match":  (1, "대상 프로그램의 최근 배치 테마와 섹터가 맞는가"),
+    "similar_admitted_case": (1, "동일 섹터·밴드의 합격 사례가 포트폴리오에 있는가"),
+    "vc_track_grammar":    (2, "조달 그래머가 글로벌 VC 트랙인가 (정부지원 트랙이면 no)"),
+    "sales_cycle_fit":     (1, "세일즈 사이클이 4개월 프로그램 구조와 맞는가"),
+    "momentum":            (2, "최근 24개월 내 라운드·매출·제품 진전 신호가 있는가"),
+}
+FIT_HIGH, FIT_MID, FIT_LOW = "높음", "중간", "낮음"
+FIT_CUTOFF_HIGH, FIT_CUTOFF_MID = 4, 1
+
+
+def fit_of(signals: dict[str, str], gate: str) -> tuple[str, int, list[str]]:
+    """Fit 판정 — (등급, 점수, 비고). 게이트 탈락이면 Fit 판단 자체가 무의미."""
+    if gate == GATE_FAIL:
+        return "해당 없음", 0, ["게이트 탈락 — Fit 판정 생략"]
+    score, unknown, notes = 0, [], []
+    for name, (w, _desc) in FIT_SIGNALS.items():
+        v = signals.get(name, "unknown")
+        if v == "yes":
+            score += w
+        elif v == "no":
+            score -= w
+        else:
+            unknown.append(name)
+
+    grade = (FIT_HIGH if score >= FIT_CUTOFF_HIGH
+             else FIT_MID if score >= FIT_CUTOFF_MID else FIT_LOW)
+    # 스테이지 밴드 이탈은 상한 규칙 — 프롬프트가 "게이트아웃 조건이 될 수 있다"고 명시
+    if signals.get("stage_band_fit") == "no" and grade == FIT_HIGH:
+        grade = FIT_MID
+        notes.append("스테이지 밴드 이탈 → Fit 상한 중간")
+    if len(unknown) >= 3:
+        notes.append(f"미확인 신호 {len(unknown)}개 — 잠정 판정")
+    return grade, score, notes
+
+
+# ---------------------------------------------------------------- 조치 매핑
+def action_of(tier: str, fit: str, gate: str, routed: bool) -> str:
+    """Quality × Fit → 실제로 무엇을 할지. 프롬프트의 2×2 를 조치로 확정한다."""
+    if routed:
+        return "라우팅 — SOSV IndieBio NY/SF 안내"
+    if gate == GATE_FAIL:
+        return "탈락 — 게이트 사유 통지 + 자가진단 제공"
+    if gate == GATE_HUMAN:
+        return "에스컬레이션 — 담당자 검토"
+    if tier == TIER_HOLD:
+        # Fit 은 공개 신호만으로 판정되므로 설문 없이도 확정된다.
+        # Fit 낮음이면 설문을 받아 Quality 를 확정해도 결론이 바뀌지 않는다 → 비용 절약
+        if fit == FIT_LOW:
+            return "타 프로그램 안내 (Fit 낮음 — 설문 불필요)"
+        return "설문·증빙 요청 (판정 보류 — 탈락 아님)"
+    if tier in PASS_TIERS:
+        return {FIT_HIGH: "추천 진행",
+                FIT_MID: "조건부 추천 — 확인사항 해소 후",
+                FIT_LOW: "타 프로그램 추천 (Quality 는 충분)"}.get(fit, "담당자 검토")
+    if tier.startswith("C"):
+        return ("보완 후 재도전 — 과제 통지" if fit != FIT_LOW
+                else "타 프로그램 추천")
+    return "부적합"
+
+
 def band_table(track: str, band: str) -> dict[int, str] | None:
     """해당 트랙·밴드의 주축(Traction/TRL) 레벨표. 밴드 미확정이면 None."""
     return (BAND_TRACTION if track == "500" else BAND_TRL).get(band)

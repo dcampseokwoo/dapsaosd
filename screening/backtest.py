@@ -34,6 +34,8 @@ def evaluate(c: dataset.Company) -> dict:
             "company": c, "routed": True, "gates": [], "gate": "라우팅",
             "credibility": "해당 없음", "scores": {},
             "verdict": {m: "점수 미산출 (SOSV IndieBio 안내)" for m in MODES},
+            "fit": "해당 없음", "fit_score": 0, "fit_notes": [],
+            "action": rules_v2.action_of("", "", "라우팅", True),
         }
 
     gates = rules.run_gates(c)
@@ -52,8 +54,13 @@ def evaluate(c: dataset.Company) -> dict:
             verdict[m] = f"사람 검토 (참고 Tier {_short(tier)})"
         else:
             verdict[m] = tier
+    # v2 구조: Fit 도 규칙표가 계산한다 (v1 은 정성 판단이라 결정성이 없었다)
+    fit, fit_score, fit_notes = rules_v2.fit_of(dataset.FIT.get(c.key, {}), gate)
+    action = rules_v2.action_of(scores["v2"].tier, fit, gate, False)
     return {"company": c, "routed": False, "gates": gates, "gate": gate,
-            "credibility": cred, "scores": scores, "verdict": verdict}
+            "credibility": cred, "scores": scores, "verdict": verdict,
+            "fit": fit, "fit_score": fit_score, "fit_notes": fit_notes,
+            "action": action}
 
 
 def _short(tier: str) -> str:
@@ -176,7 +183,7 @@ def render_table(results: list[dict]) -> str:
         lines.append(
             f"| {c.name} | {c.track} | {c.stage_band} | {gt[c.ground_truth]} | "
             f"{r['gate']} | {_tier_cell(r, 'strict')} | {_tier_cell(r, 'neutral')} | "
-            f"**{_tier_cell(r, 'v2')}** | {c.fit} |")
+            f"**{_tier_cell(r, 'v2')}** | {r['fit']} |")
     return "\n".join(lines)
 
 
@@ -304,6 +311,76 @@ def render_report(results: list[dict], mt: dict) -> str:
     return "\n".join(L)
 
 
+def render_reevaluation(results: list[dict], mt: dict) -> str:
+    """새 평가구조(v2)로 전 기업을 다시 평가한 리포트."""
+    d = mt["modes"]["v2"]
+    L = ["# 재평가 결과 — 새 평가구조 v2", ""]
+    L.append("규칙: `screening/rules_v2.py` / 평가구조 문서: `screening/ENGINE_V2.md`")
+    L.append("사실: `screening/dataset.py` (웹 검색 공개 정보만 — 덱·CV·설문 없음)")
+    L.append("")
+    L.append(f"- 추천 진행/조건부: **{d['pass_rate']:.0%}** · "
+             f"판정 보류(설문 요청): {d['n_hold']}개사 · "
+             f"실제 합격 기업 오탈락: **{len(d['admit_rejected'])}개사**")
+    L.append("")
+
+    L.append("## 조치별 요약")
+    L.append("")
+    groups: dict[str, list[str]] = {}
+    for r in results:
+        groups.setdefault(r["action"], []).append(r["company"].name)
+    for act, names in sorted(groups.items(), key=lambda x: -len(x[1])):
+        L.append(f"- **{act}** ({len(names)}) — {', '.join(names)}")
+    L.append("")
+
+    L.append("## 전체 판정표")
+    L.append("")
+    L.append("| 기업 | 트랙 | 밴드 | 정답 | 게이트 | Tier | Fit(점수) | 조치 |")
+    L.append("|---|---|---|---|---|---|---|---|")
+    gt = {"admitted_500": "합격(500)", "admitted_hax": "합격(HAX)",
+          "unknown": "미확인", "probe": "게이트 검증"}
+    for r in results:
+        c = r["company"]
+        tier = "라우팅" if r["routed"] else _tier_cell(r, "v2")
+        L.append(f"| {c.name} | {c.track} | {c.stage_band} | {gt[c.ground_truth]} | "
+                 f"{r['gate']} | {tier} | {r['fit']} ({r['fit_score']:+d}) | "
+                 f"{r['action']} |")
+    L.append("")
+
+    L.append("## 기업별 상세")
+    for r in results:
+        c = r["company"]
+        L.append(f"\n### {c.name} — {c.sector_note}")
+        L.append("")
+        L.append(f"- 밴드 **{c.stage_band}** / 트랙 **{c.track}** / 게이트 **{r['gate']}**")
+        if r["routed"]:
+            L.append("- 바이오 → 점수 미산출, SOSV IndieBio NY/SF 안내")
+        else:
+            s = r["scores"]["v2"]
+            for axis, (lv, why) in dataset.LEVELS_V2.get(c.key, {}).items():
+                L.append(f"- **{rules.AXIS_LABELS[axis]}** "
+                         f"{'L%d' % lv if lv else '`확인 필요`'} — {why}")
+            w = "—" if s.weighted is None else f"{s.weighted:.2f}"
+            L.append(f"- 가중평균 **{w}** → **{s.tier}**")
+            for n in s.notes:
+                L.append(f"  - {n}")
+            sig = dataset.FIT.get(c.key, {})
+            yes = [k for k, v in sig.items() if v == "yes"]
+            no = [k for k, v in sig.items() if v == "no"]
+            unk = [k for k, v in sig.items() if v == "unknown"]
+            L.append(f"- Fit **{r['fit']}** ({r['fit_score']:+d}) — "
+                     f"충족 {len(yes)} / 미충족 {len(no)} / 미확인 {len(unk)}")
+            if no:
+                L.append("  - 미충족: " + ", ".join(
+                    rules_v2.FIT_SIGNALS[k][1] for k in no))
+            for n in r["fit_notes"]:
+                L.append(f"  - {n}")
+        L.append(f"- **조치: {r['action']}**")
+        if c.needs_confirm:
+            L.append(f"- `확인 필요`: {', '.join(c.needs_confirm)}")
+    L.append("")
+    return "\n".join(L)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", action="store_true", help="리포트 파일 생성")
@@ -326,7 +403,11 @@ def main() -> None:
         (OUT_DIR / "backtest_metrics.json").write_text(
             json.dumps(mt, ensure_ascii=False, indent=2), encoding="utf-8")
         (BASE / "screening" / "RESULTS.md").write_text(body, encoding="utf-8")
-        print(f"\n리포트: {OUT_DIR/'backtest_report.md'}, screening/RESULTS.md")
+        reeval = render_reevaluation(results, mt)
+        (OUT_DIR / "reevaluation.md").write_text(reeval, encoding="utf-8")
+        (BASE / "screening" / "REEVALUATION.md").write_text(reeval, encoding="utf-8")
+        print(f"\n리포트: screening/RESULTS.md (v1↔v2 비교), "
+              f"screening/REEVALUATION.md (v2 재평가)")
 
 
 if __name__ == "__main__":

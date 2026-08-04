@@ -113,6 +113,77 @@ class TestRulesV2(unittest.TestCase):
         self.assertLess(mt["modes"]["v2"]["pass_rate"], 0.5)
 
 
+class TestFitRules(unittest.TestCase):
+    """v2 신설 — Fit 도 규칙표가 계산한다(v1 은 정성 판단이라 결정성이 없었다)."""
+
+    def test_fit_is_deterministic(self):
+        sig = dataset.FIT["cardmonster"]
+        first = rules_v2.fit_of(sig, rules.GATE_COND)
+        for _ in range(10):
+            self.assertEqual(rules_v2.fit_of(sig, rules.GATE_COND), first)
+
+    def test_unknown_signal_is_not_negative(self):
+        allyes = {k: "yes" for k in rules_v2.FIT_SIGNALS}
+        base = rules_v2.fit_of(allyes, rules.GATE_PASS)[1]
+        one_unknown = dict(allyes, momentum="unknown")
+        one_no = dict(allyes, momentum="no")
+        self.assertEqual(rules_v2.fit_of(one_unknown, rules.GATE_PASS)[1], base - 2)
+        self.assertEqual(rules_v2.fit_of(one_no, rules.GATE_PASS)[1], base - 4)
+
+    def test_stage_mismatch_caps_fit_at_mid(self):
+        sig = {k: "yes" for k in rules_v2.FIT_SIGNALS} | {"stage_band_fit": "no"}
+        grade, score, _ = rules_v2.fit_of(sig, rules.GATE_PASS)
+        self.assertGreaterEqual(score, rules_v2.FIT_CUTOFF_HIGH)
+        self.assertEqual(grade, rules_v2.FIT_MID)
+
+    def test_gate_fail_skips_fit(self):
+        self.assertEqual(rules_v2.fit_of(dataset.FIT["nthing"],
+                                        rules.GATE_FAIL)[0], "해당 없음")
+
+    def test_every_company_has_all_fit_signals(self):
+        for key, sig in dataset.FIT.items():
+            self.assertEqual(set(sig), set(rules_v2.FIT_SIGNALS), key)
+            for k, v in sig.items():
+                self.assertIn(v, ("yes", "no", "unknown"), f"{key}.{k}")
+
+    def test_admitted_companies_are_high_fit(self):
+        for r in backtest.run():
+            if r["company"].ground_truth.startswith("admitted"):
+                self.assertEqual(r["fit"], rules_v2.FIT_HIGH, r["company"].name)
+
+
+class TestActionMapping(unittest.TestCase):
+    def test_hold_is_never_a_rejection(self):
+        a = rules_v2.action_of(rules_v2.TIER_HOLD, rules_v2.FIT_HIGH,
+                               rules.GATE_COND, False)
+        self.assertIn("설문", a)
+        self.assertIn("탈락 아님", a)      # 탈락 통보로 오인되지 않게 문구에 명시
+        self.assertNotIn("부적합", a)
+
+    def test_low_fit_hold_skips_survey(self):
+        """Fit 은 공개 신호로 확정 — Fit 낮음이면 설문 비용을 쓰지 않는다."""
+        a = rules_v2.action_of(rules_v2.TIER_HOLD, rules_v2.FIT_LOW,
+                               rules.GATE_COND, False)
+        self.assertIn("설문 불필요", a)
+
+    def test_good_quality_low_fit_goes_elsewhere(self):
+        a = rules_v2.action_of("B 확인 후 추천", rules_v2.FIT_LOW,
+                               rules.GATE_PASS, False)
+        self.assertIn("타 프로그램", a)
+
+    def test_every_company_gets_an_action(self):
+        for r in backtest.run():
+            self.assertTrue(r["action"], r["company"].name)
+
+    def test_admitted_companies_are_not_dropped(self):
+        """합격 4개사는 '추천' 또는 '설문 요청'이어야 한다 — 탈락·부적합 금지."""
+        for r in backtest.run():
+            if r["company"].ground_truth.startswith("admitted"):
+                self.assertTrue(
+                    "추천" in r["action"] or "설문" in r["action"],
+                    f"{r['company'].name}: {r['action']}")
+
+
 class TestGates(unittest.TestCase):
     def test_bio_is_routed_not_scored(self):
         r = backtest.evaluate(dataset.by_key("bredis"))
