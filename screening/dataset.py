@@ -453,6 +453,93 @@ COMPANIES: list[Company] = [
 ]
 
 
+# ---------------------------------------------------------------- v2 재분류
+# rules_v2 의 두 규칙에 따라 같은 사실을 다시 분류한 것:
+#   (1) 주축(Traction/TRL)은 스테이지 밴드별 레벨표로 판정
+#   (2) `문서 명시` 이상 증거가 없으면 레벨을 매기지 않는다(None)
+#       — v1 에서 정보 부재를 L1 또는 '중간값 L3'로 흡수하던 것을 금지
+LEVELS_V2: dict[str, dict[str, tuple[int | None, str]]] = {
+    "cardmonster": {
+        "traction": (3, "오프라인 게임 검증 = 외부 사용자 존재. 시드 초기 밴드표 L3(유료 증거는 미확인)"),
+        "team": (4, "넥슨·크래프톤 경력 보도 명시 → 레벨 부여 가능"),
+        "market": (None, "덱 미제출 — 시장 논증의 질을 평가할 근거 자체가 없음"),
+        "moat": (3, "AI 제작 파이프라인 보도 명시, 구축 증거 없음 → L3"),
+    },
+    "allsale": {
+        "traction": (4, "브랜드 대상 유상 운영대행 실운영 + 틱톡샵 공식 파트너 → 유료 고객 존재. 규모는 미확인"),
+        "team": (None, "대표 성명 외 경력 미확인"),
+        "market": (None, "덱 미제출 — 상향식 논증 평가 불가"),
+        "moat": (4, "틱톡샵 공식 파트너 지위 = 확보된 채널 우위(보도 명시)"),
+    },
+    "stillbright": {
+        "trl": (3, "프리시드 밴드표: 핵심 원리 실증(TRL 3) → L3"),
+        "team": (4, "컬럼비아 박사급 전기화학 2인 보도 명시"),
+        "manufacturing": (3, "상온·상압 = 설비 단순화 논리 명시. BOM/CM 정량화 없음"),
+        "customer": (None, "고객 활동에 대한 공개 정보 부재 — '없음'이 아니라 '미확인'"),
+    },
+    "neptune": {
+        "trl": (4, "시드 초기 밴드표: 실환경 실증 진행 중 → L4"),
+        "team": (4, "EF 선발 기술 창업팀, 로보틱스 도메인 명시"),
+        "manufacturing": (3, "RaaS 로 양산 부담 회피. BOM 정량화 근거 없음"),
+        "customer": (3, "선사 대상 실증 = 구체적 고객 디스커버리 확인"),
+    },
+    "safetics": {
+        "traction": (4, "A 이후 밴드표: 유료 고객 + 명확한 우상향(연 +43%). 20% MoM 아님"),
+        "team": (None, "창업자 이력 미확인 — 사업 설명은 팀 근거가 아님"),
+        "market": (None, "덱 미제출"),
+        "moat": (4, "안전 인증 기반 진입장벽 + 총판 계약 보도 명시"),
+    },
+    "dhive": {
+        "trl": (4, "시드 초기 밴드표: 지자체 실증 투입 = 실환경 실증 진행 중"),
+        "team": (None, "창업팀 정보 없음"),
+        "manufacturing": (None, "BOM·CM·DFM 언급 전무"),
+        "customer": (3, "지자체 실증 = 구체적 고객 디스커버리"),
+    },
+    "bitbyte": {
+        "traction": (4, "시드 후기 밴드표: 유료(광고) 매출 + 8배 성장·월 BEP = 명확한 우상향"),
+        "team": (3, "플레이키보드 창업·운영 이력 보도 명시, 글로벌 스케일업 이력 없음"),
+        "market": (None, "덱 미제출"),
+        "moat": (2, "성장 동력이 투자사 솔루션(다로)에 의존 — 보도로 확인된 사실"),
+    },
+    "nthing": {
+        "trl": (5, "A 이후 밴드표: 상용 배치·양산 검증"),
+        "team": (4, "다수 라운드 조달·해외 프로젝트 실적"),
+        "manufacturing": (4, "모듈 양산·설치 실적 존재"),
+        "customer": (4, "매출 고객 존재"),
+    },
+    "jobis": {
+        "trl": (None, "하드웨어 아님 — TRL 축 적용 불가(v1 처럼 L1 로 강등하지 않는다)"),
+        "team": (4, "대규모 조달·상용 서비스 운영"),
+        "manufacturing": (None, "양산 개념 없음 — 축 적용 불가"),
+        "customer": (5, "대규모 유료 사용자"),
+    },
+    "palussmny": {
+        "traction": (None, "매출·사용자 지표 전무"),
+        "team": (None, "창업팀 미확인"),
+        "market": (2, "국내 대학원생 커뮤니티 = 세그먼트 협소(서비스 정의로 확인 가능)"),
+        "moat": (None, "데이터 자산의 수익화 연결 미확인"),
+    },
+    "wavedeck": {
+        "traction": (None, "정보 없음"), "team": (None, "정보 없음"),
+        "market": (None, "사업 영역 특정 불가"), "moat": (None, "정보 없음"),
+    },
+    "aroundus": {
+        "traction": (None, "최근 실적 정보 없음 — 활동 여부 자체가 미확인"),
+        "team": (None, "현재 팀 구성 미확인"),
+        "market": (2, "지역 기반 서비스 — 확장 논거 미확인"),
+        "moat": (None, "7년 공백 — 방어자산 유무를 판단할 근거 없음(L1 단정 금지)"),
+    },
+    "kkureogi": {
+        "trl": (None, "CES 전시만으로 TRL 특정 불가"), "team": (None, "정보 없음"),
+        "manufacturing": (None, "정보 없음"), "customer": (None, "정보 없음"),
+    },
+}
+
+
+def levels_v2_of(c: Company) -> dict[str, int | None]:
+    return {a: v[0] for a, v in LEVELS_V2.get(c.key, {}).items()}
+
+
 def by_key(key: str) -> Company:
     for c in COMPANIES:
         if c.key == key:

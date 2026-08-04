@@ -4,7 +4,7 @@ python test_screening_offline.py
 """
 import unittest
 
-from screening import backtest, dataset, rules
+from screening import backtest, dataset, rules, rules_v2
 
 
 class TestRules(unittest.TestCase):
@@ -50,6 +50,67 @@ class TestRules(unittest.TestCase):
     def test_all_unknown_is_undecidable(self):
         lv = {"traction": None, "team": None, "market": None, "moat": None}
         self.assertEqual(rules.aggregate("500", lv, "neutral").tier, "판정 불가")
+
+
+class TestRulesV2(unittest.TestCase):
+    """v1 에서 드러난 4개 결함이 실제로 고쳐졌는지."""
+
+    def test_weights_unchanged(self):
+        """가중치는 디캠프 내부 루브릭 — v2 도 건드리지 않는다."""
+        self.assertEqual(rules_v2.WEIGHTS, rules.WEIGHTS)
+
+    def test_band_tables_cover_every_band(self):
+        for track, bands in (("500", rules_v2.BAND_TRACTION),
+                             ("hax", rules_v2.BAND_TRL)):
+            for band in ("프리시드", "시드 초기", "시드 후기", "A 이후"):
+                t = rules_v2.band_table(track, band)
+                self.assertEqual(sorted(t), [1, 2, 3, 4, 5], f"{track}/{band}")
+
+    def test_preseed_can_reach_top_tier(self):
+        """v1 의 핵심 결함: 프리시드는 만점을 받아도 A 에 못 갔다."""
+        perfect = {"traction": 5, "team": 5, "market": 5, "moat": 5}
+        self.assertEqual(rules_v2.aggregate("500", perfect).tier, "A 추천")
+
+    def test_unknown_axis_is_not_a_penalty(self):
+        """`확인 필요` 축은 감점이 아니라 제외 — 남은 축의 평균이 그대로 나온다."""
+        s = rules_v2.aggregate("500", {"traction": 4, "team": 4,
+                                       "market": None, "moat": None})
+        self.assertEqual(s.weighted, 4.0)
+        self.assertEqual(sorted(s.unknown_axes), ["market", "moat"])
+
+    def test_low_coverage_holds_instead_of_rejecting(self):
+        """커버리지 미달 → 탈락이 아니라 보류."""
+        s = rules_v2.aggregate("500", {"traction": None, "team": None,
+                                       "market": 2, "moat": None})
+        self.assertEqual(s.tier, rules_v2.TIER_HOLD)
+        self.assertIsNone(s.weighted)
+
+    def test_hax_customer_l1_does_not_demote(self):
+        """HAX 는 고객 없는 랩 단계에 투자한다 — 고객 L1 은 강등 사유가 아니다."""
+        lv = {"trl": 4, "team": 4, "manufacturing": 3, "customer": 1}
+        v1 = rules.aggregate("hax", lv, "strict")
+        v2 = rules_v2.aggregate("hax", lv)
+        self.assertTrue(v1.demoted)
+        self.assertFalse(v2.demoted)
+        self.assertIn(v2.tier, rules.PASS_TIERS)
+
+    def test_core_axis_l1_still_demotes(self):
+        """반대로 핵심축(TRL/Team) L1 은 v2 에서도 강등된다."""
+        lv = {"trl": 1, "team": 5, "manufacturing": 5, "customer": 5}
+        self.assertTrue(rules_v2.aggregate("hax", lv).demoted)
+
+    def test_v2_does_not_reject_actual_admits(self):
+        """회귀 테스트: 실제 합격 기업을 C/D 로 떨어뜨리면 실패."""
+        results = backtest.run()
+        for r in results:
+            if r["company"].ground_truth.startswith("admitted"):
+                self.assertFalse(backtest.rejected(r, "v2"),
+                                 f"{r['company'].name} 오탈락")
+
+    def test_v2_stays_selective(self):
+        """재현율을 올리느라 전부 통과시키면 스크리너가 아니다."""
+        mt = backtest.metrics(backtest.run())
+        self.assertLess(mt["modes"]["v2"]["pass_rate"], 0.5)
 
 
 class TestGates(unittest.TestCase):

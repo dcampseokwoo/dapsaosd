@@ -19,11 +19,11 @@ import argparse
 import json
 from pathlib import Path
 
-from screening import dataset, rules
+from screening import dataset, rules, rules_v2
 
 BASE = Path(__file__).resolve().parent.parent
 OUT_DIR = BASE / "output" / "screening"
-MODES = ("strict", "neutral")
+MODES = ("strict", "neutral", "v2")
 
 
 # ---------------------------------------------------------------- 실행
@@ -39,7 +39,9 @@ def evaluate(c: dataset.Company) -> dict:
     gates = rules.run_gates(c)
     gate = rules.gate_verdict(gates)
     cred = rules.credibility_overall(c.credibility)
-    scores = {m: rules.aggregate(c.track, c.levels_only, m, cred) for m in MODES}
+    scores = {m: rules.aggregate(c.track, c.levels_only, m, cred)
+              for m in ("strict", "neutral")}
+    scores["v2"] = rules_v2.aggregate(c.track, dataset.levels_v2_of(c), cred)
 
     verdict = {}
     for m in MODES:
@@ -55,8 +57,10 @@ def evaluate(c: dataset.Company) -> dict:
 
 
 def _short(tier: str) -> str:
-    """'B 확인 후 추천' → 'B', '판정 불가' → '판정 불가'."""
-    return tier[0] if tier[:1] in ("A", "B", "C", "D") else tier
+    """'B 확인 후 추천' → 'B', '판정 보류 — 정보 부족' → '보류'."""
+    if tier[:1] in ("A", "B", "C", "D"):
+        return tier[0]
+    return "보류" if tier.startswith("판정 보류") else tier
 
 
 def recommended(res: dict, mode: str) -> bool:
@@ -64,6 +68,19 @@ def recommended(res: dict, mode: str) -> bool:
     if res["routed"] or res["gate"] in (rules.GATE_FAIL, rules.GATE_HUMAN):
         return False
     return res["scores"][mode].tier in rules.PASS_TIERS
+
+
+def rejected(res: dict, mode: str) -> bool:
+    """'탈락 처리'인가 = 게이트 탈락 또는 Tier C/D.
+
+    `판정 보류`는 탈락이 아니다 — 설문·증빙을 받으면 다시 평가되는 상태다.
+    """
+    if res["routed"]:
+        return False
+    if res["gate"] == rules.GATE_FAIL:
+        return True
+    tier = res["scores"][mode].tier
+    return tier.startswith(("C", "D"))
 
 
 def sensitivity(c: dataset.Company, mode: str) -> list[str]:
@@ -108,6 +125,10 @@ def metrics(results: list[dict]) -> dict:
             "admit_recall": f"{len(hit)}/{len(admits)}",
             "admit_missed": [r["company"].name for r in admits
                              if not recommended(r, m)],
+            "admit_rejected": [r["company"].name for r in admits
+                               if rejected(r, m)],
+            "n_hold": sum(1 for r in scored
+                          if r["scores"][m].tier == rules_v2.TIER_HOLD),
         }
 
     # 모드 간 판정 불일치
@@ -137,14 +158,16 @@ def _tier_cell(res: dict, mode: str) -> str:
     if res["routed"]:
         return "라우팅"
     s = res["scores"][mode]
-    w = "—" if s.weighted is None else f"{s.weighted:.2f}"
-    return f"{res['verdict'][mode]} ({w})"
+    if s.weighted is None:
+        # 점수 미산출(보류/판정 불가) — 긴 Tier 명을 줄여 표를 읽기 쉽게
+        return res["verdict"][mode].replace(s.tier, _short(s.tier))
+    return f"{res['verdict'][mode]} ({s.weighted:.2f})"
 
 
 def render_table(results: list[dict]) -> str:
     lines = [
-        "| 기업 | 트랙 | 스테이지 | 정답 | 게이트 | strict | neutral | Fit |",
-        "|---|---|---|---|---|---|---|---|",
+        "| 기업 | 트랙 | 스테이지 | 정답 | 게이트 | v1 strict | v1 neutral | **v2** | Fit |",
+        "|---|---|---|---|---|---|---|---|---|",
     ]
     gt = {"admitted_500": "합격(500)", "admitted_hax": "합격(HAX)",
           "unknown": "미확인", "probe": "게이트 검증"}
@@ -153,7 +176,7 @@ def render_table(results: list[dict]) -> str:
         lines.append(
             f"| {c.name} | {c.track} | {c.stage_band} | {gt[c.ground_truth]} | "
             f"{r['gate']} | {_tier_cell(r, 'strict')} | {_tier_cell(r, 'neutral')} | "
-            f"{c.fit} |")
+            f"**{_tier_cell(r, 'v2')}** | {c.fit} |")
     return "\n".join(lines)
 
 
@@ -181,6 +204,43 @@ def render_report(results: list[dict], mt: dict) -> str:
         L.append(f"- 실제 합격 기업 재현율: **{d['admit_recall']}**"
                  + (f" — 놓친 기업: {', '.join(d['admit_missed'])}"
                     if d["admit_missed"] else ""))
+        L.append(f"- 합격 기업 **오탈락**(C/D·게이트탈락 처리): "
+                 f"**{len(d['admit_rejected'])}개사**"
+                 + (f" — {', '.join(d['admit_rejected'])}"
+                    if d["admit_rejected"] else ""))
+        if d["n_hold"]:
+            L.append(f"- 판정 보류(설문·증빙 요청): {d['n_hold']}개사")
+    L.append("")
+
+    L.append("## 2-1. v1 → v2 수정 효과")
+    L.append("")
+    L.append("v2 는 가중치를 건드리지 않고 **레벨표와 집계 규칙만** 고친 버전이다"
+             "(`screening/rules_v2.py`). 같은 사실, 같은 가중치, 다른 규칙.")
+    L.append("")
+    L.append("| 지표 | v1 strict | v1 neutral | v2 |")
+    L.append("|---|---|---|---|")
+    L.append("| 추천 대상 비율 | " + " | ".join(
+        f"{mt['modes'][m]['pass_rate']:.0%}" for m in MODES) + " |")
+    L.append("| 합격 기업 재현율 | " + " | ".join(
+        mt["modes"][m]["admit_recall"] for m in MODES) + " |")
+    L.append("| 합격 기업 오탈락 | " + " | ".join(
+        f"{len(mt['modes'][m]['admit_rejected'])}개사" for m in MODES) + " |")
+    L.append("")
+    L.append("수정 내용 4가지:")
+    L.append("")
+    L.append("1. **스테이지 밴드별 레벨표** — v1 의 절대 레벨표에서는 프리시드가 "
+             "Traction L2 상한에 갇혀, 팀·시장·해자가 전부 L5 여도 최대 3.80(B). "
+             "밴드별로 '그 단계에서 가능한 최고 속도'를 L5 로 재정의했다.")
+    L.append("2. **`확인 필요`를 레벨로 환산 금지** — 증거 등급 `문서 명시` 이상이 "
+             "없으면 레벨을 매기지 않는다. v1 은 정보 부재를 L1(strict) 또는 "
+             "중간값 L3 로 흡수해, '모르는 것'을 '나쁜 것'으로 바꿨다.")
+    L.append(f"3. **커버리지 규칙** — 레벨 확정 축의 가중치 합이 "
+             f"{rules_v2.COVERAGE_MIN:.0%} 미만이면 Tier 대신 `판정 보류`. "
+             "탈락이 아니라 설문·증빙 요청 상태다.")
+    L.append("4. **강등 규칙의 트랙별 분리** — v1 은 어느 축이든 L1 이면 상한 C. "
+             "HAX 는 고객 없는 랩 단계에 투자하는 프로그램이므로 고객 축 L1 을 "
+             "강등 사유로 쓰면 프로그램 정의와 모순된다. 강등 축을 "
+             f"{rules_v2.DEMOTE_AXES} 로 한정했다.")
     L.append("")
 
     L.append("## 3. `확인 필요` 해석에 따른 판정 격차")
@@ -255,7 +315,8 @@ def main() -> None:
     print()
     for m in MODES:
         d = mt["modes"][m]
-        print(f"[{m}] 통과율 {d['pass_rate']:.0%} / 합격기업 재현율 {d['admit_recall']}")
+        print(f"[{m}] 통과율 {d['pass_rate']:.0%} / 합격기업 재현율 "
+              f"{d['admit_recall']} / 합격기업 오탈락 {len(d['admit_rejected'])}개사")
     print(f"[모드 불일치] {len(mt['mode_disagreement'])}개사")
 
     if a.report:
