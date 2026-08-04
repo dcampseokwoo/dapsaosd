@@ -2,9 +2,11 @@
 
 python test_screening_offline.py
 """
+import json
 import unittest
 
-from screening import backtest, dataset, experiment, rules, rules_v2, rules_v3
+from screening import (agreement, backtest, blind_fixture, dataset, experiment,
+                       levels_fable, rules, rules_v2, rules_v3)
 
 
 class TestRules(unittest.TestCase):
@@ -362,6 +364,83 @@ class TestBacktest(unittest.TestCase):
         self.assertIn("전체 판정표", body)
         for c in dataset.COMPANIES:
             self.assertIn(c.name, body)
+
+
+class TestBlindAgreement(unittest.TestCase):
+    """작업 1~3 — 블라인드 재분류 측정의 무결성."""
+
+    def test_blind_input_has_no_leak(self):
+        """블라인드 입력에 정답·기존 분류·비고가 새어들지 않는다."""
+        rows = blind_fixture.build()
+        self.assertEqual(len(rows), len(dataset.COMPANIES))
+        for row in rows:
+            self.assertEqual(set(row), set(blind_fixture.ALLOWED))
+        text = json.dumps(rows, ensure_ascii=False)
+        for bad in ("ground_truth", '"levels"', "LEVELS_V2", "fit_reason",
+                    '"unstable"', "needs_confirm", '"note"', '"sources"'):
+            self.assertNotIn(bad, text)
+
+    def test_kappa_perfect_agreement_is_one(self):
+        pairs = [(1, 1), (2, 2), (None, None), (5, 5), (3, 3), (None, None)]
+        self.assertEqual(agreement.kappa(pairs), 1.0)
+
+    def test_kappa_chance_level_is_zero(self):
+        """관측 일치가 우연 기대치와 같으면 κ=0 (두 범주를 독립·균등 사용)."""
+        pairs = [(1, 1), (1, 2), (2, 1), (2, 2)] * 5
+        self.assertAlmostEqual(agreement.kappa(pairs), 0.0, places=3)
+
+    def test_kappa_penalizes_chance(self):
+        """일치율이 같아도 범주가 쏠리면 κ 는 낮아야 한다 — 단순 일치율과 다름."""
+        skewed = [(1, 1)] * 9 + [(1, 2)]      # 일치 90%, 그러나 거의 전부 한 범주
+        spread = [(i, i) for i in (1, 2, 3, 4, 5)] * 2
+        self.assertLess(agreement.kappa(skewed), agreement.kappa(spread))
+
+    def test_fable_covers_every_scored_axis(self):
+        """독립 분류가 기존 분류와 같은 기업·축을 전부 다뤘는지."""
+        self.assertEqual(set(levels_fable.LEVELS_FABLE), set(dataset.LEVELS_V2))
+        for key, axes in dataset.LEVELS_V2.items():
+            self.assertEqual(set(levels_fable.LEVELS_FABLE[key]), set(axes), key)
+            for axis, (lv, why) in levels_fable.LEVELS_FABLE[key].items():
+                self.assertTrue(lv is None or lv in (1, 2, 3, 4, 5), f"{key}.{axis}")
+                self.assertTrue(why, f"{key}.{axis} 근거 누락")
+
+    def test_confidence_is_recorded_for_every_axis(self):
+        for key, axes in levels_fable.LEVELS_FABLE.items():
+            for axis in axes:
+                self.assertIn(levels_fable.CONFIDENCE[key][axis],
+                              ("high", "low"), f"{key}.{axis}")
+
+    def test_reclassified_only_touches_disagreed_axes(self):
+        """작업 2-3 규칙: 일치했던 축은 건드리지 않는다."""
+        base = agreement.axis_pairs(agreement.merged_fable(False))
+        dis = {(r["key"], r["axis"]) for r in agreement.disagreements(base)}
+        for key, axes in levels_fable.RECLASSIFIED.items():
+            for axis in axes:
+                self.assertIn((key, axis), dis, f"{key}.{axis} 는 일치했던 축")
+
+    def test_improvement_raised_adjacent_agreement(self):
+        """작업 2-3 합격 기준: 개선이 인접 일치율을 실제로 올렸는지 고정."""
+        imp = agreement.improvement_effect()
+        self.assertIsNotNone(imp)
+        self.assertGreater(imp["overall_after"]["adjacent"],
+                           imp["overall_before"]["adjacent"])
+
+    def test_no_admit_is_confirmed_rejected_in_either_classification(self):
+        """두 분류 모두에서 합격사가 v3 `확정 비추천`으로 떨어지지 않는다."""
+        for results in (backtest.run(), agreement.run_with_fable(True)):
+            for r in results:
+                if r["company"].ground_truth.startswith("admitted"):
+                    self.assertNotEqual(r["v3"].zone, rules_v3.ZONE_NO,
+                                        r["company"].name)
+
+    def test_swap_restores_dataset(self):
+        """run_with_fable 이 dataset 전역 상태를 원상 복구하는지."""
+        before = {k: dict(v) for k, v in dataset.LEVELS_V2.items()}
+        unstable_before = {c.key: dict(c.unstable) for c in dataset.COMPANIES}
+        agreement.run_with_fable(True)
+        self.assertEqual(dataset.LEVELS_V2, before)
+        for c in dataset.COMPANIES:
+            self.assertEqual(c.unstable, unstable_before[c.key])
 
 
 if __name__ == "__main__":
