@@ -182,18 +182,22 @@ python test_ac_watch_offline.py                      # ② 오프라인 검증
 ```
 screening/
   rules.py        v1 — 프롬프트 원문 그대로의 규칙 테이블
-  rules_v2.py     v2 — 새 평가구조 구현 (밴드별 레벨표·커버리지·Fit 규칙표·조치 매핑)
+  rules_v2.py     v2 — 밴드별 레벨표·커버리지·Fit 규칙표·조치 매핑
+  rules_v3.py     v3 — 불확실성 전파 (구간추정 → 확정 추천/사람 검토/확정 비추천)
+  experiment.py   실험 5종 — 성적표·확정판정 정확도·컷오프 민감도·자료부재 분해·LOO
   ENGINE_V2.md    v2 평가구조 문서 — 그대로 붙여 쓰는 프롬프트
   dataset.py      웹 검색으로 수집한 14개사 팩트시트 + 축별 레벨 분류 + 근거·출처
   backtest.py     실행기 — 판정표·통과율·재현율·민감도·게이트 검증
   RESULTS.md      v1↔v2 비교 백테스트 리포트 (생성물)
-  REEVALUATION.md v2 재평가 결과 — 기업별 Tier·Fit·조치 (생성물)
+  REEVALUATION.md 재평가 결과 — 기업별 Tier·v3 구간·Fit·조치 (생성물)
+  EXPERIMENT.md   실험 결과 — 어느 구조가 더 정확한가 (생성물)
   SAMPLE_OUTPUT.md  버전1 내부용 / 버전2 자가진단용 실제 출력 샘플 2개사
 ```
 
 ```bash
 python -m screening.backtest            # 판정표 + 요약 지표
 python -m screening.backtest --report   # output/screening/ + screening/RESULTS.md 갱신
+python -m screening.experiment --report # 실험 5종 실행 + EXPERIMENT.md 갱신
 python test_screening_offline.py        # 오프라인 검증 (API 키/네트워크 불필요)
 ```
 

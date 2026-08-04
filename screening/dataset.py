@@ -450,6 +450,109 @@ COMPANIES: list[Company] = [
         has_working_product=True,
         product_note="CES 전시 = 프로토타입 존재 추정",
     ),
+    # ================================================== HAX 합격군 (표본 확대)
+    Company(
+        key="avidbots", name="Avidbots", track="hax",
+        sector_key="robotics", sector_note="산업용 자율 바닥청소 로봇 'Neo'",
+        stage_band="프리시드", ground_truth="admitted_hax",
+        facts=[
+            ("HAX 공식 서술: **거친 프로토타입(rough prototype) 상태로 입주**", "문서 명시(HAX 공식)"),
+            ("HAX 에서 프로토타입 정제 → 캐나다에서 저비용 팀 구축 → 고객 계약 → 제품 출하", "문서 명시(HAX 공식)"),
+            ("공동창업자/CEO Faizan Sheikh", "문서 명시(보도)"),
+            ("[후행] 시리즈C $70M 조달", "문서 명시(보도)"),
+            ("입주 시점 BOM·양산 파트너", "확인 필요"),
+            ("입주 시점 고객", "확인 필요"),
+        ],
+        levels={
+            "trl": (4, "입주 시점 '거친 프로토타입' — 통합 동작 로봇에 근접"),
+            "team": (3, "엔지니어링 창업팀, 로보틱스 도메인. 엑싯·스케일업 이력 없음"),
+            "manufacturing": (None, "입주 시점 양산 근거 없음"),
+            "customer": (None, "입주 시점 고객 근거 없음 — 프로그램 중 확보"),
+        },
+        unstable={"trl": 5},
+        credibility=_cred(CRED_OK, CRED_OK),
+        needs_confirm=["입주 시점 프로토타입 완성도", "초기 고객 파이프라인"],
+        fit="", fit_reason="",
+        sources=[
+            "https://hax.co/avidbots-closes-70m-series-c-to-scale-autonomous-industrial-cleaning-robots/",
+            "https://avidbots.com/news/faizan-sheikh-featured-on-techcrunch-pre-seed-to-unicorn-lessons-from-hax-robotics-founders-breakout-session/",
+        ],
+        note="입주 시점 상태가 공식 문서로 남은 드문 케이스 — 가장 신뢰도 높은 양성 표본.",
+        product_note="거친 프로토타입", english_ok=True,
+        english_note="캐나다 영어권 팀", cap_table_note="프리시드 — 수용 가능",
+    ),
+    Company(
+        key="cocoon", name="Cocoon Carbon", track="hax",
+        sector_key="materials", sector_note="철강·시멘트 탈탄소 소재",
+        stage_band="프리시드", ground_truth="admitted_hax",
+        facts=[
+            ("HAX 프로그램 6개월 참여 후 2024.05 $5.4M 라운드", "문서 명시(보도)"),
+            ("HAX 랩 설비를 활용해 개발", "문서 명시(HAX 공식)"),
+            ("창업팀 구성·경력", "확인 필요"),
+            ("입주 시점 TRL·고객·양산 계획", "확인 필요"),
+        ],
+        levels={
+            "trl": (3, "HAX 랩 설비 활용 = 입주 시점 랩 단계 → 프리시드 밴드 L3"),
+            "team": (None, "창업자 정보 미확인"),
+            "manufacturing": (None, "근거 없음"),
+            "customer": (None, "근거 없음"),
+        },
+        credibility=_cred(CRED_OK, CRED_OK),
+        needs_confirm=["창업팀", "입주 시점 TRL", "시멘트·철강사 접점"],
+        fit="", fit_reason="",
+        sources=["https://sosv.com/prototyping-to-production-how-hax-helps-founders-build-hard-tech/"],
+        note="공개 정보가 얇은 합격사 — 자료 부재가 판정을 막는 케이스.",
+        product_note="랩 단계 공정", english_ok=True, english_note="미국 기반",
+        cap_table_note="프리시드",
+    ),
+    Company(
+        key="levelzero", name="Level Zero Health", track="hax",
+        sector_key="medical_device",
+        sector_note="연속 호르몬 모니터링 웨어러블 바이오센서 (의료기기 하드웨어)",
+        stage_band="프리시드", ground_truth="admitted_hax",
+        facts=[
+            ("SOSV HAX 프로그램 졸업", "문서 명시(HAX 공식)"),
+            ("공동창업 Ula Rustamova / Irene Jia — Entrepreneur First 출신", "문서 명시(보도)"),
+            ("[후행] 프리시드 $6.9M (redalpine 리드, HAX/SOSV·EF 참여)", "문서 명시(보도)"),
+            ("입주 시점 센서 완성도·임상 데이터", "확인 필요"),
+        ],
+        levels={
+            "trl": (None, "입주 시점 센서 완성도 근거 없음"),
+            "team": (4, "EF 선발 기술 창업 2인 — 딥테크 창업 트랙 검증"),
+            "manufacturing": (None, "근거 없음"),
+            "customer": (None, "근거 없음"),
+        },
+        credibility=_cred(CRED_OK, CRED_OK),
+        needs_confirm=["센서 TRL", "규제 경로(FDA/CE)", "임상 파트너"],
+        fit="", fit_reason="",
+        sources=["https://hax.co/company/level-zero-health/",
+                 "https://sosv.com/continuous-hormone-monitoring-startup-level-zero-health-raises-6-9m-pre-seed-round/"],
+        note="라우팅 경계 케이스: 진단이지만 치료제가 아니라 센서 하드웨어 → IndieBio 아니라 HAX.",
+        product_note="웨어러블 센서 개발", english_ok=True,
+        english_note="영국·미국 기반", cap_table_note="프리시드",
+    ),
+    Company(
+        key="unspun", name="unspun", track="hax",
+        sector_key="materials", sector_note="3D 위빙 로봇 — 주문형 의류 제조",
+        stage_band="프리시드", ground_truth="admitted_hax",
+        facts=[
+            ("HAX/SOSV 포트폴리오 — 3D 위빙 기술", "문서 명시(HAX 공식)"),
+            ("창업팀·입주 시점 TRL·고객", "확인 필요"),
+        ],
+        levels={
+            "trl": (None, "입주 시점 근거 없음"),
+            "team": (None, "근거 없음"),
+            "manufacturing": (3, "3D 위빙 자체가 제조 공정 기술 — 공정 인지는 확인되나 정량 근거 없음"),
+            "customer": (None, "근거 없음"),
+        },
+        credibility=_cred(CRED_OK, CRED_OK),
+        needs_confirm=["창업팀", "입주 시점 TRL", "의류 브랜드 접점"],
+        fit="", fit_reason="",
+        sources=["https://startupintros.com/orgs/hax"],
+        note="공개 정보 최소 — 커버리지 규칙이 실제로 작동하는지 확인용 합격사.",
+        product_note="위빙 장비 개발", english_ok=True, english_note="미국·홍콩 기반",
+        cap_table_note="프리시드",
+    ),
     # ============================================================ 확정 불합격군
     # 불합격은 원리적으로 공개되지 않는다(AC 는 합격자만 발표한다). 창업자가
     # 스스로 공개한 사례만 확보 가능 — 아래 2건이 검색으로 찾은 전부다.
@@ -594,6 +697,28 @@ LEVELS_V2: dict[str, dict[str, tuple[int | None, str]]] = {
         "trl": (None, "CES 전시만으로 TRL 특정 불가"), "team": (None, "정보 없음"),
         "manufacturing": (None, "정보 없음"), "customer": (None, "정보 없음"),
     },
+    # HAX 합격군 확대분 — 밴드별 레벨표 적용 (Company.levels 와 동일: 이미 v2 기준)
+    "avidbots": {
+        "trl": (4, "프리시드 밴드표: '거친 프로토타입'으로 입주 — 통합 동작에 근접"),
+        "team": (3, "로보틱스 엔지니어링 창업팀, 엑싯 이력 없음"),
+        "manufacturing": (None, "입주 시점 근거 없음"),
+        "customer": (None, "입주 시점 근거 없음"),
+    },
+    "cocoon": {
+        "trl": (3, "HAX 랩 설비 활용 = 랩 단계"),
+        "team": (None, "창업자 정보 미확인"),
+        "manufacturing": (None, "근거 없음"), "customer": (None, "근거 없음"),
+    },
+    "levelzero": {
+        "trl": (None, "입주 시점 센서 완성도 근거 없음"),
+        "team": (4, "EF 선발 기술 창업 2인"),
+        "manufacturing": (None, "근거 없음"), "customer": (None, "근거 없음"),
+    },
+    "unspun": {
+        "trl": (None, "근거 없음"), "team": (None, "근거 없음"),
+        "manufacturing": (3, "3D 위빙 = 공정 기술 자체, 정량 근거 없음"),
+        "customer": (None, "근거 없음"),
+    },
     # 확정 불합격군 — 밴드별 레벨표 적용
     "saasmetrics": {
         "traction": (4, "프리시드 밴드표: 유료 고객 수십 곳 + 30% MoM → L4 이상 확실"),
@@ -697,6 +822,26 @@ FIT: dict[str, dict[str, str]] = {
         "vc_track_grammar": "no",         # 지역은행·정책금융 중심
         "sales_cycle_fit": "unknown",
         "momentum": "yes",                # CES 2025
+    },
+    "avidbots": {
+        "stage_band_fit": "yes", "sector_theme_match": "yes",   # 로보틱스 = HAX 핵심
+        "similar_admitted_case": "yes", "vc_track_grammar": "yes",
+        "sales_cycle_fit": "yes", "momentum": "yes",
+    },
+    "cocoon": {
+        "stage_band_fit": "yes", "sector_theme_match": "yes",   # 소재·기후
+        "similar_admitted_case": "yes", "vc_track_grammar": "yes",
+        "sales_cycle_fit": "yes", "momentum": "yes",
+    },
+    "levelzero": {
+        "stage_band_fit": "yes", "sector_theme_match": "yes",   # 헬스 하드웨어
+        "similar_admitted_case": "yes", "vc_track_grammar": "yes",
+        "sales_cycle_fit": "yes", "momentum": "yes",
+    },
+    "unspun": {
+        "stage_band_fit": "yes", "sector_theme_match": "yes",
+        "similar_admitted_case": "yes", "vc_track_grammar": "yes",
+        "sales_cycle_fit": "unknown", "momentum": "unknown",
     },
     "saasmetrics": {
         "stage_band_fit": "yes",          # 프리시드

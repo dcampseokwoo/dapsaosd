@@ -4,7 +4,7 @@ python test_screening_offline.py
 """
 import unittest
 
-from screening import backtest, dataset, rules, rules_v2
+from screening import backtest, dataset, experiment, rules, rules_v2, rules_v3
 
 
 class TestRules(unittest.TestCase):
@@ -182,6 +182,91 @@ class TestActionMapping(unittest.TestCase):
                 self.assertTrue(
                     "추천" in r["action"] or "설문" in r["action"],
                     f"{r['company'].name}: {r['action']}")
+
+
+class TestRulesV3(unittest.TestCase):
+    """v3 — 불확실성 전파. 라벨을 보지 않고 구조만으로 오탐을 줄이는가."""
+
+    def test_known_axes_give_point_estimate(self):
+        """모든 축이 확정이면 구간 폭 0 — v2 점추정과 같은 값."""
+        lv = {"traction": 4, "team": 3, "market": 3, "moat": 2}
+        iv = rules_v3.decide("500", lv, {})
+        self.assertEqual(iv.lo, iv.hi)
+        self.assertEqual(iv.width, 0)
+        self.assertAlmostEqual(iv.lo, rules_v2.aggregate("500", lv).weighted)
+
+    def test_unknown_axis_widens_interval(self):
+        iv = rules_v3.decide("500", {"traction": 4, "team": 3,
+                                     "market": None, "moat": 2}, {})
+        self.assertGreater(iv.width, 0)
+        self.assertEqual(iv.unknown_axes, ["market"])
+        # 시장 가중치 0.2 × (5-1) = 0.8
+        self.assertAlmostEqual(iv.width, 0.8)
+
+    def test_only_adjacent_alternatives_count_as_boundary(self):
+        """2단계 떨어진 대안은 경계 판정으로 보지 않는다(근거 없는 확대 방지)."""
+        lv = {"traction": 3, "team": 4, "market": 3, "moat": 3}
+        near = rules_v3.decide("500", lv, {"team": 3})
+        far = rules_v3.decide("500", lv, {"traction": 1})
+        self.assertIn("team", near.unstable_axes)
+        self.assertEqual(far.unstable_axes, [])
+
+    def test_confident_only_when_interval_clears_line(self):
+        hi = rules_v3.decide("hax", {"trl": 4, "team": 4,
+                                     "manufacturing": 3, "customer": 3}, {})
+        self.assertEqual(hi.zone, rules_v3.ZONE_YES)
+        lo = rules_v3.decide("500", {"traction": 3, "team": 2,
+                                     "market": 3, "moat": 2}, {})
+        self.assertEqual(lo.zone, rules_v3.ZONE_NO)
+        mid = rules_v3.decide("500", {"traction": 4, "team": 3,
+                                      "market": None, "moat": 2}, {})
+        self.assertEqual(mid.zone, rules_v3.ZONE_HUMAN)
+
+    def test_gate_fail_is_not_recommended(self):
+        iv = rules_v3.decide("hax", {"trl": 5, "team": 5, "manufacturing": 5,
+                                     "customer": 5}, {}, gate=rules.GATE_FAIL)
+        self.assertEqual(iv.zone, rules_v3.ZONE_NO)
+
+    def test_v3_catches_the_v2_false_positive(self):
+        """핵심 회귀 테스트: SaaSMetrics(500 탈락)를 v3 는 단정하지 않는다."""
+        r = backtest.evaluate(dataset.by_key("saasmetrics"))
+        self.assertEqual(r["scores"]["v2"].tier, "B 확인 후 추천")   # v2 는 오탐
+        self.assertEqual(r["v3"].zone, rules_v3.ZONE_HUMAN)          # v3 는 유보
+
+    def test_v3_keeps_every_admit_out_of_rejection(self):
+        for r in backtest.run():
+            if r["company"].ground_truth.startswith("admitted"):
+                self.assertNotEqual(r["v3"].zone, rules_v3.ZONE_NO,
+                                    r["company"].name)
+
+
+class TestExperiment(unittest.TestCase):
+    """실험 결과를 고정한다 — 회귀 시 즉시 드러나게."""
+
+    def setUp(self):
+        self.results = backtest.run()
+
+    def test_confident_decisions_have_no_error(self):
+        """v3 가 단정한 건에 오류가 없어야 한다 (실험 2의 핵심 주장)."""
+        e = experiment.exp2_confident(self.results)
+        self.assertEqual(e["v3"]["wrong"], [])
+        self.assertGreater(e["v3"]["decided"], 0)
+
+    def test_v3_is_more_accurate_than_v2_where_it_decides(self):
+        e = experiment.exp2_confident(self.results)
+        self.assertGreater(e["v3"]["accuracy"], e["v2"]["accuracy"])
+        self.assertLess(e["v3"]["coverage"], e["v2"]["coverage"])  # 대가는 커버리지
+
+    def test_uncertainty_is_mostly_from_missing_data(self):
+        """남은 불확실성이 규칙 탓이 아니라 자료 부재 탓임을 고정."""
+        e = experiment.exp4_full_docs(self.results)
+        self.assertGreater(e["unknown_share_of_width"], 0.5)
+
+    def test_recommend_line_sits_on_a_stable_plateau(self):
+        """3.25 가 우연이 아님 — 인접 구간에서도 정확도가 유지되는지."""
+        rows = {r["line"]: r for r in experiment.exp3_line_sweep(self.results)}
+        self.assertEqual(rows[3.25]["accuracy"], 1.0)
+        self.assertEqual(rows[3.50]["accuracy"], 1.0)
 
 
 class TestValidity(unittest.TestCase):

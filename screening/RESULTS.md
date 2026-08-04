@@ -1,6 +1,6 @@
 # 프리스크리닝 엔진 백테스트 — 500 Global / HAX
 
-- 대상: 16개사 (점수 산출 15개사 + 바이오 라우팅)
+- 대상: 20개사 (점수 산출 19개사 + 바이오 라우팅)
 - 입력: 웹 검색으로 수집한 공개 정보만 (피치덱·CV·설문 없음 → 전 기업 `간이 진단`)
 - 점수 계산: `screening/rules.py` 고정 테이블. 사실→레벨 분류는 `screening/dataset.py` 에 근거와 함께 기록
 
@@ -22,6 +22,10 @@
 | 웨이브덱 | 500 | 시드 초기 | 미확인 | 탈락 | 게이트 탈락 (참고 Tier D) (1.00) | 게이트 탈락 (참고 Tier 판정 불가) | **게이트 탈락 (참고 Tier 보류)** | 해당 없음 |
 | 어라운드어스 | 500 | 시드 후기 | 미확인 | 조건부 | D 부적합 (1.20) | D 부적합 (1.67) | **보류** | 중간 |
 | 꾸러기수비대 | hax | 시드 초기 | 미확인 | 조건부 | D 부적합 (1.00) | 판정 불가 | **보류** | 중간 |
+| Avidbots | hax | 프리시드 | 합격(HAX) | 통과 | C 보완 후 재도전 (2.80) | B 확인 후 추천 (3.57) | **B 확인 후 추천 (3.57)** | 높음 |
+| Cocoon Carbon | hax | 프리시드 | 합격(HAX) | 통과 | D 부적합 (1.80) | C 보완 후 재도전 (3.00) | **보류** | 높음 |
+| Level Zero Health | hax | 프리시드 | 합격(HAX) | 통과 | D 부적합 (1.90) | A 추천 (4.00) | **보류** | 높음 |
+| unspun | hax | 프리시드 | 합격(HAX) | 통과 | D 부적합 (1.40) | C 보완 후 재도전 (3.00) | **보류** | 높음 |
 | SaaSMetrics | 500 | 프리시드 | **탈락(500)** | 조건부 | C 보완 후 재도전 (2.90) | B 확인 후 추천 (3.38) | **B 확인 후 추천 (3.38)** | 높음 |
 | HelpDocs | 500 | 시드 초기 | **탈락(복수AC)** | 조건부 | C 보완 후 재도전 (2.60) | C 보완 후 재도전 (2.60) | **C 보완 후 재도전 (2.60)** | 중간 |
 
@@ -29,42 +33,43 @@
 
 ### `strict` 모드
 
-- D 부적합: 5개사
-- C 보완 후 재도전: 4개사
+- D 부적합: 8개사
+- C 보완 후 재도전: 5개사
 - B 확인 후 추천: 2개사
 - 게이트 탈락 (참고 Tier D): 2개사
 - 사람 검토 (참고 Tier B): 1개사
 - 게이트 탈락 (참고 Tier A): 1개사
-- **추천 대상 비율: 13%** (Neptune Robotics, 비트바이트)
-- 실제 합격 기업 재현율: **1/4** — 놓친 기업: 카드몬스터 (CardMonster), 올세일코퍼레이션 (Allsale), Still Bright
-- 합격 기업 **오탈락**(C/D·게이트탈락 처리): **3개사** — 카드몬스터 (CardMonster), 올세일코퍼레이션 (Allsale), Still Bright
+- **추천 대상 비율: 10%** (Neptune Robotics, 비트바이트)
+- 실제 합격 기업 재현율: **1/8** — 놓친 기업: 카드몬스터 (CardMonster), 올세일코퍼레이션 (Allsale), Still Bright, Avidbots, Cocoon Carbon, Level Zero Health, unspun
+- 합격 기업 **오탈락**(C/D·게이트탈락 처리): **7개사** — 카드몬스터 (CardMonster), 올세일코퍼레이션 (Allsale), Still Bright, Avidbots, Cocoon Carbon, Level Zero Health, unspun
 
 ### `neutral` 모드
 
-- C 보완 후 재도전: 4개사
-- B 확인 후 추천: 4개사
+- C 보완 후 재도전: 6개사
+- B 확인 후 추천: 5개사
 - D 부적합: 2개사
 - 사람 검토 (참고 Tier B): 1개사
 - 게이트 탈락 (참고 Tier A): 1개사
 - 게이트 탈락 (참고 Tier D): 1개사
 - 게이트 탈락 (참고 Tier 판정 불가): 1개사
 - 판정 불가: 1개사
-- **추천 대상 비율: 27%** (Neptune Robotics, 디하이브, 비트바이트, SaaSMetrics)
-- 실제 합격 기업 재현율: **1/4** — 놓친 기업: 카드몬스터 (CardMonster), 올세일코퍼레이션 (Allsale), Still Bright
-- 합격 기업 **오탈락**(C/D·게이트탈락 처리): **3개사** — 카드몬스터 (CardMonster), 올세일코퍼레이션 (Allsale), Still Bright
+- A 추천: 1개사
+- **추천 대상 비율: 32%** (Neptune Robotics, 디하이브, 비트바이트, Avidbots, Level Zero Health, SaaSMetrics)
+- 실제 합격 기업 재현율: **3/8** — 놓친 기업: 카드몬스터 (CardMonster), 올세일코퍼레이션 (Allsale), Still Bright, Cocoon Carbon, unspun
+- 합격 기업 **오탈락**(C/D·게이트탈락 처리): **5개사** — 카드몬스터 (CardMonster), 올세일코퍼레이션 (Allsale), Still Bright, Cocoon Carbon, unspun
 
 ### `v2` 모드
 
-- B 확인 후 추천: 5개사
-- 판정 보류 — 정보 부족: 5개사
+- 판정 보류 — 정보 부족: 8개사
+- B 확인 후 추천: 6개사
 - 게이트 탈락 (참고 Tier 보류): 2개사
 - 사람 검토 (참고 Tier 보류): 1개사
 - 게이트 탈락 (참고 Tier A): 1개사
 - C 보완 후 재도전: 1개사
-- **추천 대상 비율: 33%** (카드몬스터 (CardMonster), Still Bright, Neptune Robotics, 비트바이트, SaaSMetrics)
-- 실제 합격 기업 재현율: **3/4** — 놓친 기업: 올세일코퍼레이션 (Allsale)
+- **추천 대상 비율: 32%** (카드몬스터 (CardMonster), Still Bright, Neptune Robotics, 비트바이트, Avidbots, SaaSMetrics)
+- 실제 합격 기업 재현율: **4/8** — 놓친 기업: 올세일코퍼레이션 (Allsale), Cocoon Carbon, Level Zero Health, unspun
 - 합격 기업 **오탈락**(C/D·게이트탈락 처리): **0개사**
-- 판정 보류(설문·증빙 요청): 8개사
+- 판정 보류(설문·증빙 요청): 11개사
 
 ## 2-1. v1 → v2 수정 효과
 
@@ -72,9 +77,9 @@ v2 는 가중치를 건드리지 않고 **레벨표와 집계 규칙만** 고친
 
 | 지표 | v1 strict | v1 neutral | v2 |
 |---|---|---|---|
-| 추천 대상 비율 | 13% | 27% | 33% |
-| 합격 기업 재현율 | 1/4 | 1/4 | 3/4 |
-| 합격 기업 오탈락 | 3개사 | 3개사 | 0개사 |
+| 추천 대상 비율 | 10% | 32% | 32% |
+| 합격 기업 재현율 | 1/8 | 3/8 | 4/8 |
+| 합격 기업 오탈락 | 7개사 | 5개사 | 0개사 |
 
 수정 내용 4가지:
 
@@ -93,6 +98,10 @@ v2 는 가중치를 건드리지 않고 **레벨표와 집계 규칙만** 고친
 | 디하이브 | D 부적합 | B 확인 후 추천 |
 | 웨이브덱 | 게이트 탈락 (참고 Tier D) | 게이트 탈락 (참고 Tier 판정 불가) |
 | 꾸러기수비대 | D 부적합 | 판정 불가 |
+| Avidbots | C 보완 후 재도전 | B 확인 후 추천 |
+| Cocoon Carbon | D 부적합 | C 보완 후 재도전 |
+| Level Zero Health | D 부적합 | A 추천 |
+| unspun | D 부적합 | C 보완 후 재도전 |
 | SaaSMetrics | C 보완 후 재도전 | B 확인 후 추천 |
 
 ## 4. 결정성 민감도 (경계 판정 1단계 뒤집기)
@@ -117,6 +126,10 @@ v2 는 가중치를 건드리지 않고 **레벨표와 집계 규칙만** 고친
 | 웨이브덱 | 500 | 탈락 | 테크 기업 + 동작하는 프로토타입=탈락, 풀타임 / 리로케이션 의사=조건부, C레벨 영어 (영어 전용 프로그램)=조건부 |
 | 어라운드어스 | 500 | 조건부 | 풀타임 / 리로케이션 의사=조건부, C레벨 영어 (영어 전용 프로그램)=조건부 |
 | 꾸러기수비대 | hax | 조건부 | C레벨 영어 (영어 전용 프로그램)=조건부 |
+| Avidbots | hax | 통과 | — |
+| Cocoon Carbon | hax | 통과 | — |
+| Level Zero Health | hax | 통과 | — |
+| unspun | hax | 통과 | — |
 | SaaSMetrics | 500 | 조건부 | 풀타임 / 리로케이션 의사=조건부 |
 | HelpDocs | 500 | 조건부 | 풀타임 / 리로케이션 의사=조건부 |
 
@@ -282,6 +295,54 @@ v2 는 가중치를 건드리지 않고 **레벨표와 집계 규칙만** 고친
 - `확인 필요`: 제품 정의, TRL, 팀, 고객
 - 비고: 전 축 `확인 필요` — CES 참가만으로 레벨을 올리지 않는지 확인용.
 - 출처: https://thevc.kr/
+
+### Avidbots — 산업용 자율 바닥청소 로봇 'Neo'
+
+- **TRL** L4 — 입주 시점 '거친 프로토타입' — 통합 동작 로봇에 근접
+- **Team** L3 — 엔지니어링 창업팀, 로보틱스 도메인. 엑싯·스케일업 이력 없음
+- **양산 경로** `확인 필요` — 입주 시점 양산 근거 없음
+- **고객** `확인 필요` — 입주 시점 고객 근거 없음 — 프로그램 중 확보
+- 신뢰성: 정상
+- Fit **** — 
+- `확인 필요`: 입주 시점 프로토타입 완성도, 초기 고객 파이프라인
+- 비고: 입주 시점 상태가 공식 문서로 남은 드문 케이스 — 가장 신뢰도 높은 양성 표본.
+- 출처: https://hax.co/avidbots-closes-70m-series-c-to-scale-autonomous-industrial-cleaning-robots/ / https://avidbots.com/news/faizan-sheikh-featured-on-techcrunch-pre-seed-to-unicorn-lessons-from-hax-robotics-founders-breakout-session/
+
+### Cocoon Carbon — 철강·시멘트 탈탄소 소재
+
+- **TRL** L3 — HAX 랩 설비 활용 = 입주 시점 랩 단계 → 프리시드 밴드 L3
+- **Team** `확인 필요` — 창업자 정보 미확인
+- **양산 경로** `확인 필요` — 근거 없음
+- **고객** `확인 필요` — 근거 없음
+- 신뢰성: 정상
+- Fit **** — 
+- `확인 필요`: 창업팀, 입주 시점 TRL, 시멘트·철강사 접점
+- 비고: 공개 정보가 얇은 합격사 — 자료 부재가 판정을 막는 케이스.
+- 출처: https://sosv.com/prototyping-to-production-how-hax-helps-founders-build-hard-tech/
+
+### Level Zero Health — 연속 호르몬 모니터링 웨어러블 바이오센서 (의료기기 하드웨어)
+
+- **TRL** `확인 필요` — 입주 시점 센서 완성도 근거 없음
+- **Team** L4 — EF 선발 기술 창업 2인 — 딥테크 창업 트랙 검증
+- **양산 경로** `확인 필요` — 근거 없음
+- **고객** `확인 필요` — 근거 없음
+- 신뢰성: 정상
+- Fit **** — 
+- `확인 필요`: 센서 TRL, 규제 경로(FDA/CE), 임상 파트너
+- 비고: 라우팅 경계 케이스: 진단이지만 치료제가 아니라 센서 하드웨어 → IndieBio 아니라 HAX.
+- 출처: https://hax.co/company/level-zero-health/ / https://sosv.com/continuous-hormone-monitoring-startup-level-zero-health-raises-6-9m-pre-seed-round/
+
+### unspun — 3D 위빙 로봇 — 주문형 의류 제조
+
+- **TRL** `확인 필요` — 입주 시점 근거 없음
+- **Team** `확인 필요` — 근거 없음
+- **양산 경로** L3 — 3D 위빙 자체가 제조 공정 기술 — 공정 인지는 확인되나 정량 근거 없음
+- **고객** `확인 필요` — 근거 없음
+- 신뢰성: 정상
+- Fit **** — 
+- `확인 필요`: 창업팀, 입주 시점 TRL, 의류 브랜드 접점
+- 비고: 공개 정보 최소 — 커버리지 규칙이 실제로 작동하는지 확인용 합격사.
+- 출처: https://startupintros.com/orgs/hax
 
 ### SaaSMetrics — 구독 비즈니스 지표·리텐션 분석 SaaS
 

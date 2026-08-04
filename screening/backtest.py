@@ -19,7 +19,7 @@ import argparse
 import json
 from pathlib import Path
 
-from screening import dataset, rules, rules_v2
+from screening import dataset, rules, rules_v2, rules_v3
 
 BASE = Path(__file__).resolve().parent.parent
 OUT_DIR = BASE / "output" / "screening"
@@ -36,6 +36,7 @@ def evaluate(c: dataset.Company) -> dict:
             "verdict": {m: "점수 미산출 (SOSV IndieBio 안내)" for m in MODES},
             "fit": "해당 없음", "fit_score": 0, "fit_notes": [],
             "action": rules_v2.action_of("", "", "라우팅", True),
+            "v3": None, "action_v3": "라우팅 — SOSV IndieBio NY/SF 안내",
         }
 
     gates = rules.run_gates(c)
@@ -57,10 +58,13 @@ def evaluate(c: dataset.Company) -> dict:
     # v2 구조: Fit 도 규칙표가 계산한다 (v1 은 정성 판단이라 결정성이 없었다)
     fit, fit_score, fit_notes = rules_v2.fit_of(dataset.FIT.get(c.key, {}), gate)
     action = rules_v2.action_of(scores["v2"].tier, fit, gate, False)
+    # v3: 불확실성 구간 → 3구역 (확정 추천 / 사람 검토 / 확정 비추천)
+    iv = rules_v3.decide(c.track, dataset.levels_v2_of(c), c.unstable, gate)
     return {"company": c, "routed": False, "gates": gates, "gate": gate,
             "credibility": cred, "scores": scores, "verdict": verdict,
             "fit": fit, "fit_score": fit_score, "fit_notes": fit_notes,
-            "action": action}
+            "action": action, "v3": iv,
+            "action_v3": rules_v3.action_of(iv, fit)}
 
 
 def _short(tier: str) -> str:
@@ -531,17 +535,21 @@ def render_reevaluation(results: list[dict], mt: dict) -> str:
 
     L.append("## 전체 판정표")
     L.append("")
-    L.append("| 기업 | 트랙 | 밴드 | 정답 | 게이트 | Tier | Fit(점수) | 조치 |")
-    L.append("|---|---|---|---|---|---|---|---|")
+    L.append("| 기업 | 트랙 | 밴드 | 정답 | 게이트 | v2 Tier | **v3 구간 → 구역** "
+             "| Fit | **v3 조치** |")
+    L.append("|---|---|---|---|---|---|---|---|---|")
     gt = {"admitted_500": "합격(500)", "admitted_hax": "합격(HAX)",
           "rejected_500": "**탈락(500)**", "rejected_multi": "**탈락(복수AC)**",
           "unknown": "미확인", "probe": "게이트 검증"}
     for r in results:
         c = r["company"]
         tier = "라우팅" if r["routed"] else _tier_cell(r, "v2")
+        iv = r["v3"]
+        v3cell = "라우팅" if iv is None else \
+            f"[{iv.lo:.2f}, {iv.hi:.2f}] → **{iv.zone}**"
         L.append(f"| {c.name} | {c.track} | {c.stage_band} | {gt[c.ground_truth]} | "
-                 f"{r['gate']} | {tier} | {r['fit']} ({r['fit_score']:+d}) | "
-                 f"{r['action']} |")
+                 f"{r['gate']} | {tier} | {v3cell} | {r['fit']} ({r['fit_score']:+d}) | "
+                 f"{r['action_v3']} |")
     L.append("")
 
     L.append("## 기업별 상세")
