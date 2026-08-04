@@ -173,6 +173,36 @@ python test_ac_watch_offline.py                      # ② 오프라인 검증
   (예: "前 500 Global APAC 총괄 스카우트" 같은 영입 시그널 중점 확인)
 - 비교 시트 갱신이 필요한 변경이면 리포트 상단에 ⚠️ alert 표기
 
+## 프리스크리닝 엔진 백테스트 (`screening/`)
+
+500 Global / HAX 지원 적합성을 판정하는 프리스크리닝 프롬프트가 **실제로 기업을 걸러내는지**
+공개 정보 기반으로 검증한 모듈. 프롬프트의 핵심 설계 원칙("점수를 매기지 마라, 사실을 분류하라.
+점수는 규칙 테이블이 계산한다")을 코드로 강제해, 결정성이 보장되는 구간과 아닌 구간을 분리했다.
+
+```
+screening/
+  rules.py        가중치·Tier 컷오프·하드 게이트·강등 규칙·신뢰성 상한 (점수 계산부)
+  dataset.py      웹 검색으로 수집한 14개사 팩트시트 + 축별 레벨 분류 + 근거·출처
+  backtest.py     실행기 — 판정표·통과율·재현율·민감도·게이트 검증
+  RESULTS.md      생성된 백테스트 리포트 (재생성 가능)
+  SAMPLE_OUTPUT.md  버전1 내부용 / 버전2 자가진단용 실제 출력 샘플 2개사
+```
+
+```bash
+python -m screening.backtest            # 판정표 + 요약 지표
+python -m screening.backtest --report   # output/screening/ + screening/RESULTS.md 갱신
+python test_screening_offline.py        # 오프라인 검증 (API 키/네트워크 불필요)
+```
+
+데이터셋 구성: 실제 500 플래그십 참가 확정 2개사(카드몬스터·올세일 — 디캠프 추천 채널),
+HAX 졸업 2개사(Still Bright·Neptune Robotics), 디캠프 DB 대조군 8개사,
+게이트 검증용 프로브 2개사(바이오 라우팅 / HAX 제외 섹터).
+
+`확인 필요` 축의 처리 방식이 프롬프트에서 충돌하므로 두 모드로 병행 계산한다.
+`strict`(증거 없으면 하위 레벨) / `neutral`(운영원칙1대로 제외 후 재정규화).
+
+## 모니터링 대상 목록 설정
+
 대상 목록은 `monitors/ac_watch/config.py`의 `TARGETS` 기본값(Upright·Intralink는 URL 확인됨,
 Long Story Short는 도메인 미확인이라 뉴스 검색만) 대신 `data/ac_targets.json`이
 있으면 그 파일을 우선 사용한다 — `data/ac_targets.sample.json`을 복사해 URL을 채우면 된다.
