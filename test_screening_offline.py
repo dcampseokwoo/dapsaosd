@@ -202,6 +202,19 @@ class TestValidity(unittest.TestCase):
         self.assertTrue(any("정밀도" in m for m in self.v["not_measurable"]))
         self.assertTrue(any("근접 탈락" in m for m in self.v["not_measurable"]))
 
+    def test_no_version_is_perfect(self):
+        """어느 버전도 라벨 6개사를 다 맞히지 못함 — '완성' 주장 차단."""
+        sb = backtest.scoreboard(backtest.run())
+        for mode, r in sb.items():
+            got, total = r["total"].split("/")
+            self.assertLess(int(got), int(total), f"{mode} 가 만점이면 표본을 재검토")
+
+    def test_agreement_signal_is_documented_as_failed(self):
+        """버전 합의는 오탐을 잡지 못한다 — 나중에 신뢰도로 오용되지 않게 고정."""
+        ag = backtest.agreement(backtest.run())
+        self.assertFalse(ag["catches_false_positive"])
+        self.assertIn("사용 금지", ag["conclusion"])
+
     def test_known_false_positive_is_surfaced(self):
         """SaaSMetrics(500 탈락)를 v2 가 추천하는 오탐 — 숨기지 말고 노출."""
         self.assertIn("SaaSMetrics", self.v["false_positives"])

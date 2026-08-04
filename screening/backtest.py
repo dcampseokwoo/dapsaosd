@@ -323,6 +323,50 @@ RESCUED_BY = {
 }
 
 
+def scoreboard(results: list[dict]) -> dict:
+    """라벨된 기업(합격 4 + 불합격 2)에서 각 버전의 성적.
+
+    표본 6개사 — 이것으로 '가장 정확한 버전'을 고를 수는 없다. 기록용이다.
+    """
+    lab = [r for r in results
+           if r["company"].ground_truth.startswith(("admitted", "rejected"))]
+    adm = [r for r in lab if r["company"].ground_truth.startswith("admitted")]
+    rej = [r for r in lab if r["company"].ground_truth.startswith("rejected")]
+    out = {}
+    for m in MODES:
+        tp = sum(1 for r in adm if not rejected(r, m))       # 합격사를 안 떨어뜨림
+        tn = sum(1 for r in rej if rejected(r, m))           # 불합격사를 떨어뜨림
+        out[m] = {"admit_kept": f"{tp}/{len(adm)}",
+                  "reject_caught": f"{tn}/{len(rej)}",
+                  "total": f"{tp + tn}/{len(lab)}"}
+    return out
+
+
+def agreement(results: list[dict]) -> dict:
+    """[실패한 시도] 두 버전의 합의를 신뢰도 신호로 쓸 수 있는가 → 쓸 수 없다.
+
+    아이디어: v1 과 v2 가 같은 결론이면 '확정', 다르면 '사람 검토'로 보내
+    라벨 없이도 불안정한 판정을 걸러낸다.
+    결과: SaaSMetrics(실제 500 탈락)는 v1 neutral·v2 가 **둘 다 추천**한다.
+    즉 합의는 오탐을 잡지 못한다. 이 신호를 신뢰도로 쓰지 말 것.
+    """
+    rows, catches_fp = [], True
+    for r in results:
+        if r["routed"]:
+            continue
+        v1 = recommended(r, "neutral")
+        v2 = recommended(r, "v2")
+        agree = v1 == v2
+        rows.append({"name": r["company"].name, "gt": r["company"].ground_truth,
+                     "v1": v1, "v2": v2, "agree": agree})
+        if r["company"].ground_truth.startswith("rejected") and v1 and v2:
+            catches_fp = False      # 불합격사를 두 버전이 함께 추천 → 신호 무효
+    return {"rows": rows, "n_agree": sum(1 for x in rows if x["agree"]),
+            "catches_false_positive": catches_fp,
+            "conclusion": ("합의 신호는 오탐을 잡지 못한다 — 신뢰도로 사용 금지"
+                           if not catches_fp else "검증 필요")}
+
+
 def validity(results: list[dict]) -> dict:
     """이 백테스트로 무엇을 주장할 수 있고 무엇을 주장할 수 없는가."""
     adm = [r for r in results if r["company"].ground_truth.startswith("admitted")]
@@ -413,6 +457,32 @@ def render_reevaluation(results: list[dict], mt: dict) -> str:
                  "특히 Moat 가중치 10% 는 '트랙션은 빠르나 방어자산이 없는' 프로필을 "
                  "막지 못한다 — SaaSMetrics 가 정확히 그 프로필이고, 500 은 실제로 탈락시켰다.")
         L.append("")
+    sb = scoreboard(results)
+    L.append("### 라벨된 6개사 성적 (합격 4 + 확정 불합격 2)")
+    L.append("")
+    L.append("| 버전 | 합격사 유지 | 불합격사 검출 | 합계 |")
+    L.append("|---|---|---|---|")
+    for m in MODES:
+        L.append(f"| {m} | {sb[m]['admit_kept']} | {sb[m]['reject_caught']} | "
+                 f"**{sb[m]['total']}** |")
+    L.append("")
+    L.append("**어느 버전도 6/6 이 아니다.** v1 strict 는 불합격사를 다 잡지만 합격사를 "
+             "3개 떨어뜨리고, v2 는 합격사를 다 살리지만 불합격사 1개를 통과시킨다. "
+             "표본 6개사로는 이 트레이드오프의 어느 지점이 옳은지 결정할 수 없다.")
+    L.append("")
+
+    ag = agreement(results)
+    L.append("### [실패한 시도] 버전 합의를 신뢰도 신호로 쓰기")
+    L.append("")
+    L.append("두 버전이 같은 결론이면 '확정', 다르면 '사람 검토'로 보내 라벨 없이 "
+             f"불안정한 판정을 걸러내려 했다. 합의 {ag['n_agree']}건 / "
+             f"불일치 {len(ag['rows']) - ag['n_agree']}건.")
+    L.append("")
+    L.append(f"**결론: {ag['conclusion']}.** SaaSMetrics(실제 500 탈락)를 "
+             "v1 neutral 과 v2 가 둘 다 추천한다 — 합의해도 함께 틀린다. "
+             "이 신호를 신뢰도로 사용하지 말 것.")
+    L.append("")
+
     L.append("**측정 가능한 것**")
     for m in v["measurable"]:
         L.append(f"- {m}")
