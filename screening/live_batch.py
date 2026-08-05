@@ -32,7 +32,7 @@ from pathlib import Path
 from screening import rules, rules_v2, rules_v3
 
 BASE = Path(__file__).resolve().parent.parent
-FACTS = BASE / "output" / "screening" / "facts_all.json"
+FACTS = Path(__file__).resolve().parent / "data" / "facts_batch_2467.json"
 
 # 트랙·밴드·라우팅 사유. 근거는 facts_all.json 의 사실. (track, stage_band, reason)
 ROUTING = {
