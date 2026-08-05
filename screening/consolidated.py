@@ -68,10 +68,23 @@ def group2() -> list[dict]:
     return out
 
 
-def _batch_rows(mod, levels_mod, group_label) -> list[dict]:
-    """live_batch / live_batch2 공통 — 라우팅 퍼널 + 점수화."""
+def _enrichment() -> dict:
+    """levels_enriched.ENRICHED overlay — 자동 창업자·트랙션 보강분 (있으면)."""
+    try:
+        from screening import levels_enriched
+        return levels_enriched.ENRICHED
+    except Exception:
+        return {}
+
+
+def _batch_rows(mod, levels_mod, group_label, *, enrich=True) -> list[dict]:
+    """live_batch / live_batch2 공통 — 라우팅 퍼널 + 점수화.
+
+    enrich=True 면 levels_enriched 오버레이(자동 보강분)를 null 축에 덮어쓴다.
+    """
     out = []
     lv_all = getattr(levels_mod, "LEVELS", {})
+    overlay = _enrichment() if enrich else {}
     for fr in mod.funnel():
         row = {"group": group_label, "key": fr["key"], "name": fr["name"],
                "tag": f"디캠프 배치 {fr['batch']}", "track": fr["track"],
@@ -80,9 +93,13 @@ def _batch_rows(mod, levels_mod, group_label) -> list[dict]:
         if fr["track"] == "bio_routing" or not fr["scoreable"] or lv is None:
             row.update({"v2": "—", "v2w": None, "v3": "—", "v3lo": None, "v3hi": None})
         else:
-            levels = {a: v[0] for a, v in lv.items()}
-            unstable = {a: v[2] for a, v in lv.items()
-                        if len(v) > 2 and v[2] is not None}
+            merged = {a: (v[0], v[1], v[2] if len(v) > 2 else None)
+                      for a, v in lv.items()}
+            for a, ev in overlay.get(fr["key"], {}).items():
+                if a in merged and merged[a][0] is None and ev[0] is not None:
+                    merged[a] = ev            # null 축만 보강분으로 채움
+            levels = {a: v[0] for a, v in merged.items()}
+            unstable = {a: v[2] for a, v in merged.items() if v[2] is not None}
             gate = (rules.GATE_HUMAN if fr["gate"] == rules.GATE_HUMAN
                     else rules.GATE_COND)
             v2, iv = _v2v3(fr["track"], levels, unstable, gate)
@@ -92,23 +109,33 @@ def _batch_rows(mod, levels_mod, group_label) -> list[dict]:
     return out
 
 
-def group3() -> list[dict]:
+def group3(enrich=True) -> list[dict]:
     from screening import live_batch, levels_live
     lm = type("LM", (), {"LEVELS": levels_live.LEVELS_LIVE})
-    return _batch_rows(live_batch, lm, "G3 디캠프 배치 2·4·6·7기")
+    return _batch_rows(live_batch, lm, "G3 디캠프 배치 2·4·6·7기", enrich=enrich)
 
 
-def group4() -> list[dict]:
+def group4(enrich=True) -> list[dict]:
     try:
         from screening import live_batch2, levels_live2
     except Exception:
         return []
     lm = type("LM", (), {"LEVELS": levels_live2.LEVELS_LIVE2})
-    return _batch_rows(live_batch2, lm, "G4 디캠프 배치 1·3·5기")
+    return _batch_rows(live_batch2, lm, "G4 디캠프 배치 1·3·5기", enrich=enrich)
 
 
-def all_rows() -> list[dict]:
-    return group1() + group2() + group3() + group4()
+def group5(enrich=True) -> list[dict]:
+    """G5 실제 500/HAX 포트폴리오사 (신규 크롤링)."""
+    try:
+        from screening import live_portfolio
+    except Exception:
+        return []
+    return live_portfolio.rows(enrich=enrich)
+
+
+def all_rows(enrich=True) -> list[dict]:
+    return (group1() + group2() + group3(enrich) + group4(enrich)
+            + group5(enrich))
 
 
 def main() -> None:
