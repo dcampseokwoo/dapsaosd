@@ -433,6 +433,15 @@ class TestBlindAgreement(unittest.TestCase):
                     self.assertNotEqual(r["v3"].zone, rules_v3.ZONE_NO,
                                         r["company"].name)
 
+    def test_live_selected_companies_are_not_rejected(self):
+        """실전 선발 2개사(디캠프×500 1기)는 보강 팩트 기준으로도 걸러지면 안 된다."""
+        from screening import live_eval
+        for key in live_eval.ENRICHED:
+            r = live_eval.evaluate(key)
+            self.assertNotEqual(r["v3"].zone, rules_v3.ZONE_NO, key)
+            self.assertFalse(r["v2"].tier.startswith(("C", "D")), key)
+            self.assertNotEqual(r["gate"], rules.GATE_FAIL, key)
+
     def test_swap_restores_dataset(self):
         """run_with_fable 이 dataset 전역 상태를 원상 복구하는지."""
         before = {k: dict(v) for k, v in dataset.LEVELS_V2.items()}
