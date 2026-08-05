@@ -117,6 +117,28 @@ IPO('YY), M&A('YY), 알 수 없음` — IPO/M&A는 2자리 연도 필수. Pre-A=
 - 연도 없는 `M&A`/`IPO` 값은 연도를 찾아 `M&A('YY)` 형식으로 보정
 - 동명 기업은 업종·웹사이트·서비스명 일치 확인 후에만 채택
 
+## 대시보드 (`dashboard/`)
+
+조사·모니터링 결과를 시각화하는 경영진용 웹 대시보드. dcamp 디자인 시스템
+([dcamp2/dcamp_designsystem](https://github.com/dcamp2/dcamp_designsystem) —
+`.claude/skills/ui-standards/`에 설치됨)을 따라 Next.js 15 + Tailwind CSS v4 +
+shadcn/ui + Recharts로 구현.
+
+```bash
+cd dashboard
+npm install
+npm run dev        # http://localhost:3000
+```
+
+| 페이지 | 데이터 소스 | 내용 |
+|---|---|---|
+| `/stages` | `data/스테이지_업데이트_26.07.csv` + `checkpoints/results.jsonl` | 반영/변경 없음/확인 필요 KPI, 스테이지·신뢰도 분포 차트, 기업별 상세(근거·출처) |
+| `/global500` | `output/global500/*.json` + `checkpoints/global500_deadline.jsonl` | 다음 배치 마감일 D-day, 배치 일정, 페이지 변경 감지, 마감일 이력 |
+| `/ac-watch` | `output/ac_watch/*.json` | 업체별 변경 감지·수집 실패 상태, 분석 요약, 관련 뉴스 |
+
+모니터 리포트가 아직 없으면 실행 안내가 담긴 빈 상태를 보여준다. 저장소 루트
+경로는 기본적으로 `dashboard/..`이며 `DAPSAOSD_ROOT` 환경변수로 재정의 가능.
+
 ## 모니터링 — 500 Global / AC 업체 (별도 실행 파일 2개)
 
 투자 스테이지 파이프라인과 같은 인프라(`ai/gemini.py`, `collectors/news_search.py`,
