@@ -120,7 +120,8 @@ def build() -> Path:
     _c(ws2, 1, 1, "1차 필터 퍼널 — 그룹 × 게이트 결과", bold=True, size=12, wrap=False)
     ws2.merge_cells(start_row=1, start_column=1, end_row=1, end_column=7)
     groups = ["G1 실전 500 선발(딥크롤)", "G2 라벨·대조 표본",
-              "G3 디캠프 배치 2·4·6·7기", "G4 디캠프 배치 1·3·5기"]
+              "G3 디캠프 배치 2·4·6·7기", "G4 디캠프 배치 1·3·5기",
+              "G5 실제 500/HAX 포트폴리오"]
     gate_cats = ["통과/조건부(점수화)", "사람 검토", "게이트 탈락", "라우팅"]
 
     def cat(row):
@@ -159,16 +160,28 @@ def build() -> Path:
     _c(ws2, rr, 6, len(rows), align="center", bold=True, fill=GRP_FILL)
 
     rr += 3
-    _c(ws2, rr, 1, "점수화된 기업의 v3 구역 분포", bold=True, size=11, wrap=False)
+    _c(ws2, rr, 1, "점수화된 기업의 v3 구역 분포 — 자동 보강 전 → 후", bold=True,
+       size=11, wrap=False)
     rr += 1
+    _c(ws2, rr, 1, "자동 보강 = 창업자 이력·트랙션을 추가 크롤링해 `확인 필요` Team 축을 "
+       "실증으로 채우는 단계(Step 1.5). 사람 검토를 줄이는 유일한 정당한 방법은 규칙 "
+       "변경이 아니라 데이터 보강이다(덱 부재로 인한 Market null 은 여전히 남는다).",
+       size=8, wrap=True)
+    ws2.merge_cells(start_row=rr, start_column=1, end_row=rr, end_column=6)
+    ws2.row_dimensions[rr].height = 30
+    rr += 1
+    before = consolidated.all_rows(enrich=False)
+    zb = Counter(row["v3"] for row in before
+                 if row["v3"] in ("확정 추천", "사람 검토", "확정 비추천"))
     zc = Counter(row["v3"] for row in rows
                  if row["v3"] in ("확정 추천", "사람 검토", "확정 비추천"))
-    _hdr(ws2, rr, ["v3 구역", "기업 수"], [20, 10])
+    _hdr(ws2, rr, ["v3 구역", "보강 전", "보강 후"], [20, 10, 10])
     rr += 1
     for z in ("확정 추천", "사람 검토", "확정 비추천"):
         _c(ws2, rr, 1, z, fill=GREEN if z == "확정 추천" else
            YELLOW if z == "사람 검토" else RED)
-        _c(ws2, rr, 2, zc.get(z, 0), align="center")
+        _c(ws2, rr, 2, zb.get(z, 0), align="center")
+        _c(ws2, rr, 3, zc.get(z, 0), align="center", bold=True)
         rr += 1
 
     # ---------------- 시트 3: 축별 레벨 ----------------
@@ -213,12 +226,28 @@ def _axis_levels():
     from screening import levels_live
     for k, axes in levels_live.LEVELS_LIVE.items():
         out[k] = (ROUTING3[k][0], {a: (v[0], v[1]) for a, v in axes.items()})
-    # G4
+    # G4 (자동 보강 오버레이 반영)
+    overlay = consolidated._enrichment()
     try:
         from screening import levels_live2, live_batch2
         for k, axes in levels_live2.LEVELS_LIVE2.items():
             out[k] = (live_batch2.ROUTING2[k][0],
                       {a: (v[0], v[1]) for a, v in axes.items()})
+    except Exception:
+        pass
+    # G3+G4 null 축에 보강분 덮어쓰기 (표시용)
+    for k, axes in overlay.items():
+        if k in out:
+            track, merged = out[k]
+            for a, ev in axes.items():
+                if a in merged and merged[a][0] is None and ev[0] is not None:
+                    merged[a] = (ev[0], ev[1])
+    # G5
+    try:
+        from screening import levels_portfolio, live_portfolio
+        pf = live_portfolio.load_facts()
+        for k, axes in levels_portfolio.LEVELS_PORTFOLIO.items():
+            out[k] = (pf[k]["program"], {a: (v[0], v[1]) for a, v in axes.items()})
     except Exception:
         pass
     return out
@@ -259,10 +288,19 @@ def _methodology(wb):
          "Step4 하드 게이트(제외 섹터·스테이지·프로토타입) → 여기까지 통과한 기업만 "
          "Step6 축별 레벨 분류 → 가중평균 → v2 Tier / v3 구간 → Step7 Fit → 조치. "
          "가중치(Traction/TRL 40·Team 30·Market/양산 20·Moat/고객 10)는 불변.", False, 10),
-        ("평가 대상 그룹", True, 11),
-        ("G1 카드몬스터·올세일 = 실제 500 선발사(딥크롤 보강). G2 = 기존 라벨·대조 "
+        ("평가 대상 그룹 (총 102개사)", True, 11),
+        ("G1 카드몬스터·올세일 = 실제 500 선발사(딥크롤 보강, 2). G2 = 기존 라벨·대조 "
          "표본 18개사(합격/탈락/미확인). G3 = 디캠프 배치 2·4·6·7기 31개사. "
-         "G4 = 디캠프 배치 1·3·5기.", False, 10),
+         "G4 = 디캠프 배치 1·3·5기 24개사. G5 = 실제 500/HAX 포트폴리오 27개사"
+         "(500 투자 15 + HAX 참여 12).", False, 10),
+        ("자동 데이터 보강 (사람 검토 감축)", True, 11),
+        ("사람 검토가 많은 주원인은 규칙이 아니라 데이터 부재다 — 개인 창업자 경력이 "
+         "보도에 드물어 Team 축(가중치 0.30)이 `확인 필요`가 되면 v3 구간이 넓어져 "
+         "추천선을 걸친다. 개선책으로 창업자 이력을 추가 크롤링해 실증이 확인된 Team "
+         "축을 채웠다(못 찾으면 null 유지 — 지어내지 않음). 이는 규칙을 라벨에 맞추는 "
+         "암기가 아니라 입력 데이터의 완결성을 높이는 자동화다. Market 축은 덱 부재로 "
+         "규칙상 상향이 금지돼 대부분 null 로 남으며, 이는 실제 지원서에 덱이 붙으면 "
+         "해소된다. 퍼널_요약 시트에 보강 전후 v3 분포를 병기했다.", False, 10),
         ("레벨 분류의 블라인드성", True, 11),
         ("G1·G3·G4 레벨은 dataset·정답을 본 적 없는 격리 세션이 개선된 §3·§4 규칙"
          "(판별 질문 포함)만 보고 분류. G2 는 블라인드 Fable 분류(개선 후) 사용. "
@@ -279,6 +317,11 @@ def _methodology(wb):
         ("● 말할 수 없는 것: 디캠프 배치사는 500/HAX 지원·합격 기업이 아니다 → "
          "정밀도·특이도 측정 불가. Team 축이 다수 '확인 필요'인 것은 개인 경력이 "
          "보도에 드물기 때문(엔진의 보수성)이며 실제 지원서엔 CV 가 붙으므로 완화된다.",
+         False, 10),
+        ("● G5 주의: 500 포트폴리오 15개사는 대부분 2013~2020 투자로 지금은 A 이후 "
+         "단계다. 스테이지가 '지원 시점'이 아니라 '현재'라 사람 검토가 많이 나오는데, "
+         "이는 '지금 지원하면 늦다'는 뜻이지 500 이 틀렸다는 뜻이 아니다. HAX "
+         "포트폴리오 12개사는 프리시드~시드가 많아 스테이지 게이트를 잘 통과한다.",
          False, 10),
     ]
     for i, (txt, bold, size) in enumerate(notes, 1):
