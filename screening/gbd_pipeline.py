@@ -131,6 +131,27 @@ def run_v4() -> list[dict]:
     return [evaluate_v4(r) for r in recs]
 
 
+def evaluate_v5(rec: dict) -> dict:
+    """v5 — router_v4 + 확정 탈락 디스퀄리파이어(disqualifiers.decide).
+
+    DB 대규모 단계에서는 설문·덱이 없어 signals=None → 언어·제품·커밋은 조건부로
+    남고, DB 로 확인 가능한 **스테이지·섹터만 확정 탈락**을 발동한다.
+    """
+    from screening import router_v4, disqualifiers
+    rr = router_v4.route(rec["sector"], rec["tech"], rec["desc"], rec["name_en"])
+    d = disqualifiers.decide(rr["track"], rr.get("confidence"), rec["sector"],
+                             rec["tech"], rec["desc"], rec["stage"], signals=None)
+    return {**rec, "track": rr["track"], "route_conf": rr.get("confidence"),
+            "route_reason": rr["reason"], "band": d["band"],
+            "gate": d["zone"], "outcome": d["zone"],
+            "reasons": "; ".join(d["reasons"])}
+
+
+def run_v5() -> list[dict]:
+    recs = json.loads((DATA / "gbd_full.json").read_text(encoding="utf-8"))
+    return [evaluate_v5(r) for r in recs]
+
+
 def run() -> list[dict]:
     recs = json.loads((DATA / "gbd_full.json").read_text(encoding="utf-8"))
     return [evaluate(r) for r in recs]

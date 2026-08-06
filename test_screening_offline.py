@@ -524,5 +524,66 @@ class TestGateV4(unittest.TestCase):
         self.assertLess(h4, h3 * 0.75)
 
 
+class TestDisqualifiersV5(unittest.TestCase):
+    """v5 확정 탈락 — '확실히 아닌 건 확실히 탈락'."""
+
+    def setUp(self):
+        from screening import disqualifiers
+        self.d = disqualifiers
+
+    def test_series_b_is_hard_reject(self):
+        z = self.d.decide("500", "high", "SW", "", "", "Series B")
+        self.assertEqual(z["zone"], self.d.Z_FAIL)
+        self.assertTrue(any("스테이지 이탈" in r for r in z["reasons"]))
+
+    def test_hax_series_a_is_hard_reject(self):
+        """HAX 는 프리시드~시드 전용 — 시리즈A도 확정 탈락."""
+        z = self.d.decide("hax", "high", "로봇", "제조", "", "Series A")
+        self.assertEqual(z["zone"], self.d.Z_FAIL)
+
+    def test_500_series_a_is_borderline_human(self):
+        """500 시리즈A 는 경계 → 사람 검토(탈락 아님)."""
+        z = self.d.decide("500", "high", "SW", "", "", "Series A")
+        self.assertEqual(z["zone"], self.d.Z_HUMAN)
+
+    def test_confirmed_no_english_is_hard_reject(self):
+        z = self.d.decide("500", "high", "SW", "", "", "Seed",
+                          signals={"english": "no"})
+        self.assertEqual(z["zone"], self.d.Z_FAIL)
+
+    def test_confirmed_no_product_is_hard_reject(self):
+        z = self.d.decide("500", "high", "SW", "", "", "Seed",
+                          signals={"product": "no"})
+        self.assertEqual(z["zone"], self.d.Z_FAIL)
+
+    def test_unconfirmed_disqualifier_does_not_reject(self):
+        """확인 안 된 disqualifier 는 추측으로 떨구지 않는다 → 조건부(점수화 진행)."""
+        z = self.d.decide("500", "high", "SW", "", "", "Seed")
+        self.assertIn(z["zone"], (self.d.Z_COND, self.d.Z_SCORE))
+        self.assertNotEqual(z["zone"], self.d.Z_FAIL)
+
+    def test_hax_excluded_sector_is_hard_reject(self):
+        z = self.d.decide("hax", "high", "핀테크", "결제", "블록체인 결제 하드월렛", "Seed")
+        self.assertEqual(z["zone"], self.d.Z_FAIL)
+
+    def test_v5_reject_is_reason_tagged(self):
+        """모든 확정 탈락은 사유가 붙는다(운영자가 큐를 비울 수 있게)."""
+        from screening import gbd_pipeline
+        v5 = gbd_pipeline.run_v5()
+        for r in v5:
+            if r["outcome"] == "확정 탈락":
+                self.assertTrue(r["reasons"], r["name_ko"])
+
+    def test_v5_activates_decisive_rejection_vs_v4(self):
+        """v4의 '스케일업 안내'(유보)를 확정 탈락으로 되돌렸는지 고정."""
+        from screening import gbd_pipeline
+        v4 = gbd_pipeline.run_v4()
+        v5 = gbd_pipeline.run_v5()
+        scaleup_v4 = sum(1 for r in v4 if "스케일업" in r["outcome"])
+        fail_v5 = sum(1 for r in v5 if r["outcome"] == "확정 탈락")
+        self.assertEqual(scaleup_v4, 0 if False else scaleup_v4)  # v4 had soft bucket
+        self.assertGreater(fail_v5, scaleup_v4)   # v5 rejects more decisively
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -381,6 +381,166 @@ def build_v4(v4_rows, v3_rows) -> Path:
     return OUT_V4
 
 
+OUT_V5 = OUT.parent / "gbd_auto_eval_v5.xlsx"
+V5_ORDER = ["점수화 대상", "조건부 통과 → 점수화 (설문 필요)", "사람 검토 (경계)",
+            "확정 탈락", "라우팅 사람 확인 (신호 접전)", "IndieBio 라우팅",
+            "자료 요청 (스테이지 미상)", "자료 요청 (트랙 특정 불가)",
+            "평가 대상외 (입력 없음)"]
+V5_FILL = {"점수화 대상": GREEN, "조건부 통과 → 점수화 (설문 필요)": GREEN,
+           "사람 검토 (경계)": YEL, "확정 탈락": PatternFill("solid", fgColor="F4B7B7"),
+           "라우팅 사람 확인 (신호 접전)": ORG, "IndieBio 라우팅": ORG,
+           "자료 요청 (스테이지 미상)": GRY, "자료 요청 (트랙 특정 불가)": GRY,
+           "평가 대상외 (입력 없음)": GRY}
+
+
+def build_v5(v5_rows, v4_rows) -> Path:
+    """v5 확정 탈락 활성 워크북 — v4(물렁) 대비 + 탈락 사유."""
+    from collections import Counter
+    wb = Workbook()
+
+    # 시트1 요약
+    ws = wb.active
+    ws.title = "요약_v5"
+    ws.sheet_view.showGridLines = False
+    _c(ws, 1, 1, f"GBD 마스터 DB — 엔진 v5 '확정 탈락' 활성 ({len(v5_rows):,}개사)",
+       bold=True, size=13)
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=5)
+    _c(ws, 2, 1, "v5 원칙: '확실히 아닌 건 확실히 탈락.' 프로그램이 절대 waive 안 하는 "
+       "기준(스테이지 이탈·섹터 부적합·언어·제품·커밋·오너십)에 **확인된 사실**이 걸리면 "
+       "즉시 확정 탈락(사유 명시). 확인 안 된 건 추측 탈락 없이 조건부(설문). "
+       "v4의 '스케일업 안내'(물렁 유보)는 철회 → 시리즈B+·HAX 시리즈A 는 확정 탈락.",
+       size=9, wrap=True)
+    ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=5)
+    ws.row_dimensions[2].height = 52
+
+    c5 = Counter(r["outcome"] for r in v5_rows)
+    _c(ws, 4, 1, "1차 필터 결과 (v5)", bold=True, size=11, fill=SUB)
+    ws.merge_cells(start_row=4, start_column=1, end_row=4, end_column=3)
+    _hdr(ws, 5, ["판정", "기업 수"], [40, 12])
+    rr = 6
+    for b in V5_ORDER:
+        _c(ws, rr, 1, b, fill=V5_FILL.get(b))
+        _c(ws, rr, 2, c5.get(b, 0), align="center", bold=True, fill=V5_FILL.get(b))
+        rr += 1
+
+    # 확정 탈락 사유 분포
+    rr += 1
+    fails = [r for r in v5_rows if r["outcome"] == "확정 탈락"]
+    reasons = Counter()
+    for r in fails:
+        for x in (r.get("reasons") or "").split("; "):
+            if x:
+                reasons[x.split(":")[0].split("—")[0].strip()] += 1
+    _c(ws, rr, 1, f"확정 탈락 {len(fails):,}개사 — 사유 분포", bold=True, size=11, fill=SUB)
+    ws.merge_cells(start_row=rr, start_column=1, end_row=rr, end_column=3)
+    rr += 1
+    _hdr(ws, rr, ["탈락 사유", "기업 수"], [40, 12])
+    rr += 1
+    for k, n in reasons.most_common():
+        _c(ws, rr, 1, k, fill=V5_FILL["확정 탈락"])
+        _c(ws, rr, 2, n, align="center")
+        rr += 1
+
+    # v4 대비
+    rr += 1
+    def v4b(o):
+        if "스케일업" in o:
+            return "스케일업 안내"
+        if "사람 검토" in o:
+            return "사람 검토"
+        return "기타"
+    c4 = Counter(v4b(r["outcome"]) for r in v4_rows)
+    _c(ws, rr, 1, "v4(물렁) → v5(확정 탈락) 대비", bold=True, size=11, fill=SUB)
+    ws.merge_cells(start_row=rr, start_column=1, end_row=rr, end_column=3)
+    rr += 1
+    _hdr(ws, rr, ["지표", "v4", "v5"], [30, 10, 10])
+    rr += 1
+    for lab, a, b in [("확정 탈락(v4는 스케일업 안내로 유보)", c4.get("스케일업 안내", 0),
+                       c5.get("확정 탈락", 0)),
+                      ("사람 검토", c4.get("사람 검토", 0), c5.get("사람 검토 (경계)", 0))]:
+        _c(ws, rr, 1, lab, size=9)
+        _c(ws, rr, 2, a, align="center")
+        _c(ws, rr, 3, b, align="center", bold=True)
+        rr += 1
+
+    # 시트2 확정 탈락 목록 (사유 포함)
+    ws2 = wb.create_sheet("확정_탈락")
+    ws2.sheet_view.showGridLines = False
+    _c(ws2, 1, 1, f"확정 탈락 {len(fails):,}개사 — 사유별 (운영자가 큐를 비울 수 있게)",
+       bold=True, size=12)
+    ws2.merge_cells(start_row=1, start_column=1, end_row=1, end_column=6)
+    _hdr(ws2, 3, ["국문명", "업종(CB)", "스테이지", "→ 트랙", "탈락 사유"],
+         [22, 20, 12, 10, 50])
+    rr = 4
+    for r in sorted(fails, key=lambda x: (x["track"], x["name_ko"])):
+        _c(ws2, rr, 1, r["name_ko"], size=9, fill=V5_FILL["확정 탈락"])
+        _c(ws2, rr, 2, r["sector"][:30], size=8, fill=V5_FILL["확정 탈락"])
+        _c(ws2, rr, 3, r["stage"], size=8, align="center", fill=V5_FILL["확정 탈락"])
+        _c(ws2, rr, 4, r["track"], size=9, align="center", fill=V5_FILL["확정 탈락"])
+        _c(ws2, rr, 5, r.get("reasons", ""), size=8, fill=V5_FILL["확정 탈락"])
+        rr += 1
+    ws2.freeze_panes = "A4"
+
+    # 시트3 전체 판정
+    ws3 = wb.create_sheet("전체_판정_v5")
+    ws3.sheet_view.showGridLines = False
+    _c(ws3, 1, 1, f"전체 판정표 v5 ({len(v5_rows):,}개사)", bold=True, size=12)
+    ws3.merge_cells(start_row=1, start_column=1, end_row=1, end_column=8)
+    _hdr(ws3, 3, ["국문명", "업종(CB)", "스테이지", "재단분류", "→ 트랙", "밴드",
+                  "v5 판정", "사유"], [20, 18, 11, 16, 9, 9, 22, 30])
+    rr = 4
+    ordr = {b: i for i, b in enumerate(V5_ORDER)}
+    for r in sorted(v5_rows, key=lambda x: (ordr.get(x["outcome"], 9), x["track"])):
+        f = V5_FILL.get(r["outcome"], GRY)
+        _c(ws3, rr, 1, r["name_ko"], fill=f, size=9)
+        _c(ws3, rr, 2, r["sector"][:34], fill=f, size=8)
+        _c(ws3, rr, 3, r["stage"], fill=f, size=8, align="center")
+        _c(ws3, rr, 4, r["type"][:24], fill=f, size=8)
+        _c(ws3, rr, 5, r["track"], fill=f, size=9, align="center")
+        _c(ws3, rr, 6, r["band"], fill=f, size=8, align="center")
+        _c(ws3, rr, 7, r["outcome"], fill=f, size=8)
+        _c(ws3, rr, 8, (r.get("reasons") or "")[:40], fill=f, size=8)
+        rr += 1
+    ws3.freeze_panes = "A4"
+
+    # 시트4 방법론
+    ws4 = wb.create_sheet("방법론_v5")
+    ws4.sheet_view.showGridLines = False
+    ws4.column_dimensions["A"].width = 115
+    notes = [
+        ("엔진 v5 — '확실히 아닌 건 확실히 탈락'", True, 12),
+        ("확정 탈락 디스퀄리파이어 (프로그램이 절대 waive 안 하는 기준)", True, 11),
+        ("① 스테이지 이탈: 시리즈B+ (양 트랙), HAX 는 시리즈A도 이탈(프리시드~시드 전용). "
+         "② 섹터 부적합: HAX 제외 섹터(핀테크·크립토·보안·이커머스·순수SW). "
+         "③ 언어: C레벨 영어 불가 확인. ④ 제품: 동작 프로토타입 없음 확인. "
+         "⑤ 커밋: 풀타임/이주 거부 확인(500). ⑥ HAX 오너십: 프라이스드 라운드/10% 불가.",
+         False, 10),
+        ("확인된 것만 탈락 — 추측으로 떨구지 않는다", True, 11),
+        ("③④⑤⑥은 설문·덱이 있어야 확인된다. DB 대규모 단계에는 그 입력이 없어 "
+         "**스테이지·섹터만 확정 탈락**을 발동하고, 언어·제품·커밋은 조건부(설문 필요)로 "
+         "남긴다. 실제 지원서(설문+덱)가 들어오면 나머지 디스퀄리파이어가 활성화된다.",
+         False, 10),
+        ("v4에서 무엇을 되돌렸나", True, 11),
+        ("v4의 '스케일업 트랙 안내'(물렁한 유보)를 철회했다. 시리즈B+·HAX 시리즈A는 "
+         "프로그램에 명백히 부적합하므로 스케일업 안내가 아니라 **확정 탈락(스테이지 "
+         "이탈)**으로 떨군다 — 운영자가 큐를 확실히 비울 수 있게. 사유가 붙어 있어 "
+         "왜 탈락인지 즉시 판단 가능.", False, 10),
+        ("불변·한계", True, 11),
+        ("WEIGHTS·컷오프 불변. 확정 탈락은 '확인된 부적합 사실'에만 발동(오탈락 방지). "
+         "키워드 라우터 근사 → 라우팅 불안정은 별도 사람 확인. 4축 점수는 팩트시트 있는 "
+         "102개사에만.", False, 10),
+    ]
+    for i, (t, b, sz) in enumerate(notes, 1):
+        c = _c(ws4, i, 1, t, bold=b, size=sz, wrap=True)
+        if b and sz >= 11:
+            c.fill = SUB
+        ws4.row_dimensions[i].height = 48 if len(t) > 70 else 16
+
+    OUT_V5.parent.mkdir(parents=True, exist_ok=True)
+    wb.save(OUT_V5)
+    return OUT_V5
+
+
 if __name__ == "__main__":
     from screening import gbd_pipeline
     rows = gbd_pipeline.run()
