@@ -224,6 +224,163 @@ def build(rows, s) -> Path:
     return OUT
 
 
+OUT_V4 = OUT.parent / "gbd_auto_eval_v4.xlsx"
+
+V4_ORDER = ["점수화 대상", "사람 검토 (경계 스테이지/보류)",
+            "스케일업 트랙 안내 (스테이지 명백 이탈)", "라우팅 사람 확인 (신호 접전)",
+            "IndieBio 라우팅", "자료 요청 (스테이지 미상)", "자료 요청 (트랙 특정 불가)",
+            "평가 대상외 (입력 없음)"]
+V4_FILL = {"점수화 대상": GREEN, "사람 검토 (경계 스테이지/보류)": YEL,
+           "스케일업 트랙 안내 (스테이지 명백 이탈)": PatternFill("solid", fgColor="DEEBF7"),
+           "라우팅 사람 확인 (신호 접전)": ORG, "IndieBio 라우팅": ORG,
+           "자료 요청 (스테이지 미상)": GRY, "자료 요청 (트랙 특정 불가)": GRY,
+           "평가 대상외 (입력 없음)": GRY}
+
+
+def build_v4(v4_rows, v3_rows) -> Path:
+    """v4 재설계 워크북 — v3 대비 비교 포함."""
+    from collections import Counter
+    wb = Workbook()
+
+    # 시트1 요약 + v3 대비
+    ws = wb.active
+    ws.title = "요약_v4"
+    ws.sheet_view.showGridLines = False
+    _c(ws, 1, 1, f"GBD 마스터 DB — 엔진 v4 대규모 자동 평가 ({len(v4_rows):,}개사)",
+       bold=True, size=13)
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=5)
+    _c(ws, 2, 1, "v4 재설계: 다신호 가중 라우터(자기불확실성 플래그) + 스테이지 3분할 "
+       "게이트(시드=점수화 / 시리즈A=경계 사람검토 / 시리즈B+=스케일업 안내) + 입력 "
+       "상태 분리. WEIGHTS·컷오프 불변. 4축 점수는 팩트시트 있는 102개사에만.",
+       size=9, wrap=True)
+    ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=5)
+    ws.row_dimensions[2].height = 40
+
+    def v3bucket(o):
+        if "통과" in o:
+            return "점수화 대상"
+        if "사람 검토" in o:
+            return "사람 검토 (경계 스테이지/보류)"
+        if "게이트 탈락" in o:
+            return "게이트 탈락(v3) → 스케일업 재분류"
+        if "IndieBio" in o:
+            return "IndieBio 라우팅"
+        if "미상" in o:
+            return "자료 요청 (스테이지 미상)"
+        return "평가 대상외 (입력 없음)"
+    c3 = Counter(v3bucket(r["outcome"]) for r in v3_rows)
+    c4 = Counter(r["outcome"] for r in v4_rows)
+
+    _c(ws, 4, 1, "1차 필터 결과 — v3(기존) → v4(재설계)", bold=True, size=11, fill=SUB)
+    ws.merge_cells(start_row=4, start_column=1, end_row=4, end_column=4)
+    _hdr(ws, 5, ["v4 버킷", "v4 기업 수", "(참고) v3 동류", "v3 수"], [36, 12, 30, 10])
+    rr = 6
+    for b in V4_ORDER:
+        _c(ws, rr, 1, b, fill=V4_FILL.get(b))
+        _c(ws, rr, 2, c4.get(b, 0), align="center", bold=True, fill=V4_FILL.get(b))
+        rr += 1
+    _c(ws, rr, 1, "── v3 참고: 사람 검토 468 / 게이트 탈락 225 → v4에서 스케일업 안내로 "
+       "재분류, 사람 검토 반감 ──", size=9, wrap=True)
+    ws.merge_cells(start_row=rr, start_column=1, end_row=rr, end_column=4)
+    ws.row_dimensions[rr].height = 26
+    rr += 2
+    delta = [("사람 검토", c3.get("사람 검토 (경계 스테이지/보류)", 0),
+              c4.get("사람 검토 (경계 스테이지/보류)", 0)),
+             ("게이트 탈락 → 스케일업 안내", c3.get("게이트 탈락(v3) → 스케일업 재분류", 0),
+              c4.get("스케일업 트랙 안내 (스테이지 명백 이탈)", 0)),
+             ("라우팅 사람 확인(신규)", 0, c4.get("라우팅 사람 확인 (신호 접전)", 0))]
+    _c(ws, rr, 1, "핵심 변화", bold=True, size=11, fill=SUB)
+    ws.merge_cells(start_row=rr, start_column=1, end_row=rr, end_column=4)
+    rr += 1
+    _hdr(ws, rr, ["지표", "v3", "v4", "변화"], [30, 10, 10, 24])
+    rr += 1
+    for lab, a, b in delta:
+        _c(ws, rr, 1, lab)
+        _c(ws, rr, 2, a, align="center")
+        _c(ws, rr, 3, b, align="center", bold=True)
+        _c(ws, rr, 4, ("반감" if b < a else "신규 플래그" if a == 0 else "재분류"),
+           align="center", size=9)
+        rr += 1
+
+    # 시트2 라우팅 불안정(저신뢰) 목록
+    ws2 = wb.create_sheet("라우팅_불안정")
+    ws2.sheet_view.showGridLines = False
+    _c(ws2, 1, 1, "라우팅 불안정 — 신호 접전으로 사람 확인 권장 (조용한 오분류 방지)",
+       bold=True, size=12)
+    ws2.merge_cells(start_row=1, start_column=1, end_row=1, end_column=6)
+    low = [r for r in v4_rows if r.get("route_conf") == "low"
+           and r["track"] not in ("대상외", "판정 보류")]
+    _c(ws2, 2, 1, f"총 {len(low):,}개사 저신뢰 라우팅. 이 중 hax/bio 로 기운 건 점수화 "
+       "전 사람 확인으로 보낸다(500 저신뢰는 섹터 무관 기본값이라 진행).", size=9, wrap=True)
+    ws2.merge_cells(start_row=2, start_column=1, end_row=2, end_column=6)
+    _hdr(ws2, 4, ["국문명", "업종(CB)", "기술", "→ 트랙", "판정", "라우팅 점수"],
+         [20, 20, 16, 10, 26, 30])
+    rr = 5
+    for r in sorted(low, key=lambda x: x["name_ko"])[:400]:
+        _c(ws2, rr, 1, r["name_ko"], size=9)
+        _c(ws2, rr, 2, r["sector"][:30], size=8)
+        _c(ws2, rr, 3, r["tech"][:22], size=8)
+        _c(ws2, rr, 4, r["track"], align="center", size=9)
+        _c(ws2, rr, 5, r["outcome"], size=8)
+        _c(ws2, rr, 6, r["route_reason"].split("—")[0][-30:], size=8)
+        rr += 1
+
+    # 시트3 전체 판정
+    ws3 = wb.create_sheet("전체_판정_v4")
+    ws3.sheet_view.showGridLines = False
+    _c(ws3, 1, 1, f"전체 판정표 v4 ({len(v4_rows):,}개사)", bold=True, size=12)
+    ws3.merge_cells(start_row=1, start_column=1, end_row=1, end_column=8)
+    _hdr(ws3, 3, ["국문명", "영문명", "업종(CB)", "스테이지", "재단분류",
+                  "→ 트랙", "밴드", "v4 판정"], [20, 16, 20, 12, 18, 10, 10, 30])
+    rr = 4
+    ordr = {b: i for i, b in enumerate(V4_ORDER)}
+    for r in sorted(v4_rows, key=lambda x: (ordr.get(x["outcome"], 9), x["track"])):
+        f = V4_FILL.get(r["outcome"], GRY)
+        _c(ws3, rr, 1, r["name_ko"], fill=f, size=9)
+        _c(ws3, rr, 2, r["name_en"], fill=f, size=8)
+        _c(ws3, rr, 3, r["sector"][:38], fill=f, size=8)
+        _c(ws3, rr, 4, r["stage"], fill=f, size=8, align="center")
+        _c(ws3, rr, 5, r["type"][:26], fill=f, size=8)
+        _c(ws3, rr, 6, r["track"], fill=f, size=9, align="center")
+        _c(ws3, rr, 7, r["band"], fill=f, size=8, align="center")
+        _c(ws3, rr, 8, r["outcome"], fill=f, size=8)
+        rr += 1
+    ws3.freeze_panes = "A4"
+
+    # 시트4 방법론
+    ws4 = wb.create_sheet("방법론_v4")
+    ws4.sheet_view.showGridLines = False
+    ws4.column_dimensions["A"].width = 115
+    notes = [
+        ("엔진 v4 — 무엇이 바뀌었나", True, 12),
+        ("1. 다신호 가중 라우터", True, 11),
+        ("bio/hw/sw 3축 가중 점수(사업소개 1.0 > 기술태그 0.7 > 섹터 0.5). 1·2위 차가 "
+         "작으면 '라우팅 불안정'으로 스스로 플래그 → 조용한 오분류 방지(예: 메텍홀딩스 "
+         "tech='소프트웨어'라도 소개가 하드웨어면 접전으로 표시).", False, 10),
+        ("2. 스테이지 3분할 게이트", True, 11),
+        ("시드=점수화 / 시리즈A=경계 사람검토(아직 지원 여지) / 시리즈B+=스케일업 트랙 "
+         "안내(탈락이 아니라 '단계가 다름'). 효과: 사람 검토 468→244 반감, 게이트 탈락 "
+         "225→0(스케일업 재분류).", False, 10),
+        ("3. 입력 상태 분리", True, 11),
+        ("빈 DB 행을 '판정 불가'가 아니라 '평가 대상외(입력 없음)'로 명시. 신호 약함은 "
+         "'자료 요청'. 엔진이 판정을 안 하는 게 아니라 판정할 입력이 없는 것.", False, 10),
+        ("불변·한계", True, 11),
+        ("WEIGHTS·컷오프 불변(라벨 튜닝 없음). 키워드 라우터는 근사이며 v4의 개선은 "
+         "'틀릴 때 스스로 플래그'하는 것. 4축 점수는 1줄 소개론 불가 → 팩트시트 있는 "
+         "102개사(engine_full_eval.xlsx)에만. 정밀도·특이도는 진짜 불합격 라벨 필요.",
+         False, 10),
+    ]
+    for i, (t, b, sz) in enumerate(notes, 1):
+        c = _c(ws4, i, 1, t, bold=b, size=sz, wrap=True)
+        if b and sz >= 11:
+            c.fill = SUB
+        ws4.row_dimensions[i].height = 44 if len(t) > 70 else 16
+
+    OUT_V4.parent.mkdir(parents=True, exist_ok=True)
+    wb.save(OUT_V4)
+    return OUT_V4
+
+
 if __name__ == "__main__":
     from screening import gbd_pipeline
     rows = gbd_pipeline.run()
