@@ -452,5 +452,77 @@ class TestBlindAgreement(unittest.TestCase):
             self.assertEqual(c.unstable, unstable_before[c.key])
 
 
+class TestRouterV4(unittest.TestCase):
+    """v4 다신호 라우터 — 오분류 자기검출."""
+
+    def setUp(self):
+        from screening import router_v4
+        self.r = router_v4
+
+    def test_clear_hardware_routes_hax(self):
+        out = self.r.route("Robotics", "로봇, 제조", "자율 하역 로봇 개발")
+        self.assertEqual(out["track"], "hax")
+        self.assertEqual(out["confidence"], "high")
+
+    def test_clear_software_routes_500(self):
+        out = self.r.route("Financial Services", "핀테크", "대출 비교 플랫폼 앱")
+        self.assertEqual(out["track"], "500")
+
+    def test_therapeutic_routes_indiebio(self):
+        out = self.r.route("Bio", "신약", "항체 기반 면역항암 신약 개발")
+        self.assertEqual(out["track"], "bio_routing")
+
+    def test_digital_therapeutic_is_not_bio(self):
+        """디지털 치료제·진단은 IndieBio 가 아니다 (SW)."""
+        out = self.r.route("Healthcare", "AI", "digital therapeutics 앱")
+        self.assertNotEqual(out["track"], "bio_routing")
+
+    def test_empty_input_is_out_of_scope(self):
+        self.assertEqual(self.r.route("", "", "")["track"], "대상외")
+
+    def test_conflicting_signals_flag_low_confidence(self):
+        """HW(기술 태그)·SW(사업 소개)가 접전이면 라우팅 불안정으로 플래그."""
+        out = self.r.route("", "센서", "센서 데이터 대시보드 플랫폼")
+        self.assertEqual(out["confidence"], "low")
+
+
+class TestGateV4(unittest.TestCase):
+    """v4 스테이지 3분할 게이트."""
+
+    def setUp(self):
+        from screening import gate_v4
+        self.g = gate_v4
+
+    def test_seed_is_scoreable(self):
+        z = self.g.gate({"track": "500", "confidence": "high"}, "Seed")
+        self.assertEqual(z["zone"], self.g.ZONE["SCORE"])
+
+    def test_series_a_is_human_review(self):
+        z = self.g.gate({"track": "500", "confidence": "high"}, "Series A")
+        self.assertEqual(z["zone"], self.g.ZONE["HUMAN"])
+
+    def test_series_b_is_scaleup_not_reject(self):
+        """시리즈B 이상은 '탈락'이 아니라 '스케일업 트랙 안내'."""
+        z = self.g.gate({"track": "hax", "confidence": "high"}, "Series B")
+        self.assertEqual(z["zone"], self.g.ZONE["SCALEUP"])
+
+    def test_low_conf_routing_goes_to_human_check(self):
+        z = self.g.gate({"track": "hax", "confidence": "low"}, "Seed")
+        self.assertEqual(z["zone"], self.g.ZONE["RCHECK"])
+
+    def test_empty_input_out_of_scope(self):
+        z = self.g.gate({"track": "대상외", "confidence": "none"}, "")
+        self.assertEqual(z["zone"], self.g.ZONE["OOS"])
+
+    def test_v4_halves_human_review_vs_v3(self):
+        """재설계 효과 고정: v4 사람 검토가 v3 보다 확연히 적다."""
+        from screening import gbd_pipeline
+        v3 = gbd_pipeline.run()
+        v4 = gbd_pipeline.run_v4()
+        h3 = sum(1 for r in v3 if "사람 검토" in r["outcome"])
+        h4 = sum(1 for r in v4 if r["outcome"] == self.g.ZONE["HUMAN"])
+        self.assertLess(h4, h3 * 0.75)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

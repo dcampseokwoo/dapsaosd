@@ -116,6 +116,21 @@ def evaluate(rec: dict) -> dict:
             "gate": gv, "outcome": outcome}
 
 
+def evaluate_v4(rec: dict) -> dict:
+    """v4 파이프라인 — router_v4(다신호+신뢰도) + gate_v4(스테이지 3분할)."""
+    from screening import router_v4, gate_v4
+    rr = router_v4.route(rec["sector"], rec["tech"], rec["desc"], rec["name_en"])
+    g = gate_v4.gate(rr, rec["stage"])
+    return {**rec, "track": g["track"], "route_reason": rr["reason"],
+            "route_conf": rr.get("confidence"), "band": g["band"],
+            "gate": g["zone"], "outcome": g["zone"]}
+
+
+def run_v4() -> list[dict]:
+    recs = json.loads((DATA / "gbd_full.json").read_text(encoding="utf-8"))
+    return [evaluate_v4(r) for r in recs]
+
+
 def run() -> list[dict]:
     recs = json.loads((DATA / "gbd_full.json").read_text(encoding="utf-8"))
     return [evaluate(r) for r in recs]
