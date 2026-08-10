@@ -585,5 +585,53 @@ class TestDisqualifiersV5(unittest.TestCase):
         self.assertGreater(fail_v5, scaleup_v4)   # v5 rejects more decisively
 
 
+class TestEngineProgramsV6(unittest.TestCase):
+    """v6 — 500/HAX 별개 엔진 + 크로스 리퍼럴 + 양쪽 평가."""
+
+    def setUp(self):
+        from screening import engine_programs, disqualifiers
+        self.ep = engine_programs
+        self.dq = disqualifiers
+
+    def test_two_programs_are_configured_separately(self):
+        self.assertEqual(self.ep.PROGRAMS["500"]["axes"],
+                         ("traction", "team", "market", "moat"))
+        self.assertEqual(self.ep.PROGRAMS["hax"]["axes"],
+                         ("trl", "team", "manufacturing", "customer"))
+
+    def test_same_company_differs_by_program(self):
+        """같은 하드웨어 시리즈A 기업: 500=경계 / HAX=확정 탈락."""
+        rec = {"sector": "Robotics", "tech": "로봇", "desc": "산업 로봇",
+               "stage": "Series A", "name_en": "x"}
+        r500 = self.ep.eval_program("500", rec)
+        rhax = self.ep.eval_program("hax", rec)
+        self.assertEqual(r500["zone"], self.dq.Z_HUMAN)      # 500 시리즈A = 경계
+        self.assertEqual(rhax["zone"], self.dq.Z_FAIL)       # HAX 시리즈A = 탈락
+
+    def test_cross_referral_hax_stage_to_500(self):
+        """HAX 스테이지 탈락(시리즈A) → 500 후보로 리퍼럴."""
+        rec = {"sector": "Robotics", "tech": "로봇", "desc": "산업 로봇",
+               "stage": "Series A", "name_en": "x"}
+        other = self.ep.cross_referral(
+            "hax", ["스테이지 이탈: 시리즈A — HAX 는 프리시드~시드 전용"], rec)
+        self.assertEqual(other, "500")
+
+    def test_ambiguous_routing_dual_evaluates(self):
+        """라우팅 접전이면 양쪽 엔진 평가 결과(dual)를 낸다."""
+        rec = {"sector": "", "tech": "센서", "desc": "센서 데이터 대시보드 플랫폼",
+               "stage": "Seed", "name_en": ""}
+        d = self.ep.decide_v6(rec)
+        self.assertIsNotNone(d["dual"])
+        self.assertIn("500", d["dual"])
+        self.assertIn("hax", d["dual"])
+
+    def test_v6_eliminates_routing_limbo(self):
+        """v6 는 '라우팅 사람 확인' 미결 버킷을 남기지 않는다(전부 해소)."""
+        from screening import gbd_pipeline
+        v6 = gbd_pipeline.run_v6()
+        limbo = sum(1 for r in v6 if "라우팅 사람 확인" in r["outcome"])
+        self.assertEqual(limbo, 0)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

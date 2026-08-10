@@ -152,6 +152,21 @@ def run_v5() -> list[dict]:
     return [evaluate_v5(r) for r in recs]
 
 
+def evaluate_v6(rec: dict) -> dict:
+    """v6 — 500/HAX 별개 엔진 + 양쪽 평가(접전) + 크로스 리퍼럴."""
+    from screening import engine_programs
+    d = engine_programs.decide_v6(rec, signals=None)
+    return {**rec, "primary": d["primary"], "gate": d["zone"],
+            "outcome": d["zone"], "reasons": "; ".join(d["reasons"]),
+            "cross": d.get("cross"), "dual": d.get("dual"),
+            "note": d.get("note", "")}
+
+
+def run_v6() -> list[dict]:
+    recs = json.loads((DATA / "gbd_full.json").read_text(encoding="utf-8"))
+    return [evaluate_v6(r) for r in recs]
+
+
 def run() -> list[dict]:
     recs = json.loads((DATA / "gbd_full.json").read_text(encoding="utf-8"))
     return [evaluate(r) for r in recs]
