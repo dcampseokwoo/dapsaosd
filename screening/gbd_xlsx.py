@@ -541,6 +541,156 @@ def build_v5(v5_rows, v4_rows) -> Path:
     return OUT_V5
 
 
+OUT_V6 = OUT.parent / "gbd_auto_eval_v6.xlsx"
+
+
+def _v6_fill(zone: str) -> PatternFill:
+    if zone == "확정 탈락":
+        return PatternFill("solid", fgColor="F4B7B7")
+    if "점수화" in zone or "후보" in zone:
+        return GREEN
+    if "사람 검토" in zone or "경계" in zone:
+        return YEL
+    if "IndieBio" in zone:
+        return ORG
+    return GRY
+
+
+def _engine_sheet(wb, title, header_lines, rows, track):
+    """500/HAX 엔진 전용 시트 — 유사 합격사 컬럼 포함."""
+    from screening import similar_admits, gate_v4
+    ws = wb.create_sheet(title)
+    ws.sheet_view.showGridLines = False
+    for i, line in enumerate(header_lines):
+        _c(ws, i + 1, 1, line, bold=(i == 0), size=12 if i == 0 else 9, wrap=True)
+        ws.merge_cells(start_row=i + 1, start_column=1, end_row=i + 1, end_column=9)
+        if i > 0:
+            ws.row_dimensions[i + 1].height = 26
+    hr = len(header_lines) + 1
+    _hdr(ws, hr, ["국문명", "영문명", "업종(CB)", "스테이지", "밴드", "판정",
+                  "사유", f"유사 {track.upper()} 합격사", "재단분류"],
+         [18, 15, 18, 11, 9, 22, 26, 30, 14])
+    rr = hr + 1
+    for r in rows:
+        z = r["outcome"]
+        f = _v6_fill(z)
+        band = gate_v4.band_of(r["stage"])
+        sim = similar_admits.match_str(track, r["sector"], r["desc"], band)
+        _c(ws, rr, 1, r["name_ko"], fill=f, size=9)
+        _c(ws, rr, 2, r["name_en"], fill=f, size=8)
+        _c(ws, rr, 3, r["sector"][:34], fill=f, size=8)
+        _c(ws, rr, 4, r["stage"], fill=f, size=8, align="center")
+        _c(ws, rr, 5, band, fill=f, size=8, align="center")
+        _c(ws, rr, 6, z, fill=f, size=8)
+        _c(ws, rr, 7, (r.get("reasons") or "")[:44], fill=f, size=8)
+        _c(ws, rr, 8, sim[:46], fill=f, size=8)
+        _c(ws, rr, 9, r["type"][:20], fill=f, size=8)
+        rr += 1
+    ws.freeze_panes = "A%d" % (hr + 1)
+
+
+def build_v6(v6_rows) -> Path:
+    from collections import Counter
+    from screening import engine_programs
+    wb = Workbook()
+
+    # 시트1 요약
+    ws = wb.active
+    ws.title = "요약_v6"
+    ws.sheet_view.showGridLines = False
+    _c(ws, 1, 1, f"GBD DB — 엔진 v6 (500·HAX 별개 엔진 + 유사 합격사) {len(v6_rows):,}개사",
+       bold=True, size=13)
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=5)
+    _c(ws, 2, 1, "500과 HAX는 축·스테이지·섹터 정책이 다른 별개 엔진 → 시트 분리. "
+       "라우팅 접전은 양쪽 평가(한쪽만 통과=자동확정 / 둘다통과=양 프로그램 후보 / "
+       "둘다탈락=확정탈락). HAX 탈락이 500 후보면 크로스 리퍼럴. 점수화·후보 기업엔 "
+       "실제 500/HAX 합격사를 붙여 판단 보조.", size=9, wrap=True)
+    ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=5)
+    ws.row_dimensions[2].height = 46
+    c = Counter(r["outcome"] for r in v6_rows)
+    _hdr(ws, 4, ["판정", "기업 수"], [40, 12])
+    rr = 5
+    for k, n in c.most_common():
+        _c(ws, rr, 1, k, fill=_v6_fill(k))
+        _c(ws, rr, 2, n, align="center", bold=True, fill=_v6_fill(k))
+        rr += 1
+    rr += 1
+    cross = sum(1 for r in v6_rows if r.get("cross"))
+    _c(ws, rr, 1, f"크로스 리퍼럴(HAX 탈락 → 500 후보): {cross}개사 / "
+       f"바이오 라우팅: {c.get('IndieBio 라우팅', 0)}개사", bold=True, wrap=True)
+    ws.merge_cells(start_row=rr, start_column=1, end_row=rr, end_column=5)
+
+    # 시트2 500 엔진
+    s500 = [r for r in v6_rows if r["primary"] in ("500", "500/hax")
+            or r.get("cross") == "500"]
+    _engine_sheet(wb, "500_엔진", [
+        f"500 Global Flagship 엔진 — {len(s500):,}개사",
+        "축: 트랙션40·팀30·시장20·해자10 / 대상: MVP+트랙션, 섹터 무관, 영어 전용·SV 상주",
+        "스테이지: 시리즈A=경계(사람검토), 시리즈B+=확정 탈락. (HAX 탈락→500 후보 리퍼럴 포함)",
+    ], s500, "500")
+
+    # 시트3 HAX 엔진
+    shax = [r for r in v6_rows if r["primary"] in ("hax", "500/hax")]
+    _engine_sheet(wb, "HAX_엔진", [
+        f"HAX (SOSV) 엔진 — {len(shax):,}개사",
+        "축: TRL40·팀30·양산20·고객10 / 대상: 프리시드~시드 하드테크(기후·로보틱스·소재·헬스HW)",
+        "제외 섹터(SW·핀테크·크립토·보안·이커머스)·시리즈A+ = 확정 탈락. SAFE+지분10%.",
+    ], shax, "hax")
+
+    # 시트4 확정 탈락 (사유)
+    fails = [r for r in v6_rows if r["outcome"] == "확정 탈락"]
+    ws4 = wb.create_sheet("확정_탈락")
+    ws4.sheet_view.showGridLines = False
+    _c(ws4, 1, 1, f"확정 탈락 {len(fails):,}개사 — 사유 명시 (운영자가 큐를 비울 수 있게)",
+       bold=True, size=12)
+    ws4.merge_cells(start_row=1, start_column=1, end_row=1, end_column=5)
+    _hdr(ws4, 3, ["국문명", "업종(CB)", "스테이지", "대상 트랙", "탈락 사유"],
+         [22, 22, 12, 12, 52])
+    rr = 4
+    ff = PatternFill("solid", fgColor="F4B7B7")
+    for r in sorted(fails, key=lambda x: (str(x["primary"]), x["name_ko"])):
+        _c(ws4, rr, 1, r["name_ko"], size=9, fill=ff)
+        _c(ws4, rr, 2, r["sector"][:30], size=8, fill=ff)
+        _c(ws4, rr, 3, r["stage"], size=8, align="center", fill=ff)
+        _c(ws4, rr, 4, str(r["primary"]), size=8, align="center", fill=ff)
+        _c(ws4, rr, 5, r.get("reasons", ""), size=8, fill=ff)
+        rr += 1
+    ws4.freeze_panes = "A4"
+
+    # 시트5 방법론
+    ws5 = wb.create_sheet("방법론_v6")
+    ws5.sheet_view.showGridLines = False
+    ws5.column_dimensions["A"].width = 115
+    notes = [
+        ("엔진 v6 — 500·HAX 별개 엔진 + 유사 합격사 매칭", True, 12),
+        ("두 엔진 분리", True, 11),
+        ("500(트랙션·팀·시장·해자, 섹터 무관, 시리즈A=경계)과 HAX(TRL·팀·양산·고객, "
+         "하드웨어 전용, 시리즈A+=탈락)는 별개 엔진 → 시트 분리. 담당자가 자기 트랙만 본다.",
+         False, 10),
+        ("애매하면 양쪽 평가 + 크로스 리퍼럴", True, 11),
+        ("라우팅 접전은 사람에게 미루지 않고 양쪽 엔진 평가 → 한쪽만 통과=자동확정, "
+         "둘다통과=양 프로그램 후보, 둘다탈락=확정탈락. HAX 스테이지·섹터 탈락이 500 "
+         "후보면 크로스 리퍼럴(막다른 탈락을 라우팅 정보로).", False, 10),
+        ("유사 합격사 매칭 (신규 — 원 설계서 모듈 4)", True, 11),
+        ("점수화·후보 기업에 실제 500/HAX 포트폴리오(수집 35개사) 중 트랙·스테이지·섹터가 "
+         "비슷한 합격사를 붙인다. 리서치 공백이던 '합격자 프로필'을 기능으로 해결 — "
+         "담당자 판단 보조용 참고 사례이지 컷오프 튜닝에 쓰지 않는다.", False, 10),
+        ("한계", True, 11),
+        ("WEIGHTS·컷오프 불변. 확정 탈락은 확인된 부적합만. 키워드 라우터·유사 매칭은 "
+         "근사. 4축 점수는 팩트시트 있는 소표본에만. 정밀도는 진짜 불합격 라벨 필요.",
+         False, 10),
+    ]
+    for i, (t, b, sz) in enumerate(notes, 1):
+        cc = _c(ws5, i, 1, t, bold=b, size=sz, wrap=True)
+        if b and sz >= 11:
+            cc.fill = SUB
+        ws5.row_dimensions[i].height = 44 if len(t) > 70 else 16
+
+    OUT_V6.parent.mkdir(parents=True, exist_ok=True)
+    wb.save(OUT_V6)
+    return OUT_V6
+
+
 if __name__ == "__main__":
     from screening import gbd_pipeline
     rows = gbd_pipeline.run()
