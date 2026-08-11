@@ -556,35 +556,81 @@ def _v6_fill(zone: str) -> PatternFill:
     return GRY
 
 
+# 판정 → 액션 그룹(정렬·표시용) + 메일 유형(다음 단계용)
+def action_group(zone: str) -> tuple[int, str]:
+    if zone == "확정 탈락":
+        return 4, "🔴 확정 탈락"
+    if "점수화" in zone or "후보" in zone:
+        return 1, "🟢 검토 대상 (덱 받아 정밀평가)"
+    if "경계" in zone or "사람 검토" in zone:
+        return 2, "🟡 경계 검토 (담당자 판단)"
+    return 3, "⚪ 자료 요청 (정보 부족)"
+
+
+def email_type(zone: str) -> str:
+    if zone == "확정 탈락":
+        return "자가진단·보완 안내 (탈락 통보 아님)"
+    if "조건부" in zone or "자료 요청" in zone:
+        return "설문·자료 요청"
+    if "점수화" in zone or "후보" in zone:
+        return "내부 검토 → 선정 시 지원 안내"
+    if "경계" in zone:
+        return "담당자 검토"
+    return "—"
+
+
+def target_market(target: str) -> tuple[str, bool]:
+    """타겟 국가 필드 → (표시 라벨, 미국 정합 여부)."""
+    t = (target or "").strip()
+    if not t:
+        return "미상 (설문)", False
+    us = "미국" in t
+    return t, us
+
+
 def _engine_sheet(wb, title, header_lines, rows, track):
-    """500/HAX 엔진 전용 시트 — 유사 합격사 컬럼 포함."""
+    """500/HAX 엔진 전용 시트 — 액션 그룹 정렬 + 타겟 시장 + 메일 유형 + 유사 합격사."""
     from screening import similar_admits, gate_v4
     ws = wb.create_sheet(title)
     ws.sheet_view.showGridLines = False
     for i, line in enumerate(header_lines):
         _c(ws, i + 1, 1, line, bold=(i == 0), size=12 if i == 0 else 9, wrap=True)
-        ws.merge_cells(start_row=i + 1, start_column=1, end_row=i + 1, end_column=9)
+        ws.merge_cells(start_row=i + 1, start_column=1, end_row=i + 1, end_column=10)
         if i > 0:
             ws.row_dimensions[i + 1].height = 26
+    # 액션별 개수 요약
+    from collections import Counter
+    gc = Counter(action_group(r["outcome"])[1] for r in rows)
     hr = len(header_lines) + 1
-    _hdr(ws, hr, ["국문명", "영문명", "업종(CB)", "스테이지", "밴드", "판정",
-                  "사유", f"유사 {track.upper()} 합격사", "재단분류"],
-         [18, 15, 18, 11, 9, 22, 26, 30, 14])
+    _c(ws, hr, 1, "액션 요약:  " + "   ".join(
+        f"{g.split(' ')[0]} {g[2:]} {n}" for g, n in sorted(gc.items())),
+       bold=True, size=9, wrap=True)
+    ws.merge_cells(start_row=hr, start_column=1, end_row=hr, end_column=10)
+    ws.row_dimensions[hr].height = 24
+    hr += 1
+    _hdr(ws, hr, ["액션", "국문명", "업종(CB)", "스테이지", "타겟 시장", "판정",
+                  "사유", f"유사 {track.upper()} 합격사", "메일 유형", "재단분류"],
+         [22, 18, 17, 10, 12, 20, 22, 26, 24, 12])
     rr = hr + 1
-    for r in rows:
+    # 액션 우선순위 → 검토 대상이 맨 위, 탈락이 맨 아래
+    rows_sorted = sorted(rows, key=lambda r: (action_group(r["outcome"])[0],
+                                              r["name_ko"]))
+    for r in rows_sorted:
         z = r["outcome"]
         f = _v6_fill(z)
         band = gate_v4.band_of(r["stage"])
         sim = similar_admits.match_str(track, r["sector"], r["desc"], band)
-        _c(ws, rr, 1, r["name_ko"], fill=f, size=9)
-        _c(ws, rr, 2, r["name_en"], fill=f, size=8)
-        _c(ws, rr, 3, r["sector"][:34], fill=f, size=8)
+        tm, us = target_market(r.get("target", ""))
+        _c(ws, rr, 1, action_group(z)[1], fill=f, size=8, bold=True)
+        _c(ws, rr, 2, r["name_ko"], fill=f, size=9)
+        _c(ws, rr, 3, r["sector"][:30], fill=f, size=8)
         _c(ws, rr, 4, r["stage"], fill=f, size=8, align="center")
-        _c(ws, rr, 5, band, fill=f, size=8, align="center")
+        _c(ws, rr, 5, ("🇺🇸 " if us else "") + tm, fill=f, size=8, align="center")
         _c(ws, rr, 6, z, fill=f, size=8)
-        _c(ws, rr, 7, (r.get("reasons") or "")[:44], fill=f, size=8)
-        _c(ws, rr, 8, sim[:46], fill=f, size=8)
-        _c(ws, rr, 9, r["type"][:20], fill=f, size=8)
+        _c(ws, rr, 7, (r.get("reasons") or "")[:40], fill=f, size=8)
+        _c(ws, rr, 8, sim[:44], fill=f, size=8)
+        _c(ws, rr, 9, email_type(z), fill=f, size=8)
+        _c(ws, rr, 10, r["type"][:18], fill=f, size=8)
         rr += 1
     ws.freeze_panes = "A%d" % (hr + 1)
 
