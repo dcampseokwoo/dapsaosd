@@ -154,10 +154,13 @@ def run_v5() -> list[dict]:
 
 def evaluate_v6(rec: dict) -> dict:
     """v6 — 500/HAX 별개 엔진 + 양쪽 평가(접전) + 크로스 리퍼럴."""
-    from screening import engine_programs
+    from screening import engine_programs, sectors
     d = engine_programs.decide_v6(rec, signals=None)
+    sec_std = (sectors.primary(rec["sector"]) or sectors.primary(rec["desc"])
+               or sectors.primary(rec["tech"]))
     return {**rec, "primary": d["primary"], "gate": d["zone"],
             "outcome": d["zone"], "reasons": "; ".join(d["reasons"]),
+            "sector_std": sectors.display(sec_std) if sec_std else "미분류",
             "cross": d.get("cross"), "dual": d.get("dual"),
             "note": d.get("note", "")}
 

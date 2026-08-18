@@ -595,7 +595,7 @@ def _engine_sheet(wb, title, header_lines, rows, track):
     ws.sheet_view.showGridLines = False
     for i, line in enumerate(header_lines):
         _c(ws, i + 1, 1, line, bold=(i == 0), size=12 if i == 0 else 9, wrap=True)
-        ws.merge_cells(start_row=i + 1, start_column=1, end_row=i + 1, end_column=10)
+        ws.merge_cells(start_row=i + 1, start_column=1, end_row=i + 1, end_column=11)
         if i > 0:
             ws.row_dimensions[i + 1].height = 26
     # 액션별 개수 요약
@@ -605,12 +605,12 @@ def _engine_sheet(wb, title, header_lines, rows, track):
     _c(ws, hr, 1, "액션 요약:  " + "   ".join(
         f"{g.split(' ')[0]} {g[2:]} {n}" for g, n in sorted(gc.items())),
        bold=True, size=9, wrap=True)
-    ws.merge_cells(start_row=hr, start_column=1, end_row=hr, end_column=10)
+    ws.merge_cells(start_row=hr, start_column=1, end_row=hr, end_column=11)
     ws.row_dimensions[hr].height = 24
     hr += 1
-    _hdr(ws, hr, ["액션", "국문명", "업종(CB)", "스테이지", "타겟 시장", "판정",
-                  "사유", f"유사 {track.upper()} 합격사", "메일 유형", "재단분류"],
-         [22, 18, 17, 10, 12, 20, 22, 26, 24, 12])
+    _hdr(ws, hr, ["액션", "국문명", "표준 섹터", "업종(CB)", "스테이지", "타겟 시장",
+                  "판정", "사유", f"유사 {track.upper()} 합격사", "메일 유형", "재단분류"],
+         [22, 18, 15, 15, 10, 12, 18, 20, 24, 22, 12])
     rr = hr + 1
     # 액션 우선순위 → 검토 대상이 맨 위, 탈락이 맨 아래
     rows_sorted = sorted(rows, key=lambda r: (action_group(r["outcome"])[0],
@@ -623,14 +623,15 @@ def _engine_sheet(wb, title, header_lines, rows, track):
         tm, us = target_market(r.get("target", ""))
         _c(ws, rr, 1, action_group(z)[1], fill=f, size=8, bold=True)
         _c(ws, rr, 2, r["name_ko"], fill=f, size=9)
-        _c(ws, rr, 3, r["sector"][:30], fill=f, size=8)
-        _c(ws, rr, 4, r["stage"], fill=f, size=8, align="center")
-        _c(ws, rr, 5, ("🇺🇸 " if us else "") + tm, fill=f, size=8, align="center")
-        _c(ws, rr, 6, z, fill=f, size=8)
-        _c(ws, rr, 7, (r.get("reasons") or "")[:40], fill=f, size=8)
-        _c(ws, rr, 8, sim[:44], fill=f, size=8)
-        _c(ws, rr, 9, email_type(z), fill=f, size=8)
-        _c(ws, rr, 10, r["type"][:18], fill=f, size=8)
+        _c(ws, rr, 3, r.get("sector_std", "미분류"), fill=f, size=8, bold=True)
+        _c(ws, rr, 4, r["sector"][:26], fill=f, size=8)
+        _c(ws, rr, 5, r["stage"], fill=f, size=8, align="center")
+        _c(ws, rr, 6, ("🇺🇸 " if us else "") + tm, fill=f, size=8, align="center")
+        _c(ws, rr, 7, z, fill=f, size=8)
+        _c(ws, rr, 8, (r.get("reasons") or "")[:40], fill=f, size=8)
+        _c(ws, rr, 9, sim[:44], fill=f, size=8)
+        _c(ws, rr, 10, email_type(z), fill=f, size=8)
+        _c(ws, rr, 11, r["type"][:18], fill=f, size=8)
         rr += 1
     ws.freeze_panes = "A%d" % (hr + 1)
 

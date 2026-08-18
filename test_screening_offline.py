@@ -633,5 +633,87 @@ class TestEngineProgramsV6(unittest.TestCase):
         self.assertEqual(limbo, 0)
 
 
+class TestSectorTaxonomy(unittest.TestCase):
+    """표준 섹터 분류 축 — 자유텍스트를 표준키로 정규화(엔진 척추)."""
+
+    def setUp(self):
+        from screening import sectors
+        self.s = sectors
+
+    def test_variants_normalize_to_same_key(self):
+        """핀테크 표기 변형이 모두 같은 표준키로 수렴한다."""
+        for t in ("핀테크", "금융", "fintech", "결제 서비스"):
+            self.assertIn("핀테크", self.s.classify(t), t)
+
+    def test_track_of_canonical_sectors(self):
+        self.assertEqual(self.s.track_of("로보틱스·자동화"), "hax")
+        self.assertEqual(self.s.track_of("핀테크"), "500")
+        self.assertEqual(self.s.track_of("바이오치료제"), "bio")
+
+    def test_track_scores_counts_distinct_sectors(self):
+        sc = self.s.track_scores("로봇 소재 배터리")   # 3개 하드테크 섹터
+        self.assertGreaterEqual(sc["hax"], 3)
+        self.assertEqual(sc["500"], 0)
+
+
+class TestSectorFirstRouting(unittest.TestCase):
+    """섹터 최우선 라우팅 — 업종 필드가 authoritative."""
+
+    def setUp(self):
+        from screening import router_v4
+        self.r = router_v4
+
+    def test_sector_field_overrides_description(self):
+        """업종이 로보틱스면 소개가 SW 단어로 도배돼도 HAX(섹터 우선)."""
+        out = self.r.route("Robotics", "", "AI 기반 소프트웨어 플랫폼 솔루션")
+        self.assertEqual(out["track"], "hax")
+        self.assertEqual(out["confidence"], "high")
+
+    def test_sector_variants_route_identically(self):
+        for t in ("금융", "fintech", "Financial Services"):
+            self.assertEqual(self.r.route(t, "", "")["track"], "500", t)
+
+    def test_route_exposes_canonical_sector(self):
+        out = self.r.route("배터리", "", "리튬 이차전지 셀 제조")
+        self.assertEqual(out["sector"], "배터리·에너지")
+
+
+class TestConfigSSOT(unittest.TestCase):
+    """프로그램 기준이 programs.PROGRAMS(SSOT) 한 곳에서 나온다."""
+
+    def setUp(self):
+        from screening import programs, disqualifiers, engine_programs
+        self.p = programs
+        self.d = disqualifiers
+        self.ep = engine_programs
+
+    def test_engine_programs_uses_shared_config(self):
+        """engine_programs.PROGRAMS 는 programs.py SSOT 를 그대로 참조한다."""
+        self.assertIs(self.ep.PROGRAMS, self.p.PROGRAMS)
+
+    def test_excluded_sectors_are_canonical_keys(self):
+        """HAX 제외 섹터는 표준키로 선언된다(자유텍스트 아님)."""
+        from screening import sectors
+        for k in self.p.excluded_sectors("hax"):
+            self.assertIn(k, sectors.TAXONOMY, k)
+
+    def test_stage_policy_drives_verdict(self):
+        """config stage_policy 를 바꾸면 판정이 따라간다(로직 하드코딩 아님)."""
+        # HAX 는 시리즈A=FAIL 정책 → 확정 탈락
+        self.assertEqual(self.d.stage_verdict("hax", "Series A")[0], "FAIL")
+        # 500 은 시리즈A=HUMAN 정책 → 경계
+        self.assertEqual(self.d.stage_verdict("500", "Series A")[0], "HUMAN")
+
+    def test_hax_excluded_sector_gate_reads_config(self):
+        """핀테크(표준키, config 제외섹터)면 HAX 확정 탈락."""
+        z = self.d.decide("hax", "high", "핀테크", "결제", "간편 결제 앱", "Seed")
+        self.assertEqual(z["zone"], self.d.Z_FAIL)
+
+    def test_hardware_with_incidental_sw_word_not_excluded(self):
+        """하드웨어 문맥에 SW 단어가 섞여도 오탈락하지 않는다(우선섹터 동반 시)."""
+        c = self.d.check("hax", "로보틱스", "로봇", "결제 단말 로봇 하드웨어", "Seed")
+        self.assertFalse(any("섹터 부적합" in x for x in c["fails"]))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

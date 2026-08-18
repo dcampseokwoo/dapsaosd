@@ -18,30 +18,9 @@ v5 까지는 한 파이프라인이 트랙만 갈라 처리했다. v6 는 이를
 from __future__ import annotations
 
 from screening import disqualifiers, router_v4
+from screening.programs import PROGRAMS   # SSOT config — 프로그램 기준은 programs.py 한 곳
 
 Z_DUAL = "양 프로그램 후보 (500·HAX 점수화 대상)"
-
-# ---------------------------------------------------------------- 프로그램 config
-PROGRAMS = {
-    "500": {
-        "name": "500 Global Flagship",
-        "target": "MVP + 유료고객/활성유저, 섹터 무관(주력 SaaS·핀테크·AI)",
-        "form": "4개월 실리콘밸리 상주 · 영어 전용",
-        "axes": ("traction", "team", "market", "moat"),
-        "weights": "트랙션40·팀30·시장20·해자10",
-        # 스테이지 정책: 시리즈B+ = 탈락, 시리즈A = 경계(사람검토), 그 이하 = OK
-        "excluded_sectors": None,     # 섹터 무관
-    },
-    "hax": {
-        "name": "HAX (SOSV)",
-        "target": "프리시드~시드 하드테크(기후·산업자동화·로보틱스·소재·헬스HW)",
-        "form": "120일 뉴어크 핸즈온 · 캡 없는 SAFE + 지분 ~10%",
-        "axes": ("trl", "team", "manufacturing", "customer"),
-        "weights": "TRL40·팀30·양산경로20·고객10",
-        # 스테이지 정책: 시리즈A+ = 탈락(프리시드~시드 전용)
-        "excluded_sectors": "핀테크·크립토·보안·이커머스·순수SW",
-    },
-}
 
 
 # ---------------------------------------------------------------- 단일 프로그램 평가
