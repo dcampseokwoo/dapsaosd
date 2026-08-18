@@ -33,8 +33,8 @@ PROGRAMS: dict[str, dict] = {
         "target_sectors": ["핀테크", "AI·데이터", "SaaS·B2B", "커머스·리테일",
                             "콘텐츠·게임", "헬스케어SW", "모빌리티·물류", "에듀테크"],
         "excluded_sectors": [],           # 섹터로 탈락시키지 않음(섹터 무관)
-        # --- 스테이지 정책
-        "stage_policy": {"scaleup": "FAIL", "series_a": "HUMAN", "early": "OK"},
+        # --- 스테이지 정책 (사람검토 폐지: 시리즈A 는 탈락 아님 → 메일 대상으로 흡수)
+        "stage_policy": {"scaleup": "FAIL", "series_a": "OK", "early": "OK"},
         # --- 지원 요건 (확인된 사실이 어길 때만 확정 탈락; 미확인은 설문/조건부)
         "requirements": {
             "language": True,      # 영어 전용

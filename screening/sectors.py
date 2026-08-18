@@ -73,7 +73,9 @@ TAXONOMY: dict[str, tuple[str, str, str]] = {
         r"커머스|commerce|이커머스|e-?commerce|유통|리테일|retail|"
         r"쇼핑|shopping|판매\s*플랫폼|d2c|틱톡\s*샵"),
     "보안": ("보안", "500",
-        r"보안\b|security|사이버|cyber|정보보호|암호화\s*솔루션"),
+        r"사이버\s*보안|cyber\s*security|정보\s*보안|정보보호|네트워크\s*보안|"
+        r"엔드포인트\s*보안|보안\s*솔루션|보안\s*관제|infosec|침입\s*탐지|"
+        r"penetration\s*test|암호화\s*솔루션"),
     "AI·데이터": ("AI·데이터", "500",
         r"\bai\b|인공지능|머신러닝|machine\s*learning|\bml\b|\bllm\b|"
         r"빅데이터|big\s*data|데이터\s*분석|analytics|생성형|generative"),
@@ -136,3 +138,105 @@ def track_scores(text: str) -> dict[str, float]:
     for k in classify(text):
         sc[TAXONOMY[k][1]] += 1.0
     return sc
+
+
+# ================================================================ 업종(CB 그룹) 축
+# **업종 ≠ 분야.** 업종 = Crunchbase 40개 그룹(거칠다). 분야 = 위 TAXONOMY(세밀,
+# 사업 실체). 업종은 소개가 비어도 채워지는 거친 사전분류(prior)일 뿐이고, 실제
+# 라우팅·탈락 판정은 **분야**가 authoritative 하다. 둘이 어긋나면(예: 업종=Hardware인데
+# 분야=커머스) 그 자체가 신호다.
+#
+# CB 그룹(ENG) → (분야 표시명, 거친 트랙). 트랙: hax(하드테크)만 배타적 좁은 축이고
+# 500 은 섹터 무관 catch-all. bio(IndieBio)는 코스로 확정하지 않고 분야에서 치료제가
+# 확인될 때만 발동한다(Biotechnology 그룹도 진단·기기·플랫폼이면 bio 아님).
+CB_GROUP: dict[str, tuple[str, str]] = {
+    # ---- 하드테크(HAX 거친 prior)
+    "hardware": ("하드웨어", "hax"),
+    "manufacturing": ("제조·양산", "hax"),
+    "science and engineering": ("과학·엔지니어링", "hax"),
+    "science & engineering": ("과학·엔지니어링", "hax"),
+    "sustainability": ("기후·환경", "hax"),
+    # ---- 그 외(500 catch-all). 분야명은 참고 표시용.
+    "agriculture and farming": ("농업·AgTech", "500"),
+    "artificial intelligence": ("AI·데이터", "500"),
+    "biotechnology": ("바이오", "500"),      # 치료제면 분야에서 bio 발동
+    "bio": ("바이오", "500"),
+    "blockchain & cryptocurrency": ("크립토·블록체인", "500"),
+    "clothing and apparel": ("패션·의류", "500"),
+    "commerce and shopping": ("커머스·리테일", "500"),
+    "community and lifestyle": ("커뮤니티·라이프", "500"),
+    "pet": ("펫", "500"),
+    "kids": ("키즈·출산", "500"),
+    "consumer goods": ("소비재", "500"),
+    "beauty/cosmetic": ("뷰티", "500"),
+    "publishing": ("출판", "500"),
+    "entertainment/art": ("엔터·예술", "500"),
+    "video": ("비디오", "500"),
+    "audio": ("오디오", "500"),
+    "media": ("미디어", "500"),
+    "data and analytics": ("AI·데이터", "500"),
+    "design": ("디자인", "500"),
+    "education": ("에듀테크", "500"),
+    "events": ("행사·이벤트", "500"),
+    "financial services": ("핀테크", "500"),
+    "food and beverage": ("식음료", "500"),
+    "food & beverage": ("식음료", "500"),
+    "game": ("콘텐츠·게임", "500"),
+    "government and military": ("정부·국방", "500"),
+    "healthcare": ("헬스케어", "500"),       # 기기면 분야에서 hax
+    "navigation and mapping": ("지도·측위", "500"),
+    "privacy and security": ("보안", "500"),
+    "professional services": ("전문서비스", "500"),
+    "hr": ("HR", "500"),
+    "real estate": ("부동산", "500"),
+    "sales and marketing": ("세일즈·마케팅", "500"),
+    "sales & marketing": ("세일즈·마케팅", "500"),
+    "software": ("소프트웨어", "500"),
+    "sports": ("스포츠", "500"),
+    "logistics": ("물류", "500"),
+    "mobility": ("모빌리티", "500"),
+    "travel and tourism": ("여행", "500"),
+}
+
+
+def cb_group(sector_raw: str) -> tuple[str, str] | None:
+    """업종(CB) 원문 → (분야 prior 표시명, 거친 트랙). 다중값이면 첫 그룹 사용."""
+    s = (sector_raw or "").strip().lower()
+    if not s:
+        return None
+    first = re.split(r"[;,/]", s)[0].strip()
+    return CB_GROUP.get(first) or CB_GROUP.get(s)
+
+
+def field_of(sector_raw: str, tech: str, desc: str, svc: str = "") -> dict:
+    """**분야 판정** — 업종(거친)과 분리해 사업 실체로 세밀 분야를 정한다.
+
+    반환: {field, field_track, cb_group, cb_track, mismatch, bio}
+      - field/field_track: 분야(세밀) 표시명·트랙 (라우팅·탈락의 authoritative 신호)
+      - cb_group/cb_track: 업종(CB 그룹) prior 표시명·트랙 (참고·폴백)
+      - mismatch: 업종 트랙 ≠ 분야 트랙 (신호)
+      - bio: 치료제 확인(IndieBio 리퍼럴 대상)
+    """
+    fine_text = " ".join((desc or "", tech or "", svc or "")).lower()
+    blob = " ".join((sector_raw or "", fine_text)).lower()
+    fine_keys = classify(fine_text)
+    cb = cb_group(sector_raw)
+    cb_disp, cb_trk = cb if cb else (None, None)
+
+    # 치료제(bio) — 분야에서 확인될 때만, 디지털·진단·기기·SW 면 차단
+    bio = ("바이오치료제" in fine_keys) and not BIO_BLOCK.search(blob)
+
+    fine_primary = fine_keys[0] if fine_keys else None
+    if bio:
+        field, ftrack = "바이오 치료제(신약)", "bio"
+    elif fine_primary:
+        field, ftrack = display(fine_primary), track_of(fine_primary)
+    elif cb_disp:
+        field, ftrack = cb_disp, cb_trk        # 소개가 비면 업종 prior 로 분야 추정
+    else:
+        field, ftrack = "미분류", None
+
+    mismatch = bool(cb_trk and ftrack and cb_trk != ftrack and not bio)
+    return {"field": field, "field_track": ftrack,
+            "cb_group": cb_disp, "cb_track": cb_trk,
+            "mismatch": mismatch, "bio": bio, "fine_keys": fine_keys}

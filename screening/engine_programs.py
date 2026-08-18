@@ -1,113 +1,91 @@
-"""v6 — 500 / HAX 를 명시적 별개 엔진으로 분리 + 크로스 리퍼럴 + 양쪽 평가.
+"""v7 — 500 / HAX 별개 엔진 + 분야 기반 판정 + 사람검토 폐지(경계→메일).
 
-왜 v6
------
-500 Global 과 HAX(SOSV)는 축·게이트·스테이지 정책이 전혀 다른 **별개 프로그램**이다.
-v5 까지는 한 파이프라인이 트랙만 갈라 처리했다. v6 는 이를 명시적으로 재설계한다:
+무엇이 바뀌었나 (v7)
+--------------------
+1. **업종 ≠ 분야** — 라우팅·탈락은 **분야(sectors.field_of, 사업 실체)**가 authoritative.
+   업종(CB 그룹)은 거친 prior/폴백. 둘이 어긋나면 신호로 표시.
+2. **사람검토 폐지** — 확정 탈락이 아닌 모든 것은 `메일 대상`으로 흡수. 경계·설문
+   필요·점수화 가능·라우팅 접전 전부 메일로(붙잡아두지 않는다).
+3. **두 엔진 분리 + 크로스 리퍼럴** — 500/HAX config 분리, HAX 탈락이 500 후보면 리퍼럴.
 
-1. **두 엔진 config 분리(PROGRAMS)** — 각 프로그램의 대상·형태·4축·스테이지 정책·
-   확정 탈락 기준을 한 곳에 선언. 출력도 트랙별로 분리한다.
-2. **애매하면 양쪽 다 평가(dual-run)** — 라우팅 신호가 접전이면 사람에게 미루지 않고
-   500·HAX 두 엔진에 모두 통과시켜 두 판정을 나란히 낸다. 한쪽만 통과하면 자동 해소.
-3. **크로스 프로그램 리퍼럴** — 한 프로그램에서 탈락해도 다른 프로그램 후보면
-   '타 프로그램 후보'로 넘긴다(막다른 탈락을 라우팅 정보로). 예: HAX 제외 섹터로
-   탈락한 SW → 500 후보. 500 은 섹터 무관이므로 catch-all 역할.
-
-라벨 비의존: 기준은 전부 프로그램 공식 정의에서 나온 것이지 합불 분포 튜닝이 아니다.
+라벨 비의존: 기준은 프로그램 공식 정의(programs.PROGRAMS)에서 나온 것이지 합불 튜닝이
+아니다.
 """
 from __future__ import annotations
 
-from screening import disqualifiers, router_v4
-from screening.programs import PROGRAMS   # SSOT config — 프로그램 기준은 programs.py 한 곳
+from screening import disqualifiers, router_v4, sectors
+from screening.programs import PROGRAMS   # SSOT config
 
-Z_DUAL = "양 프로그램 후보 (500·HAX 점수화 대상)"
+Z_FAIL = disqualifiers.Z_FAIL
+Z_MAIL = disqualifiers.Z_MAIL
+Z_BIO = disqualifiers.Z_BIO
+Z_OOS = disqualifiers.Z_OOS
+Z_DUAL = "메일 대상 (양 프로그램 후보)"
 
 
-# ---------------------------------------------------------------- 단일 프로그램 평가
 def eval_program(track: str, rec: dict, signals: dict | None = None) -> dict:
-    """지정 프로그램(500/hax) 엔진으로만 평가. disqualifiers.check 재사용."""
+    """지정 프로그램(500/hax) 엔진 평가. 확정 탈락 아니면 전부 메일 대상."""
     c = disqualifiers.check(track, rec["sector"], rec["tech"], rec["desc"],
-                            rec["stage"], signals)
-    if c["fails"]:
-        zone = disqualifiers.Z_FAIL
-    elif c["humans"]:
-        zone = disqualifiers.Z_HUMAN
-    elif c["stage_unknown"]:
-        zone = disqualifiers.Z_HOLD
-    elif c["conds"]:
-        zone = disqualifiers.Z_COND
-    else:
-        zone = disqualifiers.Z_SCORE
-    return {"zone": zone, "fails": c["fails"], "humans": c["humans"],
-            "conds": c["conds"]}
+                            rec["stage"], signals, rec.get("svc", ""))
+    zone = Z_FAIL if c["fails"] else Z_MAIL
+    return {"zone": zone, "fails": c["fails"], "conds": c["conds"],
+            "stage_unknown": c["stage_unknown"]}
 
 
-# ---------------------------------------------------------------- 크로스 리퍼럴
-def cross_referral(primary: str, fails: list[str], rec: dict) -> str | None:
-    """primary 에서 탈락했지만 다른 프로그램 후보인지 판단 → 후보 트랙 or None.
-
-    핵심 케이스: HAX 제외 섹터(SW)로 탈락 → 500 은 섹터 무관이라 후보.
-    HAX 스테이지(시리즈A)로 탈락 → 500 은 시리즈A 를 경계로 받으므로 후보.
-    (500 의 탈락 사유[시리즈B+·영어·제품]는 HAX 도 공유하므로 크로스 없음.)
-    """
+def cross_referral(primary: str, rec: dict) -> str | None:
+    """primary(=hax) 에서 탈락해도 500 후보면 '500' 반환. 500 은 섹터 무관 catch-all."""
     if primary != "hax":
         return None
-    other = "500"
-    reason_txt = " ".join(fails)
-    # HAX 탈락이 '섹터' 또는 '스테이지(시리즈A)' 때문이면 500 재평가
-    if "섹터 부적합" in reason_txt or "시리즈A" in reason_txt:
-        r = eval_program(other, rec)
-        if r["zone"] != disqualifiers.Z_FAIL:
-            return other
-    return None
+    r = eval_program("500", rec)
+    return "500" if r["zone"] != Z_FAIL else None
 
 
-# ---------------------------------------------------------------- v6 종합 판정
 def decide_v6(rec: dict, signals: dict | None = None) -> dict:
-    """라우팅 → (확신) 단일 평가 + 크로스 리퍼럴 / (접전) 양쪽 평가."""
-    rr = router_v4.route(rec["sector"], rec["tech"], rec["desc"], rec["name_en"])
-    track, conf = rr["track"], rr.get("confidence")
+    """라우팅(분야) → 단일/양쪽 평가 → 2갈래 판정 + 메일 유형."""
+    rr = router_v4.route(rec["sector"], rec["tech"], rec["desc"],
+                         rec.get("name_en", ""), rec.get("svc", ""))
+    track = rr["track"]
+    base = {"field": rr.get("field"), "cb_group": rr.get("cb_group"),
+            "mismatch": rr.get("mismatch", False)}
 
     if track == "대상외":
-        return {"primary": "—", "zone": disqualifiers.Z_OOS,
-                "reasons": ["입력 없음"], "cross": None, "dual": None}
-    if track == "판정 보류":
-        return {"primary": "—", "zone": disqualifiers.Z_SHOLD,
-                "reasons": ["신호 약함"], "cross": None, "dual": None}
+        return {**base, "primary": "—", "zone": Z_OOS, "reasons": ["입력 없음"],
+                "cross": None, "dual": None, "email": "—"}
     if track == "bio_routing":
-        return {"primary": "bio", "zone": disqualifiers.Z_ROUTE,
-                "reasons": ["바이오 치료제 → IndieBio"], "cross": None, "dual": None}
+        z = Z_BIO
+        return {**base, "primary": "bio", "zone": z,
+                "reasons": ["바이오 치료제 → IndieBio"], "cross": None,
+                "dual": None, "email": disqualifiers.email_hint(z, [], [], False)}
 
-    # 라우팅 접전 → 양쪽 엔진 다 평가(사람에게 미루지 않고 자동 해소 시도)
-    if conf == "low":
+    # 라우팅 접전(저신뢰) → 양쪽 평가, 사람에게 미루지 않는다
+    if rr.get("confidence") == "low":
         r5, rh = eval_program("500", rec, signals), eval_program("hax", rec, signals)
-        pass5 = r5["zone"] not in (disqualifiers.Z_FAIL,)
-        passh = rh["zone"] not in (disqualifiers.Z_FAIL,)
         dual = {"500": r5["zone"], "hax": rh["zone"]}
-        if pass5 and not passh:
-            return {"primary": "500", "zone": r5["zone"],
-                    "reasons": r5["fails"] + r5["humans"] + r5["conds"],
-                    "cross": None, "dual": dual, "note": "라우팅 접전 → 양쪽 평가로 500 확정"}
-        if passh and not pass5:
-            return {"primary": "hax", "zone": rh["zone"],
-                    "reasons": rh["fails"] + rh["humans"] + rh["conds"],
-                    "cross": None, "dual": dual, "note": "라우팅 접전 → 양쪽 평가로 HAX 확정"}
-        if not pass5 and not passh:
-            return {"primary": "양 트랙", "zone": disqualifiers.Z_FAIL,
-                    "reasons": ["500·HAX 양 프로그램 모두 부적합"],
-                    "cross": None, "dual": dual}
-        # 둘 다 통과 가능 → 부담이 아니라 '양 프로그램 후보'(긍정) — 점수화 대상
-        return {"primary": "500/hax", "zone": Z_DUAL,
-                "reasons": ["양 프로그램 모두 점수화 대상 — 담당자가 프로그램 선택"],
-                "cross": None, "dual": dual}
+        pass5, passh = r5["zone"] != Z_FAIL, rh["zone"] != Z_FAIL
+        if pass5 and passh:
+            z = Z_DUAL
+            return {**base, "primary": "500/hax", "zone": z,
+                    "reasons": ["양 프로그램 후보 — 담당자 프로그램 선택"],
+                    "cross": None, "dual": dual,
+                    "email": disqualifiers.email_hint(Z_MAIL, [], [], False)}
+        if pass5 or passh:
+            pri = "500" if pass5 else "hax"
+            r = r5 if pass5 else rh
+            z = Z_MAIL
+            return {**base, "primary": pri, "zone": z,
+                    "reasons": r["conds"] or ["점수화 대상"], "cross": None,
+                    "dual": dual,
+                    "email": disqualifiers.email_hint(
+                        z, r["fails"], r["conds"], r["stage_unknown"])}
+        return {**base, "primary": "양 트랙", "zone": Z_FAIL,
+                "reasons": r5["fails"] + rh["fails"] or ["양 프로그램 부적합"],
+                "cross": None, "dual": dual, "email": "자가진단·보완 안내"}
 
-    # 확신 라우팅 → 단일 평가 + (탈락 시) 크로스 리퍼럴
+    # 확신 라우팅 → 단일 평가 (+ HAX 탈락 시 500 리퍼럴)
     r = eval_program(track, rec, signals)
-    cross = None
-    if r["zone"] == disqualifiers.Z_FAIL:
-        cross = cross_referral(track, r["fails"], rec)
-    return {"primary": track, "zone": r["zone"],
-            "reasons": r["fails"] + r["humans"] + r["conds"],
+    cross = cross_referral(track, rec) if r["zone"] == Z_FAIL else None
+    reasons = r["fails"] if r["zone"] == Z_FAIL else (r["conds"] or ["점수화 대상"])
+    return {**base, "primary": track, "zone": r["zone"], "reasons": reasons,
             "cross": cross, "dual": None,
-            "band": disqualifiers.decide(track, conf, rec["sector"], rec["tech"],
-                                         rec["desc"], rec["stage"], signals)["band"]}
+            "email": disqualifiers.email_hint(
+                r["zone"], r["fails"], r["conds"], r["stage_unknown"])}

@@ -524,69 +524,59 @@ class TestGateV4(unittest.TestCase):
         self.assertLess(h4, h3 * 0.75)
 
 
-class TestDisqualifiersV5(unittest.TestCase):
-    """v5 확정 탈락 — '확실히 아닌 건 확실히 탈락'."""
+class TestDisqualifiersV7(unittest.TestCase):
+    """v7 확정 탈락 — 확인된 부적합만 탈락, 나머지는 메일(사람검토 폐지)."""
 
     def setUp(self):
-        from screening import disqualifiers
+        from screening import disqualifiers, engine_programs
         self.d = disqualifiers
+        self.ep = engine_programs
+
+    def _rec(self, sector="SW", tech="", desc="", stage="Seed"):
+        return {"sector": sector, "tech": tech, "desc": desc, "stage": stage,
+                "name_en": "x", "svc": ""}
 
     def test_series_b_is_hard_reject(self):
-        z = self.d.decide("500", "high", "SW", "", "", "Series B")
-        self.assertEqual(z["zone"], self.d.Z_FAIL)
-        self.assertTrue(any("스테이지 이탈" in r for r in z["reasons"]))
+        c = self.d.check("500", "SW", "", "", "Series B")
+        self.assertTrue(any("스테이지 이탈" in r for r in c["fails"]))
 
     def test_hax_series_a_is_hard_reject(self):
         """HAX 는 프리시드~시드 전용 — 시리즈A도 확정 탈락."""
-        z = self.d.decide("hax", "high", "로봇", "제조", "", "Series A")
-        self.assertEqual(z["zone"], self.d.Z_FAIL)
+        c = self.d.check("hax", "로봇", "제조", "", "Series A")
+        self.assertTrue(c["fails"])
 
-    def test_500_series_a_is_borderline_human(self):
-        """500 시리즈A 는 경계 → 사람 검토(탈락 아님)."""
-        z = self.d.decide("500", "high", "SW", "", "", "Series A")
-        self.assertEqual(z["zone"], self.d.Z_HUMAN)
+    def test_500_series_a_is_not_reject_anymore(self):
+        """사람검토 폐지 — 500 시리즈A 는 탈락 아니라 메일 대상."""
+        r = self.ep.eval_program("500", self._rec(stage="Series A"))
+        self.assertEqual(r["zone"], self.d.Z_MAIL)
 
     def test_confirmed_no_english_is_hard_reject(self):
-        z = self.d.decide("500", "high", "SW", "", "", "Seed",
-                          signals={"english": "no"})
-        self.assertEqual(z["zone"], self.d.Z_FAIL)
+        c = self.d.check("500", "SW", "", "", "Seed", signals={"english": "no"})
+        self.assertTrue(c["fails"])
 
     def test_confirmed_no_product_is_hard_reject(self):
-        z = self.d.decide("500", "high", "SW", "", "", "Seed",
-                          signals={"product": "no"})
-        self.assertEqual(z["zone"], self.d.Z_FAIL)
+        c = self.d.check("500", "SW", "", "", "Seed", signals={"product": "no"})
+        self.assertTrue(c["fails"])
 
-    def test_unconfirmed_disqualifier_does_not_reject(self):
-        """확인 안 된 disqualifier 는 추측으로 떨구지 않는다 → 조건부(점수화 진행)."""
-        z = self.d.decide("500", "high", "SW", "", "", "Seed")
-        self.assertIn(z["zone"], (self.d.Z_COND, self.d.Z_SCORE))
-        self.assertNotEqual(z["zone"], self.d.Z_FAIL)
+    def test_unconfirmed_disqualifier_becomes_mail(self):
+        """확인 안 된 disqualifier 는 탈락 아님 → 메일 대상."""
+        r = self.ep.eval_program("500", self._rec(stage="Seed"))
+        self.assertEqual(r["zone"], self.d.Z_MAIL)
 
-    def test_hax_excluded_sector_is_hard_reject(self):
-        z = self.d.decide("hax", "high", "핀테크", "결제", "블록체인 결제 하드월렛", "Seed")
-        self.assertEqual(z["zone"], self.d.Z_FAIL)
+    def test_hax_excluded_field_is_hard_reject(self):
+        c = self.d.check("hax", "핀테크", "결제", "블록체인 결제 하드월렛", "Seed")
+        self.assertTrue(any("분야 부적합" in r for r in c["fails"]))
 
-    def test_v5_reject_is_reason_tagged(self):
+    def test_v7_reject_is_reason_tagged(self):
         """모든 확정 탈락은 사유가 붙는다(운영자가 큐를 비울 수 있게)."""
         from screening import gbd_pipeline
-        v5 = gbd_pipeline.run_v5()
-        for r in v5:
-            if r["outcome"] == "확정 탈락":
+        for r in gbd_pipeline.run_v6():
+            if r["outcome"] == self.d.Z_FAIL:
                 self.assertTrue(r["reasons"], r["name_ko"])
 
-    def test_v5_activates_decisive_rejection_vs_v4(self):
-        """v4의 '스케일업 안내'(유보)를 확정 탈락으로 되돌렸는지 고정."""
-        from screening import gbd_pipeline
-        v4 = gbd_pipeline.run_v4()
-        v5 = gbd_pipeline.run_v5()
-        scaleup_v4 = sum(1 for r in v4 if "스케일업" in r["outcome"])
-        fail_v5 = sum(1 for r in v5 if r["outcome"] == "확정 탈락")
-        self.assertEqual(scaleup_v4, 0 if False else scaleup_v4)  # v4 had soft bucket
-        self.assertGreater(fail_v5, scaleup_v4)   # v5 rejects more decisively
 
-
-class TestEngineProgramsV6(unittest.TestCase):
-    """v6 — 500/HAX 별개 엔진 + 크로스 리퍼럴 + 양쪽 평가."""
+class TestEngineV7(unittest.TestCase):
+    """v7 — 분야 기반 · 사람검토 폐지 · 2갈래 판정."""
 
     def setUp(self):
         from screening import engine_programs, disqualifiers
@@ -600,37 +590,41 @@ class TestEngineProgramsV6(unittest.TestCase):
                          ("trl", "team", "manufacturing", "customer"))
 
     def test_same_company_differs_by_program(self):
-        """같은 하드웨어 시리즈A 기업: 500=경계 / HAX=확정 탈락."""
-        rec = {"sector": "Robotics", "tech": "로봇", "desc": "산업 로봇",
-               "stage": "Series A", "name_en": "x"}
+        """같은 하드웨어 시리즈A: 500=메일 대상 / HAX=확정 탈락."""
+        rec = {"sector": "Hardware", "tech": "로봇", "desc": "산업 로봇",
+               "stage": "Series A", "name_en": "x", "svc": ""}
         r500 = self.ep.eval_program("500", rec)
         rhax = self.ep.eval_program("hax", rec)
-        self.assertEqual(r500["zone"], self.dq.Z_HUMAN)      # 500 시리즈A = 경계
-        self.assertEqual(rhax["zone"], self.dq.Z_FAIL)       # HAX 시리즈A = 탈락
+        self.assertEqual(r500["zone"], self.dq.Z_MAIL)   # 사람검토 폐지
+        self.assertEqual(rhax["zone"], self.dq.Z_FAIL)   # HAX 시리즈A = 탈락
 
-    def test_cross_referral_hax_stage_to_500(self):
-        """HAX 스테이지 탈락(시리즈A) → 500 후보로 리퍼럴."""
-        rec = {"sector": "Robotics", "tech": "로봇", "desc": "산업 로봇",
-               "stage": "Series A", "name_en": "x"}
-        other = self.ep.cross_referral(
-            "hax", ["스테이지 이탈: 시리즈A — HAX 는 프리시드~시드 전용"], rec)
-        self.assertEqual(other, "500")
+    def test_cross_referral_hax_to_500(self):
+        """HAX 탈락(시리즈A 하드웨어) → 500 후보로 리퍼럴."""
+        rec = {"sector": "Hardware", "tech": "로봇", "desc": "산업 로봇",
+               "stage": "Series A", "name_en": "x", "svc": ""}
+        self.assertEqual(self.ep.cross_referral("hax", rec), "500")
 
-    def test_ambiguous_routing_dual_evaluates(self):
-        """라우팅 접전이면 양쪽 엔진 평가 결과(dual)를 낸다."""
-        rec = {"sector": "", "tech": "센서", "desc": "센서 데이터 대시보드 플랫폼",
-               "stage": "Seed", "name_en": ""}
-        d = self.ep.decide_v6(rec)
-        self.assertIsNotNone(d["dual"])
-        self.assertIn("500", d["dual"])
-        self.assertIn("hax", d["dual"])
-
-    def test_v6_eliminates_routing_limbo(self):
-        """v6 는 '라우팅 사람 확인' 미결 버킷을 남기지 않는다(전부 해소)."""
+    def test_no_human_review_bucket(self):
+        """엔진 출력에 '사람 검토' 버킷이 존재하지 않는다."""
         from screening import gbd_pipeline
-        v6 = gbd_pipeline.run_v6()
-        limbo = sum(1 for r in v6 if "라우팅 사람 확인" in r["outcome"])
-        self.assertEqual(limbo, 0)
+        human = sum(1 for r in gbd_pipeline.run_v6() if "사람 검토" in r["outcome"])
+        self.assertEqual(human, 0)
+
+    def test_two_bucket_outcomes_only(self):
+        """판정은 확정 탈락 / 메일 대상 / IndieBio / 대상외 로만 구성."""
+        from screening import gbd_pipeline
+        allowed = {self.dq.Z_FAIL, self.dq.Z_MAIL, self.dq.Z_BIO, self.dq.Z_OOS,
+                   self.ep.Z_DUAL}
+        for r in gbd_pipeline.run_v6():
+            self.assertIn(r["outcome"], allowed, r["name_ko"])
+
+    def test_stage_scaleup_dominates_rejections(self):
+        """스테이지 이탈이 확정 탈락의 주력(시리즈B+/IPO/M&A 제대로 걸림)."""
+        from screening import gbd_pipeline
+        rows = gbd_pipeline.run_v6()
+        fails = [r for r in rows if r["outcome"] == self.dq.Z_FAIL]
+        stage_fails = sum(1 for r in fails if "스테이지 이탈" in (r["reasons"] or ""))
+        self.assertGreater(stage_fails, len(fails) * 0.7)
 
 
 class TestSectorTaxonomy(unittest.TestCase):
@@ -656,26 +650,33 @@ class TestSectorTaxonomy(unittest.TestCase):
         self.assertEqual(sc["500"], 0)
 
 
-class TestSectorFirstRouting(unittest.TestCase):
-    """섹터 최우선 라우팅 — 업종 필드가 authoritative."""
+class TestFieldRouting(unittest.TestCase):
+    """분야(field) 기반 라우팅 — 업종은 거친 prior, 분야가 authoritative."""
 
     def setUp(self):
         from screening import router_v4
         self.r = router_v4
 
-    def test_sector_field_overrides_description(self):
-        """업종이 로보틱스면 소개가 SW 단어로 도배돼도 HAX(섹터 우선)."""
-        out = self.r.route("Robotics", "", "AI 기반 소프트웨어 플랫폼 솔루션")
+    def test_field_overrides_coarse_industry(self):
+        """업종=Hardware여도 사업 실체가 SW면 분야=500(업종≠분야 신호)."""
+        out = self.r.route("Hardware", "", "AI 기반 커머스 추천 플랫폼")
+        self.assertEqual(out["track"], "500")
+        self.assertTrue(out["mismatch"])          # 업종(hax) ≠ 분야(500)
+
+    def test_field_confirms_hardware(self):
+        """업종=Hardware이고 실체도 하드웨어면 HAX(불일치 없음)."""
+        out = self.r.route("Hardware", "로봇", "산업용 로봇 팔 제조")
         self.assertEqual(out["track"], "hax")
-        self.assertEqual(out["confidence"], "high")
+        self.assertFalse(out["mismatch"])
 
-    def test_sector_variants_route_identically(self):
-        for t in ("금융", "fintech", "Financial Services"):
-            self.assertEqual(self.r.route(t, "", "")["track"], "500", t)
+    def test_field_variants_route_identically(self):
+        """분야 표기 변형이 소개에 있으면 동일 트랙으로 수렴."""
+        for t in ("금융 결제", "fintech 서비스", "핀테크 대출"):
+            self.assertEqual(self.r.route("", "", t)["track"], "500", t)
 
-    def test_route_exposes_canonical_sector(self):
-        out = self.r.route("배터리", "", "리튬 이차전지 셀 제조")
-        self.assertEqual(out["sector"], "배터리·에너지")
+    def test_route_exposes_field(self):
+        out = self.r.route("Hardware", "", "리튬 이차전지 셀 제조")
+        self.assertEqual(out["field"], "배터리·에너지")
 
 
 class TestConfigSSOT(unittest.TestCase):
@@ -701,18 +702,18 @@ class TestConfigSSOT(unittest.TestCase):
         """config stage_policy 를 바꾸면 판정이 따라간다(로직 하드코딩 아님)."""
         # HAX 는 시리즈A=FAIL 정책 → 확정 탈락
         self.assertEqual(self.d.stage_verdict("hax", "Series A")[0], "FAIL")
-        # 500 은 시리즈A=HUMAN 정책 → 경계
-        self.assertEqual(self.d.stage_verdict("500", "Series A")[0], "HUMAN")
+        # 500 은 시리즈A=OK 정책(사람검토 폐지) → 탈락 아님
+        self.assertEqual(self.d.stage_verdict("500", "Series A")[0], "OK")
 
-    def test_hax_excluded_sector_gate_reads_config(self):
-        """핀테크(표준키, config 제외섹터)면 HAX 확정 탈락."""
-        z = self.d.decide("hax", "high", "핀테크", "결제", "간편 결제 앱", "Seed")
-        self.assertEqual(z["zone"], self.d.Z_FAIL)
+    def test_hax_excluded_field_gate_reads_config(self):
+        """핀테크(표준키, config 제외분야)면 HAX 확정 탈락."""
+        c = self.d.check("hax", "핀테크", "결제", "간편 결제 앱", "Seed")
+        self.assertTrue(any("분야 부적합" in r for r in c["fails"]))
 
     def test_hardware_with_incidental_sw_word_not_excluded(self):
-        """하드웨어 문맥에 SW 단어가 섞여도 오탈락하지 않는다(우선섹터 동반 시)."""
+        """하드웨어 문맥에 SW 단어가 섞여도 오탈락하지 않는다(우선분야 동반 시)."""
         c = self.d.check("hax", "로보틱스", "로봇", "결제 단말 로봇 하드웨어", "Seed")
-        self.assertFalse(any("섹터 부적합" in x for x in c["fails"]))
+        self.assertFalse(any("분야 부적합" in x for x in c["fails"]))
 
 
 if __name__ == "__main__":

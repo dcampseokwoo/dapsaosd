@@ -28,6 +28,7 @@ from pathlib import Path
 from screening import rules
 
 DATA = Path(__file__).resolve().parent / "data"
+FACTS = "gbd_v26.json"   # GBD 마스터 DB Ver.26.01 재추출(3,424개사, 99% 채움, PII 제외)
 
 # ---------------------------------------------------------------- 라우팅 키워드
 # 바이오 치료제(→ IndieBio 라우팅): 신약·치료제 개발. 진단·의료기기·디지털헬스 제외.
@@ -127,51 +128,30 @@ def evaluate_v4(rec: dict) -> dict:
 
 
 def run_v4() -> list[dict]:
-    recs = json.loads((DATA / "gbd_full.json").read_text(encoding="utf-8"))
+    recs = json.loads((DATA / FACTS).read_text(encoding="utf-8"))
     return [evaluate_v4(r) for r in recs]
 
 
-def evaluate_v5(rec: dict) -> dict:
-    """v5 — router_v4 + 확정 탈락 디스퀄리파이어(disqualifiers.decide).
-
-    DB 대규모 단계에서는 설문·덱이 없어 signals=None → 언어·제품·커밋은 조건부로
-    남고, DB 로 확인 가능한 **스테이지·섹터만 확정 탈락**을 발동한다.
-    """
-    from screening import router_v4, disqualifiers
-    rr = router_v4.route(rec["sector"], rec["tech"], rec["desc"], rec["name_en"])
-    d = disqualifiers.decide(rr["track"], rr.get("confidence"), rec["sector"],
-                             rec["tech"], rec["desc"], rec["stage"], signals=None)
-    return {**rec, "track": rr["track"], "route_conf": rr.get("confidence"),
-            "route_reason": rr["reason"], "band": d["band"],
-            "gate": d["zone"], "outcome": d["zone"],
-            "reasons": "; ".join(d["reasons"])}
-
-
-def run_v5() -> list[dict]:
-    recs = json.loads((DATA / "gbd_full.json").read_text(encoding="utf-8"))
-    return [evaluate_v5(r) for r in recs]
-
-
 def evaluate_v6(rec: dict) -> dict:
-    """v6 — 500/HAX 별개 엔진 + 양쪽 평가(접전) + 크로스 리퍼럴."""
-    from screening import engine_programs, sectors
+    """v7 — 분야 기반 라우팅 + 500/HAX 별개 엔진 + 사람검토 폐지(경계→메일)."""
+    from screening import engine_programs
     d = engine_programs.decide_v6(rec, signals=None)
-    sec_std = (sectors.primary(rec["sector"]) or sectors.primary(rec["desc"])
-               or sectors.primary(rec["tech"]))
     return {**rec, "primary": d["primary"], "gate": d["zone"],
             "outcome": d["zone"], "reasons": "; ".join(d["reasons"]),
-            "sector_std": sectors.display(sec_std) if sec_std else "미분류",
-            "cross": d.get("cross"), "dual": d.get("dual"),
-            "note": d.get("note", "")}
+            "field": d.get("field") or "미분류",       # 분야(세밀)
+            "cb_group": d.get("cb_group") or "—",      # 업종(CB 그룹 prior)
+            "mismatch": d.get("mismatch", False),
+            "email": d.get("email", "—"),
+            "cross": d.get("cross"), "dual": d.get("dual")}
 
 
 def run_v6() -> list[dict]:
-    recs = json.loads((DATA / "gbd_full.json").read_text(encoding="utf-8"))
+    recs = json.loads((DATA / FACTS).read_text(encoding="utf-8"))
     return [evaluate_v6(r) for r in recs]
 
 
 def run() -> list[dict]:
-    recs = json.loads((DATA / "gbd_full.json").read_text(encoding="utf-8"))
+    recs = json.loads((DATA / FACTS).read_text(encoding="utf-8"))
     return [evaluate(r) for r in recs]
 
 

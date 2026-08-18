@@ -541,55 +541,45 @@ def build_v5(v5_rows, v4_rows) -> Path:
     return OUT_V5
 
 
-OUT_V6 = OUT.parent / "gbd_auto_eval_v6.xlsx"
+OUT_V6 = OUT.parent / "gbd_auto_eval_v7.xlsx"
+
+RED = PatternFill("solid", fgColor="F4B7B7")
+BLUE = PatternFill("solid", fgColor="DEEBF7")
 
 
-def _v6_fill(zone: str) -> PatternFill:
-    if zone == "확정 탈락":
-        return PatternFill("solid", fgColor="F4B7B7")
-    if "점수화" in zone or "후보" in zone:
-        return GREEN
-    if "사람 검토" in zone or "경계" in zone:
-        return YEL
-    if "IndieBio" in zone:
-        return ORG
-    return GRY
+def _v6_fill(zone):
+    from screening import disqualifiers as dq
+    if zone == dq.Z_FAIL:
+        return RED
+    if zone == dq.Z_BIO:
+        return BLUE
+    if "입력 없음" in zone:
+        return GRY
+    return GREEN
 
 
-# 판정 → 액션 그룹(정렬·표시용) + 메일 유형(다음 단계용)
-def action_group(zone: str) -> tuple[int, str]:
-    if zone == "확정 탈락":
-        return 4, "🔴 확정 탈락"
-    if "점수화" in zone or "후보" in zone:
-        return 1, "🟢 검토 대상 (덱 받아 정밀평가)"
-    if "경계" in zone or "사람 검토" in zone:
-        return 2, "🟡 경계 검토 (담당자 판단)"
-    return 3, "⚪ 자료 요청 (정보 부족)"
+# 판정 → 액션 그룹(정렬·표시). 사람검토 폐지 → 메일 대상 vs 확정 탈락 2갈래.
+def action_group(zone):
+    from screening import disqualifiers as dq
+    if zone == dq.Z_FAIL:
+        return 3, "🔴 확정 탈락"
+    if zone == dq.Z_BIO:
+        return 2, "🔵 IndieBio 리퍼럴"
+    if "입력 없음" in zone:
+        return 4, "⚪ 대상외 (정보 공란)"
+    return 1, "🟢 메일 대상"
 
 
-def email_type(zone: str) -> str:
-    if zone == "확정 탈락":
-        return "자가진단·보완 안내 (탈락 통보 아님)"
-    if "조건부" in zone or "자료 요청" in zone:
-        return "설문·자료 요청"
-    if "점수화" in zone or "후보" in zone:
-        return "내부 검토 → 선정 시 지원 안내"
-    if "경계" in zone:
-        return "담당자 검토"
-    return "—"
-
-
-def target_market(target: str) -> tuple[str, bool]:
+def target_market(target):
     """타겟 국가 필드 → (표시 라벨, 미국 정합 여부)."""
     t = (target or "").strip()
     if not t:
         return "미상 (설문)", False
-    us = "미국" in t
-    return t, us
+    return t, ("미국" in t)
 
 
 def _engine_sheet(wb, title, header_lines, rows, track):
-    """500/HAX 엔진 전용 시트 — 액션 그룹 정렬 + 타겟 시장 + 메일 유형 + 유사 합격사."""
+    """500/HAX 엔진 시트 — 업종/분야 분리 · 액션 2갈래 정렬 · 메일 유형 · 유사 합격사."""
     from screening import similar_admits, gate_v4
     ws = wb.create_sheet(title)
     ws.sheet_view.showGridLines = False
@@ -598,39 +588,37 @@ def _engine_sheet(wb, title, header_lines, rows, track):
         ws.merge_cells(start_row=i + 1, start_column=1, end_row=i + 1, end_column=11)
         if i > 0:
             ws.row_dimensions[i + 1].height = 26
-    # 액션별 개수 요약
     from collections import Counter
     gc = Counter(action_group(r["outcome"])[1] for r in rows)
     hr = len(header_lines) + 1
     _c(ws, hr, 1, "액션 요약:  " + "   ".join(
-        f"{g.split(' ')[0]} {g[2:]} {n}" for g, n in sorted(gc.items())),
-       bold=True, size=9, wrap=True)
+        f"{g} {n}" for g, n in sorted(gc.items())), bold=True, size=9, wrap=True)
     ws.merge_cells(start_row=hr, start_column=1, end_row=hr, end_column=11)
     ws.row_dimensions[hr].height = 24
     hr += 1
-    _hdr(ws, hr, ["액션", "국문명", "표준 섹터", "업종(CB)", "스테이지", "타겟 시장",
-                  "판정", "사유", f"유사 {track.upper()} 합격사", "메일 유형", "재단분류"],
-         [22, 18, 15, 15, 10, 12, 18, 20, 24, 22, 12])
+    _hdr(ws, hr, ["액션", "국문명", "업종(CB)", "분야", "스테이지", "타겟 시장",
+                  "판정", "사유", "메일 유형", f"유사 {track.upper()} 합격사", "재단분류"],
+         [18, 17, 14, 15, 11, 12, 14, 24, 18, 24, 12])
     rr = hr + 1
-    # 액션 우선순위 → 검토 대상이 맨 위, 탈락이 맨 아래
     rows_sorted = sorted(rows, key=lambda r: (action_group(r["outcome"])[0],
                                               r["name_ko"]))
     for r in rows_sorted:
         z = r["outcome"]
         f = _v6_fill(z)
         band = gate_v4.band_of(r["stage"])
-        sim = similar_admits.match_str(track, r["sector"], r["desc"], band)
+        sim = similar_admits.match_str(track, r.get("field", ""), r["desc"], band)
         tm, us = target_market(r.get("target", ""))
+        field = ("⚠ " if r.get("mismatch") else "") + r.get("field", "미분류")
         _c(ws, rr, 1, action_group(z)[1], fill=f, size=8, bold=True)
         _c(ws, rr, 2, r["name_ko"], fill=f, size=9)
-        _c(ws, rr, 3, r.get("sector_std", "미분류"), fill=f, size=8, bold=True)
-        _c(ws, rr, 4, r["sector"][:26], fill=f, size=8)
+        _c(ws, rr, 3, r.get("cb_group", "—"), fill=f, size=8)
+        _c(ws, rr, 4, field, fill=f, size=8, bold=True)
         _c(ws, rr, 5, r["stage"], fill=f, size=8, align="center")
         _c(ws, rr, 6, ("🇺🇸 " if us else "") + tm, fill=f, size=8, align="center")
         _c(ws, rr, 7, z, fill=f, size=8)
-        _c(ws, rr, 8, (r.get("reasons") or "")[:40], fill=f, size=8)
-        _c(ws, rr, 9, sim[:44], fill=f, size=8)
-        _c(ws, rr, 10, email_type(z), fill=f, size=8)
+        _c(ws, rr, 8, (r.get("reasons") or "")[:44], fill=f, size=8)
+        _c(ws, rr, 9, r.get("email", "—"), fill=f, size=8)
+        _c(ws, rr, 10, sim[:42], fill=f, size=8)
         _c(ws, rr, 11, r["type"][:18], fill=f, size=8)
         rr += 1
     ws.freeze_panes = "A%d" % (hr + 1)
@@ -638,22 +626,22 @@ def _engine_sheet(wb, title, header_lines, rows, track):
 
 def build_v6(v6_rows) -> Path:
     from collections import Counter
-    from screening import engine_programs
+    from screening import disqualifiers as dq
     wb = Workbook()
 
     # 시트1 요약
     ws = wb.active
-    ws.title = "요약_v6"
+    ws.title = "요약_v7"
     ws.sheet_view.showGridLines = False
-    _c(ws, 1, 1, f"GBD DB — 엔진 v6 (500·HAX 별개 엔진 + 유사 합격사) {len(v6_rows):,}개사",
-       bold=True, size=13)
+    _c(ws, 1, 1, f"디캠프 GBD DB Ver.26.01 — 엔진 v7 (분야 기반·사람검토 폐지) "
+       f"{len(v6_rows):,}개사", bold=True, size=13)
     ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=5)
-    _c(ws, 2, 1, "500과 HAX는 축·스테이지·섹터 정책이 다른 별개 엔진 → 시트 분리. "
-       "라우팅 접전은 양쪽 평가(한쪽만 통과=자동확정 / 둘다통과=양 프로그램 후보 / "
-       "둘다탈락=확정탈락). HAX 탈락이 500 후보면 크로스 리퍼럴. 점수화·후보 기업엔 "
-       "실제 500/HAX 합격사를 붙여 판단 보조.", size=9, wrap=True)
+    _c(ws, 2, 1, "업종(CB 그룹)은 거칠어 참고만 하고, 라우팅·탈락은 **분야**(사업 실체)로 "
+       "판정. 확정 탈락(스테이지 이탈·분야 부적합·확인된 언어/제품)이 아니면 전부 "
+       "**메일 대상**으로 흡수(사람검토 버킷 폐지 — 애매해도 메일은 보낸다). "
+       "500/HAX 별개 시트, 접전은 양쪽 평가, HAX 탈락은 500 리퍼럴.", size=9, wrap=True)
     ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=5)
-    ws.row_dimensions[2].height = 46
+    ws.row_dimensions[2].height = 52
     c = Counter(r["outcome"] for r in v6_rows)
     _hdr(ws, 4, ["판정", "기업 수"], [40, 12])
     rr = 5
@@ -662,10 +650,14 @@ def build_v6(v6_rows) -> Path:
         _c(ws, rr, 2, n, align="center", bold=True, fill=_v6_fill(k))
         rr += 1
     rr += 1
-    cross = sum(1 for r in v6_rows if r.get("cross"))
-    _c(ws, rr, 1, f"크로스 리퍼럴(HAX 탈락 → 500 후보): {cross}개사 / "
-       f"바이오 라우팅: {c.get('IndieBio 라우팅', 0)}개사", bold=True, wrap=True)
+    mail = sum(n for k, n in c.items() if k not in (dq.Z_FAIL, dq.Z_OOS))
+    _c(ws, rr, 1, f"→ 🟢 메일 대상 합계(IndieBio 포함): {mail:,}개사  /  "
+       f"🔴 확정 탈락: {c.get(dq.Z_FAIL, 0):,}개사  /  "
+       f"업종≠분야 불일치 신호: {sum(1 for r in v6_rows if r.get('mismatch')):,}개사  /  "
+       f"크로스 리퍼럴(HAX→500): {sum(1 for r in v6_rows if r.get('cross')):,}개사",
+       bold=True, wrap=True)
     ws.merge_cells(start_row=rr, start_column=1, end_row=rr, end_column=5)
+    ws.row_dimensions[rr].height = 30
 
     # 시트2 500 엔진
     s500 = [r for r in v6_rows if r["primary"] in ("500", "500/hax")
@@ -673,7 +665,7 @@ def build_v6(v6_rows) -> Path:
     _engine_sheet(wb, "500_엔진", [
         f"500 Global Flagship 엔진 — {len(s500):,}개사",
         "축: 트랙션40·팀30·시장20·해자10 / 대상: MVP+트랙션, 섹터 무관, 영어 전용·SV 상주",
-        "스테이지: 시리즈A=경계(사람검토), 시리즈B+=확정 탈락. (HAX 탈락→500 후보 리퍼럴 포함)",
+        "트랙션=유료고객·매출(MRR/ARR)·성장률·리텐션(B2B는 계약/PO/LOI). 시리즈B+ 확정 탈락.",
     ], s500, "500")
 
     # 시트3 HAX 엔진
@@ -681,57 +673,66 @@ def build_v6(v6_rows) -> Path:
     _engine_sheet(wb, "HAX_엔진", [
         f"HAX (SOSV) 엔진 — {len(shax):,}개사",
         "축: TRL40·팀30·양산20·고객10 / 대상: 프리시드~시드 하드테크(기후·로보틱스·소재·헬스HW)",
-        "제외 섹터(SW·핀테크·크립토·보안·이커머스)·시리즈A+ = 확정 탈락. SAFE+지분10%.",
+        "제외 분야(핀테크·크립토·커머스·보안)·시리즈A+ = 확정 탈락. 캡 없는 SAFE+지분10%.",
     ], shax, "hax")
 
     # 시트4 확정 탈락 (사유)
-    fails = [r for r in v6_rows if r["outcome"] == "확정 탈락"]
+    fails = [r for r in v6_rows if r["outcome"] == dq.Z_FAIL]
     ws4 = wb.create_sheet("확정_탈락")
     ws4.sheet_view.showGridLines = False
     _c(ws4, 1, 1, f"확정 탈락 {len(fails):,}개사 — 사유 명시 (운영자가 큐를 비울 수 있게)",
        bold=True, size=12)
-    ws4.merge_cells(start_row=1, start_column=1, end_row=1, end_column=5)
-    _hdr(ws4, 3, ["국문명", "업종(CB)", "스테이지", "대상 트랙", "탈락 사유"],
-         [22, 22, 12, 12, 52])
+    ws4.merge_cells(start_row=1, start_column=1, end_row=1, end_column=6)
+    _hdr(ws4, 3, ["국문명", "업종(CB)", "분야", "스테이지", "대상 트랙", "탈락 사유"],
+         [22, 16, 15, 12, 10, 46])
     rr = 4
-    ff = PatternFill("solid", fgColor="F4B7B7")
     for r in sorted(fails, key=lambda x: (str(x["primary"]), x["name_ko"])):
-        _c(ws4, rr, 1, r["name_ko"], size=9, fill=ff)
-        _c(ws4, rr, 2, r["sector"][:30], size=8, fill=ff)
-        _c(ws4, rr, 3, r["stage"], size=8, align="center", fill=ff)
-        _c(ws4, rr, 4, str(r["primary"]), size=8, align="center", fill=ff)
-        _c(ws4, rr, 5, r.get("reasons", ""), size=8, fill=ff)
+        _c(ws4, rr, 1, r["name_ko"], size=9, fill=RED)
+        _c(ws4, rr, 2, r.get("cb_group", "—"), size=8, fill=RED)
+        _c(ws4, rr, 3, r.get("field", ""), size=8, fill=RED)
+        _c(ws4, rr, 4, r["stage"], size=8, align="center", fill=RED)
+        _c(ws4, rr, 5, str(r["primary"]), size=8, align="center", fill=RED)
+        _c(ws4, rr, 6, r.get("reasons", ""), size=8, fill=RED)
         rr += 1
     ws4.freeze_panes = "A4"
 
     # 시트5 방법론
-    ws5 = wb.create_sheet("방법론_v6")
+    ws5 = wb.create_sheet("방법론_v7")
     ws5.sheet_view.showGridLines = False
     ws5.column_dimensions["A"].width = 115
     notes = [
-        ("엔진 v6 — 500·HAX 별개 엔진 + 유사 합격사 매칭", True, 12),
-        ("두 엔진 분리", True, 11),
-        ("500(트랙션·팀·시장·해자, 섹터 무관, 시리즈A=경계)과 HAX(TRL·팀·양산·고객, "
-         "하드웨어 전용, 시리즈A+=탈락)는 별개 엔진 → 시트 분리. 담당자가 자기 트랙만 본다.",
+        ("엔진 v7 — 업종/분야 분리 · 사람검토 폐지 · 새 DB(Ver.26.01)", True, 12),
+        ("업종 ≠ 분야", True, 11),
+        ("업종(CB 40그룹)은 거칠다 — 'Hardware' 그룹에 로보틱스·반도체와 소매기술·화상회의가, "
+         "'Financial Services'에 결제·대출·보험이 섞인다. 그래서 라우팅·탈락은 **분야**"
+         "(1줄 소개·기술로 세밀 판정)를 기준으로 하고, 업종은 거친 prior/폴백으로만 쓴다. "
+         "업종≠분야 불일치(⚠)는 그 자체가 검토 신호.", False, 10),
+        ("사람검토 폐지 → 경계는 메일", True, 11),
+        ("확정 탈락이 아닌 모든 것은 '메일 대상'으로 흡수한다. 애매하다고 붙잡아두면 "
+         "아무 일도 안 일어난다 — 경계·설문 필요·점수화 가능·라우팅 접전 전부 메일로. "
+         "메일 유형(내부검토·지원안내 / 설문·자료요청 / 자가진단·보완안내)만 세분한다.", False, 10),
+        ("확정 탈락 = 확인된 부적합만", True, 11),
+        ("스테이지 이탈(시리즈B+ 양 트랙·HAX 시리즈A+), 분야 부적합(HAX 제외 분야), "
+         "확인된 언어불가·제품없음. DB로 확인 가능한 스테이지·분야가 주력이고, 언어·제품은 "
+         "덱/설문이 와야 확인되므로 그전엔 메일(설문)로 남긴다.", False, 10),
+        ("새 DB(Ver.26.01) 재추출", True, 11),
+        ("이전 판(gbd_full.json)은 빈 행이 42% 섞여 '대상외'가 과다했다 — 추출 문제였다. "
+         "새 파일은 업종·기술·스테이지·소개가 99% 채워져 대상외가 사라지고, 스테이지 이탈 "
+         "확정 탈락이 제대로 발동한다. 타겟 국가는 1%만 채워져 미국/일본 구분은 설문 과제로 남음.",
          False, 10),
-        ("애매하면 양쪽 평가 + 크로스 리퍼럴", True, 11),
-        ("라우팅 접전은 사람에게 미루지 않고 양쪽 엔진 평가 → 한쪽만 통과=자동확정, "
-         "둘다통과=양 프로그램 후보, 둘다탈락=확정탈락. HAX 스테이지·섹터 탈락이 500 "
-         "후보면 크로스 리퍼럴(막다른 탈락을 라우팅 정보로).", False, 10),
-        ("유사 합격사 매칭 (신규 — 원 설계서 모듈 4)", True, 11),
-        ("점수화·후보 기업에 실제 500/HAX 포트폴리오(수집 35개사) 중 트랙·스테이지·섹터가 "
-         "비슷한 합격사를 붙인다. 리서치 공백이던 '합격자 프로필'을 기능으로 해결 — "
-         "담당자 판단 보조용 참고 사례이지 컷오프 튜닝에 쓰지 않는다.", False, 10),
-        ("한계", True, 11),
-        ("WEIGHTS·컷오프 불변. 확정 탈락은 확인된 부적합만. 키워드 라우터·유사 매칭은 "
-         "근사. 4축 점수는 팩트시트 있는 소표본에만. 정밀도는 진짜 불합격 라벨 필요.",
-         False, 10),
+        ("트랙션 정의(500)", True, 11),
+        ("트랙션 = 시장이 실제 반응한 증거: 유료고객 수·매출(MRR/ARR)·MoM 성장률·리텐션, "
+         "B2B는 계약/PO/LOI. 1줄 소개론 측정 불가 → 대규모 자동단계엔 트랙션 점수를 내지 "
+         "않고, 덱·설문 있는 기업만 채점한다.", False, 10),
+        ("불변·한계", True, 11),
+        ("WEIGHTS·컷오프 불변. 확정 탈락은 확인된 부적합만. 분야 분류·유사 매칭은 근사. "
+         "4축 점수는 팩트시트 있는 소표본에만.", False, 10),
     ]
     for i, (t, b, sz) in enumerate(notes, 1):
         cc = _c(ws5, i, 1, t, bold=b, size=sz, wrap=True)
         if b and sz >= 11:
             cc.fill = SUB
-        ws5.row_dimensions[i].height = 44 if len(t) > 70 else 16
+        ws5.row_dimensions[i].height = 46 if len(t) > 70 else 16
 
     OUT_V6.parent.mkdir(parents=True, exist_ok=True)
     wb.save(OUT_V6)
