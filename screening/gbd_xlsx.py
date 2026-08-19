@@ -751,8 +751,14 @@ def build_us_forged(uf_rows) -> Path:
     seed = [r for r in elig if r["uf_stage"] == "OK"]
     unk = [r for r in elig if r["uf_stage"] == "UNKNOWN"]
     us = [r for r in elig if r["uf_us"]]
+    nonhard = sum(1 for r in uf_rows
+                  if r["uf_status"] == "부적합" and "분야" in r["uf_reasons"])
+    hard_late = sum(1 for r in uf_rows
+                    if r["uf_status"] == "부적합" and "스테이지" in r["uf_reasons"])
+    hard_total = hard_late + len(elig)
+    T = Counter(r["uf_tier"] for r in elig)
 
-    # 시트1 요약
+    # 시트1 요약 (빼기 → 남은 수 형식)
     ws = wb.active
     ws.title = "요약_US_FORGED"
     ws.sheet_view.showGridLines = False
@@ -761,50 +767,72 @@ def build_us_forged(uf_rows) -> Path:
     ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=6)
     _c(ws, 2, 1, "요건: 미국 진출 준비 Pre-Seed~Seed 딥테크·하드테크. Software-only·"
        "일반 소비재·범용 제품 제외. Lab-scale 이상 프로토타입. 선발 8~10개사(마감 9/6). "
-       "→ 포괄 500+HAX 스크린과 달리 특정 공고 필터라 대상이 확 좁혀진다.", size=9, wrap=True)
+       "→ 각 줄은 그 필터까지 적용하고 '남은' 기업 수(누적).", size=9, wrap=True)
     ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=6)
     ws.row_dimensions[2].height = 40
-    _hdr(ws, 4, ["필터 단계", "기업 수"], [46, 12])
-    funnel = [("전체 DB", len(uf_rows)),
-              ("① 하드테크 분야(Software·소비재 제외)",
-               sum(1 for r in uf_rows if r["uf_status"].startswith("적합")
-                   or "스테이지" in r["uf_reasons"])),
-              ("② + Pre-Seed~Seed or 미상 (시리즈A+ 제외)", len(elig)),
-              ("     ├ 스테이지 시드 확정 (최우선 후보)", len(seed)),
-              ("     └ 스테이지 미상 (설문 후 발송)", len(unk)),
-              ("③ + 미국 진출 명시 (즉시 후보)", len(us))]
+    _hdr(ws, 4, ["필터 단계 (빼기 → 남은 수)", "제외", "남은 수"], [42, 10, 12])
+    funnel = [("전체 DB", "", len(uf_rows), None),
+              ("  └ Software-only·소비재 제거", f"-{nonhard}", None, None),
+              ("① 하드테크 분야 (남은 수)", "", hard_total, None),
+              ("  └ 시리즈A+ (스테이지 이탈) 제거", f"-{hard_late}", None, None),
+              ("② Pre-Seed~Seed/미상 (남은 수 = 발송 후보)", "", len(elig), GREEN),
+              ("     ├ 스테이지 시드 확정", "", len(seed), None),
+              ("     └ 스테이지 미상 (설문 먼저)", "", len(unk), None),
+              ("③ + 미국 진출 명시 (DB 기재분)", "", len(us), None)]
     rr = 5
-    for lab, n in funnel:
-        _c(ws, rr, 1, lab, fill=GREEN if "시드 확정" in lab or "즉시" in lab else None)
-        _c(ws, rr, 2, n, align="center", bold=True)
+    for lab, minus, n, fill in funnel:
+        _c(ws, rr, 1, lab, fill=fill)
+        _c(ws, rr, 2, minus, align="center", fill=fill)
+        _c(ws, rr, 3, "" if n is None else n, align="center", bold=True, fill=fill)
         rr += 1
+    rr += 1
+    _c(ws, rr, 1, "신뢰도 티어 (발송 후보 안에서 — 더 세게 거르는 대신 티어로 분류)",
+       bold=True, size=11, fill=SUB)
+    ws.merge_cells(start_row=rr, start_column=1, end_row=rr, end_column=3)
+    rr += 1
+    _hdr(ws, rr, ["티어", "조건", "수"], [16, 40, 10])
+    rr += 1
+    tiers = [("T1 최우선", "시드 확정 + 분야 소개로 확정", GREEN),
+             ("T2 검토", "시드확정+분야폴백 / 미상+분야확정 (둘 중 하나만)", YEL),
+             ("T3 설문 우선", "스테이지 미상 + 분야 폴백 (약한 신호)", None)]
+    for name, cond, fill in tiers:
+        _c(ws, rr, 1, name, fill=fill, bold=True)
+        _c(ws, rr, 2, cond, fill=fill)
+        _c(ws, rr, 3, T.get(name, 0), align="center", bold=True, fill=fill)
+        rr += 1
+    rr += 1
+    _c(ws, rr, 1, "※ DB만으로 더 세게 거르면 진짜 딥테크(특수 용어라 분야폴백)까지 날아간다. "
+       "T1 아래는 '더 거르기'가 아니라 '설문으로 확인'이 맞다. US FORGED 핵심 요건"
+       "(Lab-scale 프로토타입·미국 의지·기술 차별성)은 DB에 없어 설문/덱 필수.",
+       size=9, wrap=True)
+    ws.merge_cells(start_row=rr, start_column=1, end_row=rr, end_column=3)
+    ws.row_dimensions[rr].height = 40
 
-    # 시트2 발송 후보
+    # 시트2 발송 후보 (티어 정렬)
     ws2 = wb.create_sheet("발송_후보")
     ws2.sheet_view.showGridLines = False
-    _c(ws2, 1, 1, f"US FORGED 발송 후보 {len(elig):,}개사 — 즉시/시드확정 상단 정렬",
+    _c(ws2, 1, 1, f"US FORGED 발송 후보 {len(elig):,}개사 — 티어순(T1 최우선 상단)",
        bold=True, size=12)
-    ws2.merge_cells(start_row=1, start_column=1, end_row=1, end_column=9)
-    _hdr(ws2, 3, ["상태", "국문명", "분야", "스테이지", "타겟 시장", "설문/확인 항목",
+    ws2.merge_cells(start_row=1, start_column=1, end_row=1, end_column=10)
+    _hdr(ws2, 3, ["티어", "국문명", "분야", "스테이지", "타겟 시장", "설문/확인 항목",
                   "업종(CB)", "유사 HAX 합격사", "재단분류"],
-         [16, 18, 14, 11, 12, 26, 14, 24, 12])
-    order = {"적합(즉시 후보)": 0, "적합(설문 확인)": 1}
-    rows_sorted = sorted(elig, key=lambda r: (order.get(r["uf_status"], 2),
-                                              0 if r["uf_stage"] == "OK" else 1,
+         [14, 18, 14, 11, 12, 24, 14, 24, 12])
+    torder = {"T1 최우선": 0, "T2 검토": 1, "T3 설문 우선": 2}
+    tfill = {"T1 최우선": GREEN, "T2 검토": YEL, "T3 설문 우선": None}
+    rows_sorted = sorted(elig, key=lambda r: (torder.get(r["uf_tier"], 3),
                                               r["uf_field"], r["name_ko"]))
     rr = 4
     for r in rows_sorted:
-        f = GREEN if r["uf_status"] == "적합(즉시 후보)" else (
-            YEL if r["uf_stage"] == "OK" else None)
+        f = tfill.get(r["uf_tier"])
         band = gate_v4.band_of(r["stage"])
         sim = similar_admits.match_str("hax", r["uf_field"], r["desc"], band)
         tm = ("🇺🇸 " if r["uf_us"] else "") + ((r.get("target") or "").strip() or "미상")
-        _c(ws2, rr, 1, r["uf_status"], fill=f, size=8, bold=True)
+        _c(ws2, rr, 1, r["uf_tier"], fill=f, size=8, bold=True)
         _c(ws2, rr, 2, r["name_ko"], fill=f, size=9)
         _c(ws2, rr, 3, r["uf_field"], fill=f, size=8, bold=True)
         _c(ws2, rr, 4, r["stage"], fill=f, size=8, align="center")
         _c(ws2, rr, 5, tm, fill=f, size=8, align="center")
-        _c(ws2, rr, 6, r["uf_reasons"][:40], fill=f, size=8)
+        _c(ws2, rr, 6, r["uf_reasons"][:38], fill=f, size=8)
         _c(ws2, rr, 7, r["sector"][:20], fill=f, size=8)
         _c(ws2, rr, 8, sim[:42], fill=f, size=8)
         _c(ws2, rr, 9, r["type"][:18], fill=f, size=8)

@@ -85,8 +85,33 @@ def eligible(rec: dict) -> dict:
             "stage": st, "us": us, "reasons": ["설문 확인 필요: " + ", ".join(need)]}
 
 
+def fine_confirmed(rec: dict) -> bool:
+    """분야가 소개·기술 텍스트로 '확정'됐는가(= CB 업종 폴백이 아닌 실체 신호)."""
+    fk = sectors.classify(" ".join((rec.get("desc", ""), rec.get("tech", ""),
+                                    rec.get("svc", ""))))
+    return any(sectors.track_of(k) == "hax" for k in fk)
+
+
+def tier(rec: dict, e: dict | None = None) -> str | None:
+    """적합 후보의 신뢰도 티어(DB로 확인 가능한 두 축: 스테이지·분야 확정).
+
+    T1 최우선 = 시드 확정 + 분야 확정 / T2 검토 = 둘 중 하나만 / T3 설문 우선 = 둘 다 미확정.
+    (더 세게 거르지 않는다 — 진짜 딥테크가 특수 용어라 분야폴백일 수 있어 버리지 않고 티어로.)
+    """
+    e = e or eligible(rec)
+    if not e["status"].startswith("적합"):
+        return None
+    seed = e["stage"] == "OK"
+    fc = fine_confirmed(rec)
+    if seed and fc:
+        return "T1 최우선"
+    if seed or fc:
+        return "T2 검토"
+    return "T3 설문 우선"
+
+
 def run() -> list[dict]:
-    """전체 DB 에 US FORGED 필터 적용 → 각 rec 에 판정 부착."""
+    """전체 DB 에 US FORGED 필터 적용 → 각 rec 에 판정·티어 부착."""
     from screening import gbd_pipeline
     import json
     recs = json.loads((gbd_pipeline.DATA / gbd_pipeline.FACTS)
@@ -96,5 +121,5 @@ def run() -> list[dict]:
         e = eligible(r)
         out.append({**r, "uf_status": e["status"], "uf_field": e["field"],
                     "uf_stage": e["stage"], "uf_us": e["us"],
-                    "uf_reasons": "; ".join(e["reasons"])})
+                    "uf_tier": tier(r, e), "uf_reasons": "; ".join(e["reasons"])})
     return out
