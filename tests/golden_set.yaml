@@ -1,0 +1,338 @@
+# US FORGED 후보 선별 엔진 — 회귀 테스트 골든셋
+#
+# 사용법: tests/golden_set.yaml 로 배치하고 pytest fixture로 로드한다.
+# 새 오류를 발견할 때마다 여기에 한 줄씩 추가한다.
+#
+# 레이어를 분리한 이유:
+#   - classification_*  는 "이 회사가 하드테크인가" 만 검증한다. 스테이지와 무관하다.
+#   - stage_rules       는 스테이지 필터만 검증한다.
+#   - end_to_end        는 최종 파이프라인을 검증한다.
+# 스테이지 값은 DB 스냅샷마다 바뀌므로(18시간 만에 652곳 변동) 섞어서 테스트하면 안 된다.
+
+meta:
+  baseline_snapshot: GBD_DB_20260818_1856.xlsx
+  baseline_sha256_prefix: "58941558719c663e"
+  baseline_rows: 3424
+  source: 엔진 출력 338개사를 원본 DB 전수와 대조한 감사 결과
+
+# ─────────────────────────────────────────────────────────────
+# 1. 분류기 검증 — hardtech 로 판정해야 하는 기업
+#    (스테이지 무관. 분류 레이어만 본다)
+# ─────────────────────────────────────────────────────────────
+classification_must_pass:
+
+  # ── 한글 레거시 업종 라벨 때문에 전량 탈락했던 그룹 ──
+  - name: "휴젝트(HUJECT)"
+    biz_no: "666-87-01737"
+    db_industry: "소재/부품/장비"
+    reason: "에너지 하베스팅 블록 시스템"
+    expect_field: "Energy/Climate Tech"
+    trap: "한글 레거시 라벨 — 영문 화이트리스트에 없어 자동 탈락했던 케이스"
+
+  - name: "비즈(주)"
+    biz_no: "318-81-02567"
+    db_industry: "소재/부품/장비"
+    reason: "소형모듈원자로(SMR) 개발 및 원자력 인허가·안전규제 컨설팅"
+    expect_field: "Energy/Climate Tech"
+    trap: "한글 레거시 라벨"
+
+  - name: "위드로봇 주식회사"
+    biz_no: "214-88-22843"
+    db_industry: "소재/부품/장비"
+    reason: "산업현장 실시간 모니터링 로봇"
+    expect_field: "Robotics/Automation"
+    trap: "한글 레거시 라벨"
+
+  - name: "주식회사 자이스웍스/JaisWorks Inc."
+    biz_no: "786-88-02885"
+    db_industry: "소재/부품/장비"
+    reason: "AI·센서 기반 설비·시스템 운영 최적화 제어"
+    expect_field: "Robotics/Automation"
+    trap: "한글 레거시 라벨 + 사명에 Inc. 포함(국내 법인이므로 해외법인 배제 규칙에 걸리면 안 됨)"
+
+  - name: "레디로버스트머신(주)"
+    biz_no: "731-88-02342"
+    db_industry: "소재/부품/장비"
+    reason: "에너지 회수 기계 시스템"
+    expect_field: "Industrial Hardware"
+    trap: "한글 레거시 라벨"
+
+  - name: "에바(EVAR)"
+    biz_no: "295-88-01148"
+    db_industry: "소재/부품/장비"
+    reason: "전기차 충전 인프라 하드웨어"
+    expect_field: "Energy/Climate Tech"
+    trap: "한글 레거시 라벨"
+
+  # ── 업종 라벨이 사업 실체를 못 담아 탈락했던 그룹 ──
+  - name: "무인탐사연구소"
+    biz_no: "888-86-02926"
+    db_industry: "Space"
+    reason: "달 탐사 로버 개발. 국내 유일 우주 로보틱스 기업"
+    expect_field: "Aerospace"
+    trap: "직전 버전에서 T1이었다가 화이트리스트를 좁히면서 탈락한 회귀 사례. 반드시 통과해야 함"
+
+  - name: "코리아 인스트루먼트"
+    biz_no: "215-81-54636"
+    db_industry: "Semiconductor"
+    reason: "반도체 웨이퍼 테스트용 프로브카드 제조"
+    expect_field: "Semiconductor/Advanced Materials"
+    trap: "업종이 정확히 Semiconductor인데 초기단계 통과율 0%였던 케이스"
+
+  - name: "(주)신성사운드모션"
+    biz_no: "693-87-01705"
+    db_industry: "Hardware; Manufacturing; Audio"
+    reason: "MEMS 가속도·자이로 센서 설계 및 공정기술 기반 MEMS 마이크로폰"
+    expect_field: "Sensor/Edge Device"
+    trap: "라벨에 Audio가 있다는 이유로 소비재로 오탈락"
+
+  - name: "(주)포레"
+    biz_no: "297-81-02412"
+    db_industry: "Sustainability; Hardware; Manufacturing; Consumer Goods; AI; Data and Analytics"
+    reason: "AI·IoT 센서 기반 음식물처리기 자체 설계·제조, 감량 데이터 관리시스템"
+    expect_field: "Industrial Hardware"
+    trap: "라벨에 Consumer Goods가 있다는 이유로 오탈락"
+
+  - name: "크레신(주)"
+    biz_no: "212-81-20189"
+    db_industry: "Audio; Hardware; Manufacturing"
+    reason: "음향 하드웨어 + 무선 SoC·RF·공간음향 설계, OEM·ODM"
+    expect_field: "Industrial Hardware"
+    trap: "Audio 라벨"
+
+  - name: "(주)에이엘티"
+    biz_no: "688-87-01019"
+    db_industry: "AI; Hardware; Software; Consumer Goods"
+    reason: "HRI 기반 시니어케어 로봇, AI 통신단말"
+    expect_field: "Robotics/Automation"
+    trap: "Consumer Goods 라벨"
+
+  - name: "벤텍스(주)"
+    biz_no: "213-86-38974"
+    db_industry: "Manufacturing; Clothing and Apparel; Science and Engineering"
+    reason: "나노테크 기반 기능성 섬유·케미칼 소재"
+    expect_field: "Semiconductor/Advanced Materials"
+    trap: "Clothing and Apparel 라벨"
+
+  - name: "솔티드 주식회사"
+    biz_no: "611-81-27282"
+    db_industry: "Healthcare; Hardware; Data and Analytics; Sports"
+    reason: "족저압 센서 스마트 인솔, 보행·균형 분석"
+    expect_field: "Sensor/Edge Device"
+    trap: "Sports 라벨"
+
+  - name: "티아이"
+    biz_no: "647-85-02411"
+    db_industry: "Bio, Healthcare"
+    reason: "백내장 수술용 전낭 절개기구, 안구 3축 편차 정밀 측정 기술"
+    expect_field: "Healthtech Device"
+
+  - name: "티제이랩스"
+    biz_no: "816-86-01941"
+    db_industry: "Mobility"
+    reason: "Surface Correlation 기반 실내측위 기술"
+    expect_field: "Sensor/Edge Device"
+
+  - name: "세라트젠"
+    biz_no: "576-88-01483"
+    db_industry: "Bio, Healthcare"
+    reason: "장기특이적 3D 세포배양용 하이드로겔 소재"
+    expect_field: "Semiconductor/Advanced Materials"
+    confidence_floor: "medium"   # 소재/바이오 경계 — low 로 떨어지면 사람 검토 버킷
+
+# ─────────────────────────────────────────────────────────────
+# 2. 분류기 검증 — hardtech 가 아니라고 판정해야 하는 기업
+# ─────────────────────────────────────────────────────────────
+classification_must_fail:
+
+  # ── 하드웨어를 다루지만 직접 만들지 않는 SW ──
+  - name: "에이머슬리"
+    biz_no: "560-81-03449"
+    db_industry: "Semiconductor"
+    expect_verdict: "software_only"
+    reason: "SK하이닉스 스핀오프. 반도체 팹 엔지니어를 대체하는 AI 에이전트 — 소프트웨어"
+    trap: "업종 라벨이 Semiconductor라 라벨 기반이면 통과한다. 소개문을 읽어야만 걸러진다"
+
+  - name: "(주)컨워스"
+    biz_no: "293-88-01763"
+    expect_verdict: "software_only"
+    reason: "BIM·포인트클라우드·드론영상 통합 3D 데이터 엔진·디지털트윈 플랫폼"
+
+  - name: "(주)엘앰캐드"
+    biz_no: "572-88-01778"
+    expect_verdict: "software_only"
+    reason: "CAD 소프트웨어"
+
+  - name: "파란에너지"
+    biz_no: "525-86-00935"
+    expect_verdict: "software_only"
+    reason: "AI 기반 실시간 에너지 관리 플랫폼"
+
+  - name: "EcoLinks"
+    biz_no: "171-88-01731"
+    expect_verdict: "software_only"
+    reason: "태양광 발전소 금융·설치·유지보수 중개 플랫폼"
+
+  - name: "올수"
+    biz_no: "520-88-01893"
+    expect_verdict: "software_only"
+    reason: "폐식용유 수거 매칭·경매·배송 플랫폼"
+
+  - name: "바나나파츠"
+    biz_no: "585-87-02233"
+    expect_verdict: "software_only"
+    reason: "전기부품 온라인 마켓플레이스 — 유통"
+
+  - name: "(주)로보트리"
+    biz_no: "151-87-01050"
+    expect_verdict: "software_only"
+    reason: "교사·학생용 3D·시뮬레이션 코딩 교육 플랫폼. 사명에 '로보'가 들어가지만 교육 SW"
+    trap: "사명 키워드 매칭 오탐"
+
+  # ── 소비재 ──
+  - name: "파인유얼뷰티"
+    biz_no: "486-81-01236"
+    expect_verdict: "consumer"
+    reason: "뷰티"
+  - name: "에코디엠랩(주)"
+    biz_no: "303-81-71892"
+    expect_verdict: "consumer"
+    reason: "뷰티·화장품. 라벨에 Hardware; Manufacturing 포함이라 오통과 위험"
+  - name: "(주)닥터스텍"
+    biz_no: "209-81-24893"
+    expect_verdict: "consumer"
+    reason: "뷰티·화장품. 라벨에 Hardware 포함"
+  - name: "주식회사 마린테크노"
+    biz_no: "417-81-49855"
+    expect_verdict: "consumer"
+    reason: "해양 바이오·뷰티 원료"
+  - name: "더캡슐"
+    biz_no: "584-81-00813"
+    expect_verdict: "consumer"
+    reason: "캡슐호텔 — 여행·숙박. 라벨에 Manufacturing 포함"
+  - name: "크레이버코퍼레이션"
+    biz_no: "261-81-14845"
+    expect_verdict: "consumer"
+    reason: "화장품·소비재 브랜드. 과거 T1 오분류 사례"
+  - name: "(주)이지코스텍"
+    biz_no: "124-86-36808"
+    expect_verdict: "consumer"
+    reason: "화장품. 과거 오분류 사례"
+  - name: "주식회사 엔터식스패션쇼핑몰"
+    biz_no: "120-81-45616"
+    expect_verdict: "consumer"
+    reason: "패션 쇼핑몰. 과거 '우주·항공'으로 오분류된 사례"
+  - name: "인테리어젠틀맨"
+    biz_no: "775-88-01284"
+    expect_verdict: "consumer"
+    reason: "인테리어·부동산. 과거 '공간/스페이스' 키워드로 우주·항공 오분류"
+
+  # ── 비스타트업 법인 ──
+  - name: "Zhongxing Machinery International Co., Ltd."
+    biz_no: "OC160024"
+    expect_verdict: "not_a_startup"
+    reason: "중국 법인. 사업자번호 OC* 형식이 판별 기준"
+  - name: "Lihua Eco-Packaging Co., Ltd."
+    biz_no: "OC180024"
+    expect_verdict: "not_a_startup"
+    reason: "중국 법인"
+
+# ─────────────────────────────────────────────────────────────
+# 3. 스테이지 필터 단독 검증
+# ─────────────────────────────────────────────────────────────
+stage_rules:
+
+  value_mapping:
+    - {value: "Pre-seed",   expect: "IN_SCOPE"}
+    - {value: "Angel",      expect: "IN_SCOPE"}
+    - {value: "Seed",       expect: "IN_SCOPE"}
+    - {value: "알 수 없음",  expect: "UNKNOWN"}
+    - {value: null,         expect: "UNKNOWN"}
+    - {value: "Pre-A",      expect: "EXCEPTION"}
+    - {value: "Series A",   expect: "OUT_OF_SCOPE"}
+    - {value: "Pre-B",      expect: "OUT_OF_SCOPE"}
+    - {value: "Series B",   expect: "OUT_OF_SCOPE"}
+    - {value: "Series C",   expect: "OUT_OF_SCOPE"}
+    - {value: "Series D",   expect: "OUT_OF_SCOPE"}
+    - {value: "Series E ~", expect: "OUT_OF_SCOPE"}
+    - {value: "Pre-IPO",    expect: "OUT_OF_SCOPE"}
+    - {value: "IPO('24)",   expect: "OUT_OF_SCOPE"}
+    - {value: "M&A('23)",   expect: "OUT_OF_SCOPE"}
+    - {value: "존재하지_않는_값", expect: "RAISE"}   # 조용히 탈락시키지 말고 예외를 던질 것
+
+  pre_a_exception:
+    # Pre-A + 타겟국가에 미국 + physical_product == true → stage_exception 버킷
+    - name: "메디띵스"
+      biz_no: "363-88-01795"
+      note: "NIRS 방광 모니터링 웨어러블. 타겟국가 미국. 신규 스냅샷에서 Series A로 변경되었을 수 있으니 스냅샷 값을 확인할 것"
+      expect_bucket: "stage_exception_or_out_of_scope"
+    - name: "아폴론"
+      biz_no: "661-81-02253"
+      note: "무채혈 CGM 디바이스. 타겟국가 미국. Pre-A"
+      expect_bucket: "stage_exception"
+    - name: "리옵스"
+      biz_no: "463-81-03056"
+      note: |
+        이전 스냅샷 Seed → 신규 스냅샷 Pre-A. 타겟국가 미국, 실리콘밸리 프로그램 참여 이력 보유.
+        제조 자동화용 RT3D 로보틱스. DB에서 미국 진출 의지가 확인되는 극소수 하드테크 기업이므로
+        스테이지 변경만으로 조용히 사라지면 안 된다.
+      expect_bucket: "stage_exception"
+
+# ─────────────────────────────────────────────────────────────
+# 4. 중복 엔티티 처리 검증
+# ─────────────────────────────────────────────────────────────
+duplicate_entities:
+  - name: "한국공장지붕태양광지주"
+    rows:
+      - {biz_no: "727-81-02043", stage: "Series C"}
+      - {biz_no: "597-88-01495", stage: "알 수 없음"}
+    expect_merged_stage: "Series C"
+    expect_final: "excluded"
+    note: "현재 엔진이 '알 수 없음' 행을 집어 Series C 기업을 통과시킨 버그의 원본"
+
+  - name: "딥메트릭스"
+    rows:
+      - {biz_no: null,           stage: "Series A"}
+      - {biz_no: "855-88-01407", stage: "Seed"}
+    expect_merged_stage: "Series A"
+
+  - name: "알피"
+    rows:
+      - {biz_no: "515-81-40648", stage: "Pre-IPO", industry: "Hardware; Manufacturing; Science and Engineering; Sustainability"}
+      - {biz_no: "821-86-02087", stage: "Pre-A",   industry: "Healthcare"}
+    expect_merged_stage: "Pre-IPO"
+    expect_final: "excluded"
+
+  - name: "오믈렛"
+    row_count: 3
+    note: "3행 존재, 스테이지 Seed/Pre-A/Pre-A. 사업자번호 563-88-23981 과 563-88-02981 — 자릿수 전치 오류 의심"
+
+  malformed_biz_no:
+    - {name: "랜딩", value: "725-870-2428", note: "하이픈 위치 오류. 정규화 후 경고 리포트에 포함할 것"}
+    - {name: "스피드플로어", value: "103-87-02332 ", note: "앞뒤 공백 포함"}
+
+# ─────────────────────────────────────────────────────────────
+# 5. 파이프라인 전체 불변식
+# ─────────────────────────────────────────────────────────────
+invariants:
+  - id: legacy_label_not_zero
+    desc: "초기단계 기업 중 한글 레거시 업종 라벨(소재/부품/장비, 기후테크, IT서비스/솔루션, 컨텐츠/소비재, 바이오/헬스케어) 보유 기업의 통과율이 0%가 아닐 것"
+    baseline: "수정 전 0/31 (0%)"
+
+  - id: no_empty_program_field
+    desc: "공고 11개 모집 분야 중 통과 기업 수가 0인 분야가 없을 것"
+    baseline: "수정 전 Semiconductor 0, Aerospace 0"
+
+  - id: no_stage_leak
+    desc: "최종 결과에 OUT_OF_SCOPE 스테이지 기업이 0곳일 것"
+    baseline: "수정 전 1곳 (한국공장지붕태양광지주, Series C)"
+
+  - id: unknown_stage_flagged
+    desc: "스테이지 UNKNOWN 기업은 통과하되 별도 티어로 표시되고, unverifiable_requirements에 '투자 단계'가 포함될 것"
+
+  - id: no_verification_claim
+    desc: "출력물 어디에도 Lab-scale 프로토타입·미국 진출 의지·기술 차별성이 '검증됨'으로 표기되지 않을 것. 이 3개는 DB에 컬럼이 없다"
+
+  - id: contact_split
+    desc: "이메일 결측 기업은 별도 시트로 분리될 것"
+    baseline: "수정 전 338곳 중 170곳(50.3%) 결측"
