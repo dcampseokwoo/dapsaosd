@@ -762,12 +762,14 @@ def build_us_forged(uf_rows) -> Path:
     ws = wb.active
     ws.title = "요약_US_FORGED"
     ws.sheet_view.showGridLines = False
-    _c(ws, 1, 1, "US FORGED — 디캠프 x HAX Hardtech Pre-Program 발송 후보 (공고문 요건)",
+    _c(ws, 1, 1, "US FORGED 발송 롱리스트 (선발 결과 아님) — 디캠프 x HAX Hardtech Pre-Program",
        bold=True, size=13)
     ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=6)
-    _c(ws, 2, 1, "요건: 미국 진출 준비 Pre-Seed~Seed 딥테크·하드테크. Software-only·"
-       "일반 소비재·범용 제품 제외. Lab-scale 이상 프로토타입. 선발 8~10개사(마감 9/6). "
-       "→ 각 줄은 그 필터까지 적용하고 '남은' 기업 수(누적).", size=9, wrap=True)
+    _c(ws, 2, 1, "요건: 미국 진출 Pre-Seed~Seed 딥테크·하드테크. Software-only·일반 소비재·"
+       "범용 제품 제외(CB 업종으로 가드). 비스타트업 법인(투자조합·SPC·해외법인) 제외. "
+       "이 목록은 '요건 충족 선발사'가 아니라 '설문 보낼 후보'다 — 핵심 요건(Lab-scale "
+       "프로토타입·미국 의지·기술 차별성)은 DB에 없어 설문/덱으로만 확인된다. 선발 8~10개사.",
+       size=9, wrap=True)
     ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=6)
     ws.row_dimensions[2].height = 40
     _hdr(ws, 4, ["필터 단계 (빼기 → 남은 수)", "제외", "남은 수"], [42, 10, 12])
@@ -845,9 +847,16 @@ def build_us_forged(uf_rows) -> Path:
     ws3.sheet_view.showGridLines = False
     _c(ws3, 1, 1, f"부적합 {len(fails):,}개사 — 사유 분포 (참고)", bold=True, size=12)
     ws3.merge_cells(start_row=1, start_column=1, end_row=1, end_column=3)
-    rc = Counter("Software-only/소비재(하드테크 아님)" if "분야" in r["uf_reasons"]
-                 else "스테이지 이탈(시리즈A+)" for r in fails)
-    _hdr(ws3, 3, ["부적합 사유", "기업 수"], [40, 12])
+
+    def _fail_bucket(r):
+        rs = r["uf_reasons"]
+        if "비스타트업" in rs:
+            return "비스타트업 법인(투자조합·SPC·해외법인)"
+        if "업종 부적합" in rs:
+            return "업종 부적합(일반 소비재·Software-only)"
+        return "스테이지 이탈(시리즈A+·IPO·M&A)"
+    rc = Counter(_fail_bucket(r) for r in fails)
+    _hdr(ws3, 3, ["부적합 사유", "기업 수"], [42, 12])
     rr = 4
     for k, n in rc.most_common():
         _c(ws3, rr, 1, k)

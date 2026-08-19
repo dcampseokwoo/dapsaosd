@@ -754,6 +754,43 @@ class TestUsForged(unittest.TestCase):
         self.assertNotIn("배터리·에너지",
                          sectors.classify("accounting solution for business"))
 
+    def test_consumer_cb_vetoes_keyword_false_positive(self):
+        """CB 업종이 소비재면 키워드가 하드테크로 오분류돼도 부적합(업종 가드)."""
+        # 부동산 회사 소개에 'space'(공간)가 있어도 우주·항공으로 통과시키지 않는다
+        e = self.uf.eligible(self._rec(sector="Real Estate",
+                                       desc="interior space design platform"))
+        self.assertEqual(e["status"], "부적합")
+
+    def test_manufacturing_with_food_tag_vetoed(self):
+        """Food+Manufacturing 다중태그는 소비재 거부(식품 제조 ≠ 딥테크 제조)."""
+        e = self.uf.eligible(self._rec(
+            sector="Food and Beverage; Manufacturing; Consumer Goods",
+            desc="freeze-dried porridge manufacturing"))
+        self.assertEqual(e["status"], "부적합")
+
+    def test_brand_name_does_not_drive_field(self):
+        """회사명/서비스명의 단어('Nanonae')가 분야를 결정하지 않는다."""
+        rec = self._rec(sector="Food & Beverage, Logistics",
+                        desc="neighborhood group purchasing app for food delivery")
+        rec["svc"] = "Nanonae"
+        self.assertFalse(self.uf.fine_confirmed(rec))     # nano(브랜드) 무시
+        self.assertEqual(self.uf.eligible(rec)["status"], "부적합")
+
+    def test_non_startup_entity_excluded(self):
+        e = self.uf.eligible(self._rec(sector="Hardware", tech="배터리",
+                                       desc="이차전지"))
+        e2 = self.uf.eligible({**self._rec(sector="Hardware"),
+                               "name_ko": "에스티이차전지성장투자목적회사"})
+        self.assertTrue(e["status"].startswith("적합"))    # 정상 하드웨어는 적합
+        self.assertEqual(e2["status"], "부적합")            # SPC 는 배제
+
+    def test_real_space_startup_survives(self):
+        """이노스페이스류(우주 하드웨어 시드)는 살아남아야 한다(비스타트업 오탐 아님)."""
+        e = self.uf.eligible(self._rec(sector="Science and Engineering",
+                                       tech="발사체", desc="소형 위성 발사체 로켓 엔진",
+                                       stage="Seed"))
+        self.assertTrue(e["status"].startswith("적합"))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
