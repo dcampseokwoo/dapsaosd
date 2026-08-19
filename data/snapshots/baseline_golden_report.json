@@ -1,0 +1,243 @@
+{
+  "provenance": {
+    "input_snapshot": "GBD_DB_20260818_1856.xlsx",
+    "input_sha256": "d766f7bde415c836007dc98c1929f18befe5ecfff8797ae54881c7b89fadf6b5",
+    "input_rows": 3424,
+    "stage_dist": {
+      "Seed": 575,
+      "Series A": 572,
+      "알 수 없음": 544,
+      "Series B": 423,
+      "Pre-A": 377,
+      "Series C": 174,
+      "IPO(~'20)": 151,
+      "Pre-IPO": 88,
+      "IPO('24)": 67,
+      "M&A(~'20)": 62,
+      "M&A": 50,
+      "Series D": 42,
+      "M&A('21)": 40,
+      "IPO('22)": 38,
+      "M&A('24)": 34,
+      "(빈값)": 33,
+      "M&A('23)": 33,
+      "IPO('23)": 32,
+      "M&A('22)": 31,
+      "IPO('21)": 27,
+      "Series E ~": 24,
+      "Angel": 3,
+      "Pre-seed": 3,
+      "IPO": 1
+    },
+    "biz_status_dist": {
+      "valid": 3207,
+      "foreign": 207,
+      "malformed": 8,
+      "empty": 2
+    }
+  },
+  "layers": {
+    "classification_must_pass": {
+      "total": 17,
+      "pass": 0,
+      "fail": 17,
+      "broken": [
+        {
+          "name": "휴젝트(HUJECT)",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "비즈(주)",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "위드로봇 주식회사",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "주식회사 자이스웍스/JaisWorks Inc.",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "레디로버스트머신(주)",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "에바(EVAR)",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "무인탐사연구소",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "코리아 인스트루먼트",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "(주)신성사운드모션",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "(주)포레",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "크레신(주)",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "(주)에이엘티",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "벤텍스(주)",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "솔티드 주식회사",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "티아이",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "티제이랩스",
+          "got": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "세라트젠",
+          "got": "software_only",
+          "in_snapshot": true
+        }
+      ]
+    },
+    "classification_must_fail": {
+      "total": 19,
+      "pass": 5,
+      "fail": 14,
+      "broken": [
+        {
+          "name": "(주)컨워스",
+          "expect": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "(주)엘앰캐드",
+          "expect": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "파란에너지",
+          "expect": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "EcoLinks",
+          "expect": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "올수",
+          "expect": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "바나나파츠",
+          "expect": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "(주)로보트리",
+          "expect": "software_only",
+          "in_snapshot": true
+        },
+        {
+          "name": "파인유얼뷰티",
+          "expect": "consumer",
+          "in_snapshot": true
+        },
+        {
+          "name": "에코디엠랩(주)",
+          "expect": "consumer",
+          "in_snapshot": true
+        },
+        {
+          "name": "(주)닥터스텍",
+          "expect": "consumer",
+          "in_snapshot": true
+        },
+        {
+          "name": "주식회사 마린테크노",
+          "expect": "consumer",
+          "in_snapshot": true
+        },
+        {
+          "name": "더캡슐",
+          "expect": "consumer",
+          "in_snapshot": true
+        },
+        {
+          "name": "Zhongxing Machinery International Co., Ltd.",
+          "expect": "not_a_startup",
+          "in_snapshot": true
+        },
+        {
+          "name": "Lihua Eco-Packaging Co., Ltd.",
+          "expect": "not_a_startup",
+          "in_snapshot": true
+        }
+      ]
+    },
+    "stage_value_mapping": {
+      "total": 16,
+      "pass": 12,
+      "fail": 4,
+      "broken": [
+        {
+          "value": "Pre-seed",
+          "expect": "IN_SCOPE",
+          "got": "UNKNOWN"
+        },
+        {
+          "value": "Pre-A",
+          "expect": "EXCEPTION",
+          "got": "OUT_OF_SCOPE"
+        },
+        {
+          "value": "Pre-B",
+          "expect": "OUT_OF_SCOPE",
+          "got": "UNKNOWN"
+        },
+        {
+          "value": "존재하지_않는_값",
+          "expect": "RAISE",
+          "got": "UNKNOWN"
+        }
+      ]
+    },
+    "malformed_biz_no": {
+      "total": 2,
+      "pass": 2,
+      "fail": 0,
+      "broken": []
+    }
+  }
+}

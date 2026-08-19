@@ -10,9 +10,18 @@
 # 스테이지 값은 DB 스냅샷마다 바뀌므로(18시간 만에 652곳 변동) 섞어서 테스트하면 안 된다.
 
 meta:
-  baseline_snapshot: GBD_DB_20260818_1856.xlsx
-  baseline_sha256_prefix: "58941558719c663e"
-  baseline_rows: 3424
+  # ⚠ 아래 스냅샷 정보는 '참고값'이지 테스트 assertion 이 아니다.
+  #    이 DB는 살아있는 구글 시트에서 export되며 하루 사이에도 스테이지가 수백 건 바뀐다.
+  #    골든셋은 스냅샷에 의존하지 않아야 한다:
+  #      - 기업 식별은 biz_no 로 한다 (사명 변경·중복에 강함)
+  #      - classification_* 는 스테이지와 무관하게 항상 성립해야 한다
+  #      - stage_rules 는 '값 → 버킷' 매핑만 검증한다. 특정 기업의 실제 스테이지 값을 하드코딩하지 않는다
+  #    실행 시 사용한 스냅샷의 파일명·SHA256·행수·스테이지 분포를 리포트에 기록만 하고, 불일치를 실패로 처리하지 말 것.
+  reference_snapshot: GBD_DB_20260818_1856.xlsx
+  reference_sha256_prefix: "58941558719c663e"
+  reference_rows: 3424
+  reference_stage_dist: {Seed: 571, 알 수 없음: 568, Series A: 567, Pre-A: 376}
+  note: 이 감사를 수행한 시점의 export 기준. 실제 사용 스냅샷과 다를 수 있으며, 다른 것이 정상이다.
   source: 엔진 출력 338개사를 원본 DB 전수와 대조한 감사 결과
 
 # ─────────────────────────────────────────────────────────────
@@ -233,7 +242,7 @@ classification_must_fail:
     expect_verdict: "not_a_startup"
     reason: "중국 법인. 사업자번호 OC* 형식이 판별 기준"
   - name: "Lihua Eco-Packaging Co., Ltd."
-    biz_no: "OC180024"
+    biz_no: "OC180035"
     expect_verdict: "not_a_startup"
     reason: "중국 법인"
 
@@ -307,9 +316,10 @@ duplicate_entities:
     row_count: 3
     note: "3행 존재, 스테이지 Seed/Pre-A/Pre-A. 사업자번호 563-88-23981 과 563-88-02981 — 자릿수 전치 오류 의심"
 
-  malformed_biz_no:
-    - {name: "랜딩", value: "725-870-2428", note: "하이픈 위치 오류. 정규화 후 경고 리포트에 포함할 것"}
-    - {name: "스피드플로어", value: "103-87-02332 ", note: "앞뒤 공백 포함"}
+
+malformed_biz_no:
+  - {name: "랜딩", value: "725-870-2428", note: "하이픈 위치 오류. 정규화 후 경고 리포트에 포함할 것"}
+  - {name: "스피드플로어", value: "103-87-02332 ", note: "앞뒤 공백 포함"}
 
 # ─────────────────────────────────────────────────────────────
 # 5. 파이프라인 전체 불변식
