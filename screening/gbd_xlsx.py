@@ -751,10 +751,12 @@ def build_us_forged(uf_rows) -> Path:
     seed = [r for r in elig if r["uf_stage"] == "OK"]
     unk = [r for r in elig if r["uf_stage"] == "UNKNOWN"]
     us = [r for r in elig if r["uf_us"]]
+    nonstartup = sum(1 for r in uf_rows
+                     if r["uf_status"] == "부적합" and "비스타트업" in r["uf_reasons"])
     nonhard = sum(1 for r in uf_rows
-                  if r["uf_status"] == "부적합" and "분야" in r["uf_reasons"])
+                  if r["uf_status"] == "부적합" and "업종 부적합" in r["uf_reasons"])
     hard_late = sum(1 for r in uf_rows
-                    if r["uf_status"] == "부적합" and "스테이지" in r["uf_reasons"])
+                    if r["uf_status"] == "부적합" and "스테이지 이탈" in r["uf_reasons"])
     hard_total = hard_late + len(elig)
     T = Counter(r["uf_tier"] for r in elig)
 
@@ -774,7 +776,8 @@ def build_us_forged(uf_rows) -> Path:
     ws.row_dimensions[2].height = 40
     _hdr(ws, 4, ["필터 단계 (빼기 → 남은 수)", "제외", "남은 수"], [42, 10, 12])
     funnel = [("전체 DB", "", len(uf_rows), None),
-              ("  └ Software-only·소비재 제거", f"-{nonhard}", None, None),
+              ("  └ 비스타트업 법인(투자조합·SPC·해외법인) 제거", f"-{nonstartup}", None, None),
+              ("  └ 일반 소비재·Software-only 업종 제거", f"-{nonhard}", None, None),
               ("① 하드테크 분야 (남은 수)", "", hard_total, None),
               ("  └ 시리즈A+ (스테이지 이탈) 제거", f"-{hard_late}", None, None),
               ("② Pre-Seed~Seed/미상 (남은 수 = 발송 후보)", "", len(elig), GREEN),
