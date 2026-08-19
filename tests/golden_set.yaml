@@ -289,32 +289,42 @@ stage_rules:
 
 # ─────────────────────────────────────────────────────────────
 # 4. 중복 엔티티 처리 검증
+#
+# 병합 전 '신원 판정'을 먼저 한다(fixture 오류 교정 2026-08-19):
+#   1) 둘 다 유효 사업자번호이고 서로 다르면 → 별개 엔티티(name_collision). 병합 금지.
+#   2) 한쪽만 유효 → 유효한 쪽이 정본. 결측 행 값은 참고만, 정본을 덮어쓰지 않음.
+#   3) 같은 사업자번호가 여러 행 → 진짜 중복. 여기서만 보수적 병합(스테이지 충돌 시 후기).
 # ─────────────────────────────────────────────────────────────
 duplicate_entities:
   - name: "한국공장지붕태양광지주"
-    rows:
-      - {biz_no: "727-81-02043", stage: "Series C"}
-      - {biz_no: "597-88-01495", stage: "알 수 없음"}
-    expect_merged_stage: "Series C"
-    expect_final: "excluded"
-    note: "현재 엔진이 '알 수 없음' 행을 집어 Series C 기업을 통과시킨 버그의 원본"
-
-  - name: "딥메트릭스"
-    rows:
-      - {biz_no: null,           stage: "Series A"}
-      - {biz_no: "855-88-01407", stage: "Seed"}
-    expect_merged_stage: "Series A"
+    expect: name_collision            # 둘 다 유효+상이 → 병합 아님, 각각 독립 판정
+    entities:
+      - {biz_no: "727-81-02043", stage: "Series C",   expect_final: "excluded"}
+      - {biz_no: "597-88-01495", stage: "알 수 없음",  expect_final: "to_classification"}
+    note: "과거 '알 수 없음' 행을 집어 통과시킨 건 병합 버그. 실제로는 별개 엔티티 2개이며 Series C 쪽만 배제된다."
 
   - name: "알피"
-    rows:
-      - {biz_no: "515-81-40648", stage: "Pre-IPO", industry: "Hardware; Manufacturing; Science and Engineering; Sustainability"}
-      - {biz_no: "821-86-02087", stage: "Pre-A",   industry: "Healthcare"}
-    expect_merged_stage: "Pre-IPO"
-    expect_final: "excluded"
+    expect: name_collision
+    suspect: different_industry        # 업종이 크게 달라 동명이인 의심
+    entities:
+      - {biz_no: "515-81-40648", stage: "Pre-IPO", industry: "Hardware; Manufacturing; Science and Engineering; Sustainability", expect_final: "excluded"}
+      - {biz_no: "821-86-02087", stage: "Pre-A",   industry: "Healthcare", expect_final: "excluded"}
+    note: "둘 다 유효+상이. 병합하면 존재하지 않는 회사를 만든다. 두 엔티티 모두 스테이지 이탈로 배제."
+
+  - name: "딥메트릭스"
+    expect: canonical_valid            # 한쪽만 유효 → 유효 행이 정본
+    canonical_biz_no: "855-88-01407"
+    canonical_stage: "Seed"
+    note: "결측 biz_no 행(Series A)은 보조 정보로만. 정본(Seed)을 덮어쓰지 않는다."
 
   - name: "오믈렛"
-    row_count: 3
-    note: "3행 존재, 스테이지 Seed/Pre-A/Pre-A. 사업자번호 563-88-23981 과 563-88-02981 — 자릿수 전치 오류 의심"
+    expect: name_collision
+    suspect: similar_biz_no            # 데이터 확인: 23981 vs 02981 은 순수 전치가 아니라 2자리 치환. 근접 유사로 플래그
+    entities:
+      - {biz_no: "563-88-23981", stage_after_merge: "Pre-A", note: "같은 번호 2행(Seed+Pre-A) → 보수적 병합으로 Pre-A"}
+      - {biz_no: "563-88-02981", stage: "Pre-A"}
+    similar_pair: ["563-88-23981", "563-88-02981"]
+    action: report_no_auto_merge       # 자동 병합 금지, 리포트에 남겨 사람이 확인
 
 
 malformed_biz_no:

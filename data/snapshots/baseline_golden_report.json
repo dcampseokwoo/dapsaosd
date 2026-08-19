@@ -46,12 +46,20 @@
       "total": 19
     },
     "stage_value_mapping": {
-      "pass": 12,
+      "pass": 16,
       "total": 16
     },
     "malformed_biz_no": {
       "pass": 2,
       "total": 2
+    },
+    "duplicate_entities": {
+      "pass": 7,
+      "total": 7
+    },
+    "pre_a_exception": {
+      "pass": 3,
+      "total": 3
     }
   },
   "cases": {
@@ -310,8 +318,8 @@
     "stage:Pre-seed": {
       "layer": "stage_value_mapping",
       "label": "Pre-seed",
-      "pass": false,
-      "got": "UNKNOWN",
+      "pass": true,
+      "got": "IN_SCOPE",
       "expect": "IN_SCOPE"
     },
     "stage:Angel": {
@@ -345,8 +353,8 @@
     "stage:Pre-A": {
       "layer": "stage_value_mapping",
       "label": "Pre-A",
-      "pass": false,
-      "got": "OUT_OF_SCOPE",
+      "pass": true,
+      "got": "EXCEPTION",
       "expect": "EXCEPTION"
     },
     "stage:Series A": {
@@ -359,8 +367,8 @@
     "stage:Pre-B": {
       "layer": "stage_value_mapping",
       "label": "Pre-B",
-      "pass": false,
-      "got": "UNKNOWN",
+      "pass": true,
+      "got": "OUT_OF_SCOPE",
       "expect": "OUT_OF_SCOPE"
     },
     "stage:Series B": {
@@ -415,8 +423,8 @@
     "stage:존재하지_않는_값": {
       "layer": "stage_value_mapping",
       "label": "존재하지_않는_값",
-      "pass": false,
-      "got": "UNKNOWN",
+      "pass": true,
+      "got": "RAISE",
       "expect": "RAISE"
     },
     "malformed:랜딩": {
@@ -432,6 +440,118 @@
       "pass": true,
       "got": "valid",
       "expect": "malformed/valid"
+    },
+    "dup:727-81-02043": {
+      "layer": "duplicate_entities",
+      "label": "한국공장지붕태양광지주/727-81-02043",
+      "pass": true,
+      "got": [
+        "name_collision",
+        "excluded"
+      ],
+      "expect": [
+        "name_collision",
+        "excluded"
+      ]
+    },
+    "dup:597-88-01495": {
+      "layer": "duplicate_entities",
+      "label": "한국공장지붕태양광지주/597-88-01495",
+      "pass": true,
+      "got": [
+        "name_collision",
+        "to_classification"
+      ],
+      "expect": [
+        "name_collision",
+        "to_classification"
+      ]
+    },
+    "dup:515-81-40648": {
+      "layer": "duplicate_entities",
+      "label": "알피/515-81-40648",
+      "pass": true,
+      "got": [
+        "name_collision",
+        "excluded"
+      ],
+      "expect": [
+        "name_collision",
+        "excluded"
+      ]
+    },
+    "dup:821-86-02087": {
+      "layer": "duplicate_entities",
+      "label": "알피/821-86-02087",
+      "pass": true,
+      "got": [
+        "name_collision",
+        "excluded"
+      ],
+      "expect": [
+        "name_collision",
+        "excluded"
+      ]
+    },
+    "dup:855-88-01407": {
+      "layer": "duplicate_entities",
+      "label": "딥메트릭스(정본)",
+      "pass": true,
+      "got": [
+        "canonical_valid",
+        "Seed"
+      ],
+      "expect": [
+        "canonical_valid",
+        "Seed"
+      ]
+    },
+    "dup:563-88-23981": {
+      "layer": "duplicate_entities",
+      "label": "오믈렛/563-88-23981",
+      "pass": true,
+      "got": [
+        "name_collision",
+        "excluded"
+      ],
+      "expect": [
+        "name_collision",
+        null
+      ]
+    },
+    "dup:563-88-02981": {
+      "layer": "duplicate_entities",
+      "label": "오믈렛/563-88-02981",
+      "pass": true,
+      "got": [
+        "name_collision",
+        "excluded"
+      ],
+      "expect": [
+        "name_collision",
+        null
+      ]
+    },
+    "pre_a:363-88-01795": {
+      "layer": "pre_a_exception",
+      "label": "메디띵스",
+      "pass": true,
+      "got": "OUT_OF_SCOPE",
+      "expect": "stage_exception_or_out_of_scope"
+    },
+    "pre_a:661-81-02253": {
+      "layer": "pre_a_exception",
+      "label": "아폴론",
+      "pass": true,
+      "got": "stage_exception",
+      "expect": "stage_exception"
+    },
+    "pre_a:463-81-03056": {
+      "layer": "pre_a_exception",
+      "label": "리옵스",
+      "pass": true,
+      "got": "stage_exception",
+      "expect": "stage_exception"
     }
   }
 }

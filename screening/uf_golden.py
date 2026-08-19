@@ -112,6 +112,66 @@ def evaluate_all() -> tuple[dict, dict]:
             "layer": "malformed_biz_no", "label": c["name"],
             "pass": ok, "got": status, "expect": "malformed/valid"}
 
+    # 중복 엔티티 (§2 신원 판정) + Pre-A 예외 (§3)
+    from screening import uf_dedup, uf_stage
+    ents = uf_dedup.resolve_entities(snapshot_rows())
+    ent_by_biz: dict[str, dict] = {}
+    for e in ents:
+        if e.get("biz_no"):
+            ent_by_biz.setdefault(e["biz_no"], e)
+
+    def _disposition(e: dict) -> str:
+        b = uf_stage.stage_bucket(e.get("stage"))
+        if b in (uf_stage.IN_SCOPE, uf_stage.UNKNOWN):
+            return "to_classification"
+        if b == uf_stage.OUT_OF_SCOPE:
+            return "excluded"
+        # EXCEPTION(Pre-A): 미국+physical(=§1) 이면 통과, 아니면 배제. physical 은 §3 단계라 True 가정.
+        return ("to_classification"
+                if uf_stage.pre_a_bucket(e.get("target", ""), True) == "stage_exception"
+                else "excluded")
+
+    for d in g["duplicate_entities"]:
+        nm, exp = d["name"], d["expect"]
+        if exp == "canonical_valid":
+            biz = d["canonical_biz_no"]
+            e = ent_by_biz.get(biz)
+            ok = bool(e) and e["identity"] == "canonical_valid" \
+                and e.get("stage") == d.get("canonical_stage")
+            cases[_case_id("dup", biz)] = {
+                "layer": "duplicate_entities", "label": f"{nm}(정본)",
+                "pass": ok, "got": e and (e["identity"], e.get("stage")),
+                "expect": ("canonical_valid", d.get("canonical_stage"))}
+        else:  # name_collision (+ suspect)
+            for spec in d.get("entities", []):
+                biz = spec["biz_no"]
+                e = ent_by_biz.get(biz)
+                ok = bool(e) and e["identity"] == "name_collision"
+                if e and "expect_final" in spec:
+                    ok = ok and _disposition(e) == spec["expect_final"]
+                if d.get("suspect") == "similar_biz_no" and e:
+                    ok = ok and "similar_biz_no_suspect" in e.get("flags", [])
+                cases[_case_id("dup", biz)] = {
+                    "layer": "duplicate_entities", "label": f"{nm}/{biz}",
+                    "pass": ok, "got": e and (e["identity"], _disposition(e)),
+                    "expect": (exp, spec.get("expect_final"))}
+
+    for pa in g["stage_rules"].get("pre_a_exception", []):
+        biz = pa["biz_no"]
+        e = ent_by_biz.get(biz)
+        if not e:
+            got = "not_found"
+        else:
+            b = uf_stage.stage_bucket(e.get("stage"))
+            got = (uf_stage.pre_a_bucket(e.get("target", ""), True) if b == uf_stage.EXCEPTION
+                   else ("OUT_OF_SCOPE" if b == uf_stage.OUT_OF_SCOPE else b))
+        exp = pa["expect_bucket"]
+        ok = (got == exp) or (exp == "stage_exception_or_out_of_scope"
+                              and got in ("stage_exception", "OUT_OF_SCOPE"))
+        cases[_case_id("pre_a", biz)] = {
+            "layer": "pre_a_exception", "label": pa["name"],
+            "pass": ok, "got": got, "expect": exp}
+
     summary: dict[str, dict] = {}
     for c in cases.values():
         s = summary.setdefault(c["layer"], {"pass": 0, "total": 0})

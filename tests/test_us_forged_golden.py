@@ -62,15 +62,20 @@ def test_malformed_biz_no_flagged(case):
         assert status == "malformed"
 
 
-# ───────────────────────── 후반 레이어(구현 후 활성화)
-@pytest.mark.skip(reason="§2 중복 병합 구현 후 활성화")
-def test_duplicate_merge():
-    ...
+# ───────────────────────── §2 중복 신원 판정 / §3 Pre-A 예외
+_CASES, _ = uf_golden.evaluate_all()
+_DUP = {k: v for k, v in _CASES.items() if v["layer"] == "duplicate_entities"}
+_PREA = {k: v for k, v in _CASES.items() if v["layer"] == "pre_a_exception"}
 
 
-@pytest.mark.skip(reason="§3 Pre-A 예외 버킷 구현 후 활성화")
-def test_pre_a_exception():
-    ...
+@pytest.mark.parametrize("case", list(_DUP.values()), ids=list(_DUP))
+def test_duplicate_identity(case):
+    assert case["pass"], (f"{case['label']}: 기대 {case['expect']}, 실제 {case['got']}")
+
+
+@pytest.mark.parametrize("case", list(_PREA.values()), ids=list(_PREA))
+def test_pre_a_exception(case):
+    assert case["pass"], (f"{case['label']}: 기대 {case['expect']}, 실제 {case['got']}")
 
 
 @pytest.mark.skip(reason="§6/§8 파이프라인 산출물 구현 후 활성화")

@@ -26,20 +26,15 @@ PROGRAM_FIELDS = [
 VERDICTS = ("hardtech", "software_only", "consumer", "not_a_startup", "unclear")
 
 
-class UnknownStageValue(Exception):
-    """스테이지 값이 매핑에 없음 — 조용히 탈락시키지 말고 예외를 던진다(§3)."""
+# 스테이지 예외는 uf_stage 로 위임(§3). 하위호환 별칭 유지.
+from screening.uf_stage import UnknownStageValue  # noqa: E402,F401
 
 
-# ───────────────────────────────────────────── 스테이지 (§3) — baseline
+# ───────────────────────────────────────────── 스테이지 (§3)
 def stage_bucket(value) -> str:
-    """스테이지 값 → IN_SCOPE / UNKNOWN / EXCEPTION / OUT_OF_SCOPE. 미매칭은 예외.
-
-    BASELINE: 현재 us_forged.stage_status(OK/UNKNOWN/LATER)를 매핑. EXCEPTION·RAISE
-    없음 → 골든셋 stage_rules 에서 Pre-seed/Pre-A/Pre-B/미매칭이 깨진다(그게 baseline).
-    """
-    from screening import us_forged as legacy
-    st = legacy.stage_status("" if value is None else str(value))
-    return {"OK": "IN_SCOPE", "UNKNOWN": "UNKNOWN", "LATER": "OUT_OF_SCOPE"}[st]
+    """스테이지 값 → IN_SCOPE / UNKNOWN / EXCEPTION / OUT_OF_SCOPE. 미매칭은 예외(§3)."""
+    from screening import uf_stage
+    return uf_stage.stage_bucket(value)
 
 
 # ───────────────────────────────────────────── 배제 (§4) — baseline
