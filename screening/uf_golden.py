@@ -62,3 +62,59 @@ def classification_verdict(entry: dict) -> tuple[str, dict]:
     """골든셋 항목의 하드테크 판정(배제+분류, 스테이지 무관) → (verdict, rec)."""
     rec = rec_for(entry)
     return uf_engine.hardtech_verdict(rec), rec
+
+
+def _case_id(layer: str, key) -> str:
+    return f"{layer}:{key}"
+
+
+def evaluate_all() -> tuple[dict, dict]:
+    """골든셋 전 케이스를 현재 엔진으로 평가 → (cases, summary).
+
+    cases[case_id] = {layer, label, pass, got, expect}. 식별자는 biz_no(분류)/값(스테이지)/
+    사명(malformed). 래칫 훅·baseline 리포트·pytest 가 이 함수를 공유한다.
+    """
+    g = load_golden()
+    cases: dict[str, dict] = {}
+
+    for e in g["classification_must_pass"]:
+        biz, _ = uf_snapshot.normalize_biz_no(e.get("biz_no"))
+        v, _rec = classification_verdict(e)
+        cid = _case_id("must_pass", biz or e["name"])
+        cases[cid] = {"layer": "classification_must_pass", "label": e["name"],
+                      "pass": v == "hardtech", "got": v, "expect": "hardtech"}
+
+    for e in g["classification_must_fail"]:
+        biz, _ = uf_snapshot.normalize_biz_no(e.get("biz_no"))
+        v, _rec = classification_verdict(e)
+        cid = _case_id("must_fail", biz or e["name"])
+        cases[cid] = {"layer": "classification_must_fail", "label": e["name"],
+                      "pass": v != "hardtech", "got": v,
+                      "expect": e.get("expect_verdict", "non-hardtech")}
+
+    for c in g["stage_rules"]["value_mapping"]:
+        val, exp = c["value"], c["expect"]
+        try:
+            got = uf_engine.stage_bucket(val)
+            ok = (exp != "RAISE" and got == exp)
+        except uf_engine.UnknownStageValue:
+            got, ok = "RAISE", (exp == "RAISE")
+        cases[_case_id("stage", str(val))] = {
+            "layer": "stage_value_mapping", "label": str(val),
+            "pass": ok, "got": got, "expect": exp}
+
+    for c in g["malformed_biz_no"]:
+        _, status = uf_snapshot.normalize_biz_no(c["value"])
+        ok = status in ("malformed", "valid")
+        if "725-870" in c["value"]:
+            ok = status == "malformed"
+        cases[_case_id("malformed", c["name"])] = {
+            "layer": "malformed_biz_no", "label": c["name"],
+            "pass": ok, "got": status, "expect": "malformed/valid"}
+
+    summary: dict[str, dict] = {}
+    for c in cases.values():
+        s = summary.setdefault(c["layer"], {"pass": 0, "total": 0})
+        s["total"] += 1
+        s["pass"] += 1 if c["pass"] else 0
+    return cases, summary

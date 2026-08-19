@@ -1,0 +1,5 @@
+# US FORGED 엔진 개발/테스트 의존성
+# 설치: pip install -r requirements-dev.txt
+pytest>=9
+PyYAML>=6
+openpyxl>=3.1

@@ -36,208 +36,402 @@
       "empty": 2
     }
   },
-  "layers": {
+  "summary": {
     "classification_must_pass": {
-      "total": 17,
       "pass": 0,
-      "fail": 17,
-      "broken": [
-        {
-          "name": "휴젝트(HUJECT)",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "비즈(주)",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "위드로봇 주식회사",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "주식회사 자이스웍스/JaisWorks Inc.",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "레디로버스트머신(주)",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "에바(EVAR)",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "무인탐사연구소",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "코리아 인스트루먼트",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "(주)신성사운드모션",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "(주)포레",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "크레신(주)",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "(주)에이엘티",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "벤텍스(주)",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "솔티드 주식회사",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "티아이",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "티제이랩스",
-          "got": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "세라트젠",
-          "got": "software_only",
-          "in_snapshot": true
-        }
-      ]
+      "total": 17
     },
     "classification_must_fail": {
-      "total": 19,
       "pass": 5,
-      "fail": 14,
-      "broken": [
-        {
-          "name": "(주)컨워스",
-          "expect": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "(주)엘앰캐드",
-          "expect": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "파란에너지",
-          "expect": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "EcoLinks",
-          "expect": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "올수",
-          "expect": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "바나나파츠",
-          "expect": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "(주)로보트리",
-          "expect": "software_only",
-          "in_snapshot": true
-        },
-        {
-          "name": "파인유얼뷰티",
-          "expect": "consumer",
-          "in_snapshot": true
-        },
-        {
-          "name": "에코디엠랩(주)",
-          "expect": "consumer",
-          "in_snapshot": true
-        },
-        {
-          "name": "(주)닥터스텍",
-          "expect": "consumer",
-          "in_snapshot": true
-        },
-        {
-          "name": "주식회사 마린테크노",
-          "expect": "consumer",
-          "in_snapshot": true
-        },
-        {
-          "name": "더캡슐",
-          "expect": "consumer",
-          "in_snapshot": true
-        },
-        {
-          "name": "Zhongxing Machinery International Co., Ltd.",
-          "expect": "not_a_startup",
-          "in_snapshot": true
-        },
-        {
-          "name": "Lihua Eco-Packaging Co., Ltd.",
-          "expect": "not_a_startup",
-          "in_snapshot": true
-        }
-      ]
+      "total": 19
     },
     "stage_value_mapping": {
-      "total": 16,
       "pass": 12,
-      "fail": 4,
-      "broken": [
-        {
-          "value": "Pre-seed",
-          "expect": "IN_SCOPE",
-          "got": "UNKNOWN"
-        },
-        {
-          "value": "Pre-A",
-          "expect": "EXCEPTION",
-          "got": "OUT_OF_SCOPE"
-        },
-        {
-          "value": "Pre-B",
-          "expect": "OUT_OF_SCOPE",
-          "got": "UNKNOWN"
-        },
-        {
-          "value": "존재하지_않는_값",
-          "expect": "RAISE",
-          "got": "UNKNOWN"
-        }
-      ]
+      "total": 16
     },
     "malformed_biz_no": {
-      "total": 2,
       "pass": 2,
-      "fail": 0,
-      "broken": []
+      "total": 2
+    }
+  },
+  "cases": {
+    "must_pass:666-87-01737": {
+      "layer": "classification_must_pass",
+      "label": "휴젝트(HUJECT)",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:318-81-02567": {
+      "layer": "classification_must_pass",
+      "label": "비즈(주)",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:214-88-22843": {
+      "layer": "classification_must_pass",
+      "label": "위드로봇 주식회사",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:786-88-02885": {
+      "layer": "classification_must_pass",
+      "label": "주식회사 자이스웍스/JaisWorks Inc.",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:731-88-02342": {
+      "layer": "classification_must_pass",
+      "label": "레디로버스트머신(주)",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:295-88-01148": {
+      "layer": "classification_must_pass",
+      "label": "에바(EVAR)",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:888-86-02926": {
+      "layer": "classification_must_pass",
+      "label": "무인탐사연구소",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:215-81-54636": {
+      "layer": "classification_must_pass",
+      "label": "코리아 인스트루먼트",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:693-87-01705": {
+      "layer": "classification_must_pass",
+      "label": "(주)신성사운드모션",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:297-81-02412": {
+      "layer": "classification_must_pass",
+      "label": "(주)포레",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:212-81-20189": {
+      "layer": "classification_must_pass",
+      "label": "크레신(주)",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:688-87-01019": {
+      "layer": "classification_must_pass",
+      "label": "(주)에이엘티",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:213-86-38974": {
+      "layer": "classification_must_pass",
+      "label": "벤텍스(주)",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:611-81-27282": {
+      "layer": "classification_must_pass",
+      "label": "솔티드 주식회사",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:647-85-02411": {
+      "layer": "classification_must_pass",
+      "label": "티아이",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:816-86-01941": {
+      "layer": "classification_must_pass",
+      "label": "티제이랩스",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:576-88-01483": {
+      "layer": "classification_must_pass",
+      "label": "세라트젠",
+      "pass": false,
+      "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_fail:560-81-03449": {
+      "layer": "classification_must_fail",
+      "label": "에이머슬리",
+      "pass": true,
+      "got": "software_only",
+      "expect": "software_only"
+    },
+    "must_fail:293-88-01763": {
+      "layer": "classification_must_fail",
+      "label": "(주)컨워스",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "software_only"
+    },
+    "must_fail:572-88-01778": {
+      "layer": "classification_must_fail",
+      "label": "(주)엘앰캐드",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "software_only"
+    },
+    "must_fail:525-86-00935": {
+      "layer": "classification_must_fail",
+      "label": "파란에너지",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "software_only"
+    },
+    "must_fail:171-88-01731": {
+      "layer": "classification_must_fail",
+      "label": "EcoLinks",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "software_only"
+    },
+    "must_fail:520-88-01893": {
+      "layer": "classification_must_fail",
+      "label": "올수",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "software_only"
+    },
+    "must_fail:585-87-02233": {
+      "layer": "classification_must_fail",
+      "label": "바나나파츠",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "software_only"
+    },
+    "must_fail:151-87-01050": {
+      "layer": "classification_must_fail",
+      "label": "(주)로보트리",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "software_only"
+    },
+    "must_fail:486-81-01236": {
+      "layer": "classification_must_fail",
+      "label": "파인유얼뷰티",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "consumer"
+    },
+    "must_fail:303-81-71892": {
+      "layer": "classification_must_fail",
+      "label": "에코디엠랩(주)",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "consumer"
+    },
+    "must_fail:209-81-24893": {
+      "layer": "classification_must_fail",
+      "label": "(주)닥터스텍",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "consumer"
+    },
+    "must_fail:417-81-49855": {
+      "layer": "classification_must_fail",
+      "label": "주식회사 마린테크노",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "consumer"
+    },
+    "must_fail:584-81-00813": {
+      "layer": "classification_must_fail",
+      "label": "더캡슐",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "consumer"
+    },
+    "must_fail:261-81-14845": {
+      "layer": "classification_must_fail",
+      "label": "크레이버코퍼레이션",
+      "pass": true,
+      "got": "software_only",
+      "expect": "consumer"
+    },
+    "must_fail:124-86-36808": {
+      "layer": "classification_must_fail",
+      "label": "(주)이지코스텍",
+      "pass": true,
+      "got": "software_only",
+      "expect": "consumer"
+    },
+    "must_fail:120-81-45616": {
+      "layer": "classification_must_fail",
+      "label": "주식회사 엔터식스패션쇼핑몰",
+      "pass": true,
+      "got": "software_only",
+      "expect": "consumer"
+    },
+    "must_fail:775-88-01284": {
+      "layer": "classification_must_fail",
+      "label": "인테리어젠틀맨",
+      "pass": true,
+      "got": "software_only",
+      "expect": "consumer"
+    },
+    "must_fail:OC160024": {
+      "layer": "classification_must_fail",
+      "label": "Zhongxing Machinery International Co., Ltd.",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "not_a_startup"
+    },
+    "must_fail:OC180035": {
+      "layer": "classification_must_fail",
+      "label": "Lihua Eco-Packaging Co., Ltd.",
+      "pass": false,
+      "got": "hardtech",
+      "expect": "not_a_startup"
+    },
+    "stage:Pre-seed": {
+      "layer": "stage_value_mapping",
+      "label": "Pre-seed",
+      "pass": false,
+      "got": "UNKNOWN",
+      "expect": "IN_SCOPE"
+    },
+    "stage:Angel": {
+      "layer": "stage_value_mapping",
+      "label": "Angel",
+      "pass": true,
+      "got": "IN_SCOPE",
+      "expect": "IN_SCOPE"
+    },
+    "stage:Seed": {
+      "layer": "stage_value_mapping",
+      "label": "Seed",
+      "pass": true,
+      "got": "IN_SCOPE",
+      "expect": "IN_SCOPE"
+    },
+    "stage:알 수 없음": {
+      "layer": "stage_value_mapping",
+      "label": "알 수 없음",
+      "pass": true,
+      "got": "UNKNOWN",
+      "expect": "UNKNOWN"
+    },
+    "stage:None": {
+      "layer": "stage_value_mapping",
+      "label": "None",
+      "pass": true,
+      "got": "UNKNOWN",
+      "expect": "UNKNOWN"
+    },
+    "stage:Pre-A": {
+      "layer": "stage_value_mapping",
+      "label": "Pre-A",
+      "pass": false,
+      "got": "OUT_OF_SCOPE",
+      "expect": "EXCEPTION"
+    },
+    "stage:Series A": {
+      "layer": "stage_value_mapping",
+      "label": "Series A",
+      "pass": true,
+      "got": "OUT_OF_SCOPE",
+      "expect": "OUT_OF_SCOPE"
+    },
+    "stage:Pre-B": {
+      "layer": "stage_value_mapping",
+      "label": "Pre-B",
+      "pass": false,
+      "got": "UNKNOWN",
+      "expect": "OUT_OF_SCOPE"
+    },
+    "stage:Series B": {
+      "layer": "stage_value_mapping",
+      "label": "Series B",
+      "pass": true,
+      "got": "OUT_OF_SCOPE",
+      "expect": "OUT_OF_SCOPE"
+    },
+    "stage:Series C": {
+      "layer": "stage_value_mapping",
+      "label": "Series C",
+      "pass": true,
+      "got": "OUT_OF_SCOPE",
+      "expect": "OUT_OF_SCOPE"
+    },
+    "stage:Series D": {
+      "layer": "stage_value_mapping",
+      "label": "Series D",
+      "pass": true,
+      "got": "OUT_OF_SCOPE",
+      "expect": "OUT_OF_SCOPE"
+    },
+    "stage:Series E ~": {
+      "layer": "stage_value_mapping",
+      "label": "Series E ~",
+      "pass": true,
+      "got": "OUT_OF_SCOPE",
+      "expect": "OUT_OF_SCOPE"
+    },
+    "stage:Pre-IPO": {
+      "layer": "stage_value_mapping",
+      "label": "Pre-IPO",
+      "pass": true,
+      "got": "OUT_OF_SCOPE",
+      "expect": "OUT_OF_SCOPE"
+    },
+    "stage:IPO('24)": {
+      "layer": "stage_value_mapping",
+      "label": "IPO('24)",
+      "pass": true,
+      "got": "OUT_OF_SCOPE",
+      "expect": "OUT_OF_SCOPE"
+    },
+    "stage:M&A('23)": {
+      "layer": "stage_value_mapping",
+      "label": "M&A('23)",
+      "pass": true,
+      "got": "OUT_OF_SCOPE",
+      "expect": "OUT_OF_SCOPE"
+    },
+    "stage:존재하지_않는_값": {
+      "layer": "stage_value_mapping",
+      "label": "존재하지_않는_값",
+      "pass": false,
+      "got": "UNKNOWN",
+      "expect": "RAISE"
+    },
+    "malformed:랜딩": {
+      "layer": "malformed_biz_no",
+      "label": "랜딩",
+      "pass": true,
+      "got": "malformed",
+      "expect": "malformed/valid"
+    },
+    "malformed:스피드플로어": {
+      "layer": "malformed_biz_no",
+      "label": "스피드플로어",
+      "pass": true,
+      "got": "valid",
+      "expect": "malformed/valid"
     }
   }
 }
