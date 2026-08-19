@@ -41,9 +41,9 @@ TAXONOMY: dict[str, tuple[str, str, str]] = {
         r"신소재|소재\b|advanced\s*material|정련|smelt|나노|nano|"
         r"복합소재|composite|촉매|catalyst|광물|mineral|섬유\b"),
     "배터리·에너지": ("배터리·에너지", "hax",
-        r"배터리|batter|이차전지|이차\s*전지|리튬|lithium|셀\b|"
+        r"배터리|batter|이차전지|이차\s*전지|리튬|lithium|배터리\s*셀|"
         r"수소|hydrogen|수전해|electroly|연료전지|fuel\s*cell|"
-        r"태양광|solar|풍력|wind\s*power|에너지\s*저장|ess\b|전력\s*변환"),
+        r"태양광|solar|풍력|wind\s*power|에너지\s*저장|\bess\b|전력\s*변환"),
     "우주·항공": ("우주·항공", "hax",
         r"우주|위성|satellite|space|aerospace|발사체|추력|thruster|"
         r"드론|drone|uav|도심\s*항공|uam"),
@@ -53,6 +53,11 @@ TAXONOMY: dict[str, tuple[str, str, str]] = {
     "반도체": ("반도체", "hax",
         r"반도체|semiconductor|웨이퍼|wafer|칩\b|chip\b|파운드리|foundry|"
         r"전공정|후공정|패키징\s*장비"),
+    "양자·퀀텀": ("양자·퀀텀", "hax",
+        r"양자|퀀텀|quantum"),
+    "Physical AI": ("Physical AI", "hax",
+        r"physical\s*ai|피지컬\s*ai|임베디드\s*ai|엣지\s*디바이스|edge\s*device|"
+        r"자율\s*주행|autonomous\s*driving"),
     "제조·장비": ("제조·장비", "hax",
         r"제조\s*장비|manufactur|양산\s*설비|공정\s*장비|장비\b|machinery|"
         r"모터|motor|변압기|transformer|플랜트|plant|3d\s*print|농기계|"
@@ -93,7 +98,7 @@ TAXONOMY: dict[str, tuple[str, str, str]] = {
         r"예약|booking|reservation|카셰어|ride\s*hail"),
     "SaaS·B2B": ("SaaS·B2B", "500",
         r"saas|b2b\b|솔루션|solution|플랫폼|platform|자동화\s*소프트웨어|"
-        r"업무\s*자동화|워크플로|workflow|api\b|대시보드|dashboard|"
+        r"업무\s*자동화|워크플로|workflow|\bapi\b|대시보드|dashboard|"
         r"소프트웨어|software|\bapp\b|어플|구독|subscription"),
 }
 

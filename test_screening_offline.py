@@ -716,5 +716,44 @@ class TestConfigSSOT(unittest.TestCase):
         self.assertFalse(any("분야 부적합" in x for x in c["fails"]))
 
 
+class TestUsForged(unittest.TestCase):
+    """US FORGED(디캠프 x HAX Hardtech Pre-Program) 공고 요건 필터."""
+
+    def setUp(self):
+        from screening import us_forged
+        self.uf = us_forged
+
+    def _rec(self, sector="", tech="", desc="", stage="Seed", target=""):
+        return {"sector": sector, "tech": tech, "desc": desc, "stage": stage,
+                "target": target, "svc": "", "name_ko": "x", "name_en": "x"}
+
+    def test_hardtech_seed_is_eligible(self):
+        e = self.uf.eligible(self._rec(sector="Hardware", tech="로봇",
+                                       desc="산업용 로봇 팔"))
+        self.assertTrue(e["status"].startswith("적합"))
+
+    def test_software_only_is_rejected(self):
+        e = self.uf.eligible(self._rec(sector="Software",
+                                       desc="SaaS 회계 솔루션 플랫폼"))
+        self.assertEqual(e["status"], "부적합")
+
+    def test_series_a_hardtech_is_rejected(self):
+        """Pre-Seed~Seed 전용 — 하드테크여도 시리즈A는 부적합."""
+        e = self.uf.eligible(self._rec(sector="Hardware", tech="로봇",
+                                       desc="산업 로봇", stage="Series A"))
+        self.assertEqual(e["status"], "부적합")
+
+    def test_us_seed_hardtech_is_immediate(self):
+        e = self.uf.eligible(self._rec(sector="Hardware", tech="로봇",
+                                       desc="로봇", stage="Seed", target="미국"))
+        self.assertEqual(e["status"], "적합(즉시 후보)")
+
+    def test_business_word_not_battery_false_positive(self):
+        """'business'의 ess 가 배터리·에너지로 오분류되지 않는다."""
+        from screening import sectors
+        self.assertNotIn("배터리·에너지",
+                         sectors.classify("accounting solution for business"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

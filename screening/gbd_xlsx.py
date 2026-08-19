@@ -739,6 +739,98 @@ def build_v6(v6_rows) -> Path:
     return OUT_V6
 
 
+OUT_UF = OUT.parent / "us_forged_candidates.xlsx"
+
+
+def build_us_forged(uf_rows) -> Path:
+    """US FORGED(디캠프 x HAX Hardtech Pre-Program) 발송 후보 워크북."""
+    from collections import Counter
+    from screening import similar_admits, gate_v4
+    wb = Workbook()
+    elig = [r for r in uf_rows if r["uf_status"].startswith("적합")]
+    seed = [r for r in elig if r["uf_stage"] == "OK"]
+    unk = [r for r in elig if r["uf_stage"] == "UNKNOWN"]
+    us = [r for r in elig if r["uf_us"]]
+
+    # 시트1 요약
+    ws = wb.active
+    ws.title = "요약_US_FORGED"
+    ws.sheet_view.showGridLines = False
+    _c(ws, 1, 1, "US FORGED — 디캠프 x HAX Hardtech Pre-Program 발송 후보 (공고문 요건)",
+       bold=True, size=13)
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=6)
+    _c(ws, 2, 1, "요건: 미국 진출 준비 Pre-Seed~Seed 딥테크·하드테크. Software-only·"
+       "일반 소비재·범용 제품 제외. Lab-scale 이상 프로토타입. 선발 8~10개사(마감 9/6). "
+       "→ 포괄 500+HAX 스크린과 달리 특정 공고 필터라 대상이 확 좁혀진다.", size=9, wrap=True)
+    ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=6)
+    ws.row_dimensions[2].height = 40
+    _hdr(ws, 4, ["필터 단계", "기업 수"], [46, 12])
+    funnel = [("전체 DB", len(uf_rows)),
+              ("① 하드테크 분야(Software·소비재 제외)",
+               sum(1 for r in uf_rows if r["uf_status"].startswith("적합")
+                   or "스테이지" in r["uf_reasons"])),
+              ("② + Pre-Seed~Seed or 미상 (시리즈A+ 제외)", len(elig)),
+              ("     ├ 스테이지 시드 확정 (최우선 후보)", len(seed)),
+              ("     └ 스테이지 미상 (설문 후 발송)", len(unk)),
+              ("③ + 미국 진출 명시 (즉시 후보)", len(us))]
+    rr = 5
+    for lab, n in funnel:
+        _c(ws, rr, 1, lab, fill=GREEN if "시드 확정" in lab or "즉시" in lab else None)
+        _c(ws, rr, 2, n, align="center", bold=True)
+        rr += 1
+
+    # 시트2 발송 후보
+    ws2 = wb.create_sheet("발송_후보")
+    ws2.sheet_view.showGridLines = False
+    _c(ws2, 1, 1, f"US FORGED 발송 후보 {len(elig):,}개사 — 즉시/시드확정 상단 정렬",
+       bold=True, size=12)
+    ws2.merge_cells(start_row=1, start_column=1, end_row=1, end_column=9)
+    _hdr(ws2, 3, ["상태", "국문명", "분야", "스테이지", "타겟 시장", "설문/확인 항목",
+                  "업종(CB)", "유사 HAX 합격사", "재단분류"],
+         [16, 18, 14, 11, 12, 26, 14, 24, 12])
+    order = {"적합(즉시 후보)": 0, "적합(설문 확인)": 1}
+    rows_sorted = sorted(elig, key=lambda r: (order.get(r["uf_status"], 2),
+                                              0 if r["uf_stage"] == "OK" else 1,
+                                              r["uf_field"], r["name_ko"]))
+    rr = 4
+    for r in rows_sorted:
+        f = GREEN if r["uf_status"] == "적합(즉시 후보)" else (
+            YEL if r["uf_stage"] == "OK" else None)
+        band = gate_v4.band_of(r["stage"])
+        sim = similar_admits.match_str("hax", r["uf_field"], r["desc"], band)
+        tm = ("🇺🇸 " if r["uf_us"] else "") + ((r.get("target") or "").strip() or "미상")
+        _c(ws2, rr, 1, r["uf_status"], fill=f, size=8, bold=True)
+        _c(ws2, rr, 2, r["name_ko"], fill=f, size=9)
+        _c(ws2, rr, 3, r["uf_field"], fill=f, size=8, bold=True)
+        _c(ws2, rr, 4, r["stage"], fill=f, size=8, align="center")
+        _c(ws2, rr, 5, tm, fill=f, size=8, align="center")
+        _c(ws2, rr, 6, r["uf_reasons"][:40], fill=f, size=8)
+        _c(ws2, rr, 7, r["sector"][:20], fill=f, size=8)
+        _c(ws2, rr, 8, sim[:42], fill=f, size=8)
+        _c(ws2, rr, 9, r["type"][:18], fill=f, size=8)
+        rr += 1
+    ws2.freeze_panes = "A4"
+
+    # 시트3 부적합 사유
+    fails = [r for r in uf_rows if r["uf_status"] == "부적합"]
+    ws3 = wb.create_sheet("부적합_참고")
+    ws3.sheet_view.showGridLines = False
+    _c(ws3, 1, 1, f"부적합 {len(fails):,}개사 — 사유 분포 (참고)", bold=True, size=12)
+    ws3.merge_cells(start_row=1, start_column=1, end_row=1, end_column=3)
+    rc = Counter("Software-only/소비재(하드테크 아님)" if "분야" in r["uf_reasons"]
+                 else "스테이지 이탈(시리즈A+)" for r in fails)
+    _hdr(ws3, 3, ["부적합 사유", "기업 수"], [40, 12])
+    rr = 4
+    for k, n in rc.most_common():
+        _c(ws3, rr, 1, k)
+        _c(ws3, rr, 2, n, align="center", bold=True)
+        rr += 1
+
+    OUT_UF.parent.mkdir(parents=True, exist_ok=True)
+    wb.save(OUT_UF)
+    return OUT_UF
+
+
 if __name__ == "__main__":
     from screening import gbd_pipeline
     rows = gbd_pipeline.run()
