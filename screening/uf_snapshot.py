@@ -106,6 +106,35 @@ def sha256(path: Path | str) -> str:
     return h.hexdigest()
 
 
+def resolve_snapshot(snap_dir: Path | str = SNAP_DIR) -> Path:
+    """data/snapshots/ 에서 최신 GBD_DB_YYYYMMDD_HHMM.xlsx 를 고른다(파일명 시각순).
+
+    실행마다 바뀌는 라이브 시트 대신 '고정된 스냅샷'만 입력으로 쓰기 위함(§7).
+    """
+    snaps = sorted(Path(snap_dir).glob("GBD_DB_*.xlsx"))
+    if not snaps:
+        raise FileNotFoundError(f"스냅샷 없음: {snap_dir}/GBD_DB_*.xlsx")
+    return snaps[-1]
+
+
+def _git_commit() -> str:
+    import subprocess
+    try:
+        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT,
+                              capture_output=True, text=True, timeout=5
+                              ).stdout.strip() or "unknown"
+    except Exception:
+        return "unknown"
+
+
+def run_metadata(path: Path | str, run_timestamp: str, rows: list[dict] | None = None) -> dict:
+    """리포트 헤더용 실행 메타(§6). run_timestamp 는 호출측이 ISO8601 로 주입."""
+    meta = provenance(path, rows)
+    meta["engine_commit"] = _git_commit()
+    meta["run_timestamp"] = run_timestamp
+    return meta
+
+
 def provenance(path: Path | str = DEFAULT_SNAPSHOT, rows: list[dict] | None = None) -> dict:
     """실행에 쓴 스냅샷 메타(리포트 기록용). run_timestamp 는 호출측에서 주입."""
     from collections import Counter
