@@ -39,11 +39,11 @@
   "summary": {
     "classification_must_pass": {
       "pass": 1,
-      "total": 16
+      "total": 15
     },
     "classification_must_fail": {
-      "pass": 7,
-      "total": 20
+      "pass": 8,
+      "total": 21
     },
     "stage_value_mapping": {
       "pass": 16,
@@ -122,13 +122,6 @@
     "must_pass:297-81-02412": {
       "layer": "classification_must_pass",
       "label": "(주)포레",
-      "pass": false,
-      "got": "software_only",
-      "expect": "hardtech"
-    },
-    "must_pass:212-81-20189": {
-      "layer": "classification_must_pass",
-      "label": "크레신(주)",
       "pass": false,
       "got": "software_only",
       "expect": "hardtech"
@@ -258,6 +251,13 @@
       "pass": true,
       "got": "software_only",
       "expect": "software_only"
+    },
+    "must_fail:212-81-20189": {
+      "layer": "classification_must_fail",
+      "label": "크레신(주)",
+      "pass": true,
+      "got": "software_only",
+      "expect": "consumer"
     },
     "must_fail:417-81-49855": {
       "layer": "classification_must_fail",

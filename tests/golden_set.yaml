@@ -3,6 +3,14 @@
 # 사용법: tests/golden_set.yaml 로 배치하고 pytest fixture로 로드한다.
 # 새 오류를 발견할 때마다 여기에 한 줄씩 추가한다.
 #
+# ⚠ fixture 수정 원칙 (반드시 지킬 것):
+#   fixture 를 '출력과 일치하도록' 반복 수정하면 테스트가 아니라 출력의 거울이 된다.
+#   → fixture 수정은 **DB 원문(1줄 소개·기술 컬럼)에 명시적 근거가 있을 때만** 허용한다.
+#     (예: 자이스웍스='intelligent control services', 크레신 기술컬럼='OEM·ODM' — 라벨이
+#      아니라 원문이 SW/수탁임을 증명.)
+#   → 원문 근거 없이 분류기 출력과 안 맞으면, fixture 를 고치지 말고 **프롬프트를 고친다**.
+#   이 원칙을 어긴 수정은 커밋에서 거부한다.
+#
 # 레이어를 분리한 이유:
 #   - classification_*  는 "이 회사가 하드테크인가" 만 검증한다. 스테이지와 무관하다.
 #   - stage_rules       는 스테이지 필터만 검증한다.
@@ -94,13 +102,6 @@ classification_must_pass:
     reason: "AI·IoT 센서 기반 음식물처리기 자체 설계·제조, 감량 데이터 관리시스템"
     expect_field: "Industrial Hardware"
     trap: "라벨에 Consumer Goods가 있다는 이유로 오탈락"
-
-  - name: "크레신(주)"
-    biz_no: "212-81-20189"
-    db_industry: "Audio; Hardware; Manufacturing"
-    reason: "음향 하드웨어 + 무선 SoC·RF·공간음향 설계, OEM·ODM"
-    expect_field: "Industrial Hardware"
-    trap: "Audio 라벨"
 
   - name: "(주)에이엘티"
     biz_no: "688-87-01019"
@@ -214,6 +215,11 @@ classification_must_fail:
     biz_no: "816-86-01941"
     expect_verdict: "software_only"
     reason: "소개문 'supplies indoor localization platform on Cloud', 기술 컬럼='클라우드' — 측위 플랫폼 SW. 과거 'Mobility' 라벨 근거 must_pass 였으나 라벨 기반 오판."
+  - name: "크레신(주)"
+    biz_no: "212-81-20189"
+    expect_verdict: "consumer"
+    reason: "소개문 '헤드폰·이어폰 중심 음향 설계~양산', 기술 컬럼에 'OEM·ODM 솔루션' 명시 — 완제품 조립·수탁(결정2 규칙: 완제품 조립·수탁만이면 consumer). 지디케이·화진과 동일 처리로 일관. 과거 라벨의 '무선 SoC·RF'만 보고 must_pass 로 오판."
+    trap: "누가 프롬프트를 바꿔 OEM 을 통과시키면 이 케이스가 잡는다"
   - name: "주식회사 마린테크노"
     biz_no: "417-81-49855"
     expect_verdict: "consumer"

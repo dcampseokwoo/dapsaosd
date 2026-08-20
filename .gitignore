@@ -10,3 +10,6 @@ data/cache/pilot_items.json
 data/cache/pilot_out_*.json
 data/cache/pilot_sample_only.json
 data/cache/pilot_pass2_*.json
+data/cache/full_items.json
+data/cache/classify_prompt.txt
+data/cache/full_out_*.json
