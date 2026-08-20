@@ -5,3 +5,6 @@ checkpoints/
 data/*.xlsx
 !data/*.csv
 output/
+data/cache/pilot_input.json
+data/cache/pilot_items.json
+data/cache/pilot_out_*.json
