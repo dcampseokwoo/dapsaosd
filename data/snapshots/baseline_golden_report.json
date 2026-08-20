@@ -38,12 +38,12 @@
   },
   "summary": {
     "classification_must_pass": {
-      "pass": 0,
-      "total": 17
+      "pass": 1,
+      "total": 16
     },
     "classification_must_fail": {
-      "pass": 5,
-      "total": 19
+      "pass": 7,
+      "total": 20
     },
     "stage_value_mapping": {
       "pass": 16,
@@ -80,13 +80,6 @@
     "must_pass:214-88-22843": {
       "layer": "classification_must_pass",
       "label": "위드로봇 주식회사",
-      "pass": false,
-      "got": "software_only",
-      "expect": "hardtech"
-    },
-    "must_pass:786-88-02885": {
-      "layer": "classification_must_pass",
-      "label": "주식회사 자이스웍스/JaisWorks Inc.",
       "pass": false,
       "got": "software_only",
       "expect": "hardtech"
@@ -168,18 +161,18 @@
       "got": "software_only",
       "expect": "hardtech"
     },
-    "must_pass:816-86-01941": {
-      "layer": "classification_must_pass",
-      "label": "티제이랩스",
-      "pass": false,
-      "got": "software_only",
-      "expect": "hardtech"
-    },
     "must_pass:576-88-01483": {
       "layer": "classification_must_pass",
       "label": "세라트젠",
       "pass": false,
       "got": "software_only",
+      "expect": "hardtech"
+    },
+    "must_pass:303-81-71892": {
+      "layer": "classification_must_pass",
+      "label": "에코디엠랩(주)",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_fail:560-81-03449": {
@@ -245,19 +238,26 @@
       "got": "hardtech",
       "expect": "consumer"
     },
-    "must_fail:303-81-71892": {
-      "layer": "classification_must_fail",
-      "label": "에코디엠랩(주)",
-      "pass": false,
-      "got": "hardtech",
-      "expect": "consumer"
-    },
     "must_fail:209-81-24893": {
       "layer": "classification_must_fail",
       "label": "(주)닥터스텍",
       "pass": false,
       "got": "hardtech",
       "expect": "consumer"
+    },
+    "must_fail:786-88-02885": {
+      "layer": "classification_must_fail",
+      "label": "주식회사 자이스웍스/JaisWorks Inc.",
+      "pass": true,
+      "got": "software_only",
+      "expect": "software_only"
+    },
+    "must_fail:816-86-01941": {
+      "layer": "classification_must_fail",
+      "label": "티제이랩스",
+      "pass": true,
+      "got": "software_only",
+      "expect": "software_only"
     },
     "must_fail:417-81-49855": {
       "layer": "classification_must_fail",

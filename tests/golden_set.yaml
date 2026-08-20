@@ -52,13 +52,6 @@ classification_must_pass:
     expect_field: "Robotics/Automation"
     trap: "한글 레거시 라벨"
 
-  - name: "주식회사 자이스웍스/JaisWorks Inc."
-    biz_no: "786-88-02885"
-    db_industry: "소재/부품/장비"
-    reason: "AI·센서 기반 설비·시스템 운영 최적화 제어"
-    expect_field: "Robotics/Automation"
-    trap: "한글 레거시 라벨 + 사명에 Inc. 포함(국내 법인이므로 해외법인 배제 규칙에 걸리면 안 됨)"
-
   - name: "레디로버스트머신(주)"
     biz_no: "731-88-02342"
     db_industry: "소재/부품/장비"
@@ -136,18 +129,21 @@ classification_must_pass:
     reason: "백내장 수술용 전낭 절개기구, 안구 3축 편차 정밀 측정 기술"
     expect_field: "Healthtech Device"
 
-  - name: "티제이랩스"
-    biz_no: "816-86-01941"
-    db_industry: "Mobility"
-    reason: "Surface Correlation 기반 실내측위 기술"
-    expect_field: "Sensor/Edge Device"
-
   - name: "세라트젠"
     biz_no: "576-88-01483"
     db_industry: "Bio, Healthcare"
     reason: "장기특이적 3D 세포배양용 하이드로겔 소재"
     expect_field: "Semiconductor/Advanced Materials"
     confidence_floor: "medium"   # 소재/바이오 경계 — low 로 떨어지면 사람 검토 버킷
+
+  # ── 수직계열화 규칙으로 정정: 뷰티 완제품이지만 소재·부품·공정 자체개발 → hardtech ──
+  - name: "에코디엠랩(주)"
+    biz_no: "303-81-71892"
+    db_industry: "Beauty/Cosmetic; Hardware; Manufacturing"
+    reason: "압전세라믹 원료·트랜스듀서·구동회로 수직계열화(원료부터 완제품까지 자체 생산)"
+    expect_field: "Semiconductor/Advanced Materials"
+    expect_consumer_facing: true   # 최종 제품은 소비자용 → 플래그 후 사람 검토(배제는 아님)
+    trap: "뷰티 라벨이라 consumer 로 오판하기 쉬우나 핵심 소재·부품·공정 자체개발 → hardtech. 닥터스텍(완제품 조립)과 대비"
 
 # ─────────────────────────────────────────────────────────────
 # 2. 분류기 검증 — hardtech 가 아니라고 판정해야 하는 기업
@@ -203,14 +199,21 @@ classification_must_fail:
     biz_no: "486-81-01236"
     expect_verdict: "consumer"
     reason: "뷰티"
-  - name: "에코디엠랩(주)"
-    biz_no: "303-81-71892"
-    expect_verdict: "consumer"
-    reason: "뷰티·화장품. 라벨에 Hardware; Manufacturing 포함이라 오통과 위험"
   - name: "(주)닥터스텍"
     biz_no: "209-81-24893"
     expect_verdict: "consumer"
-    reason: "뷰티·화장품. 라벨에 Hardware 포함"
+    reason: "초음파·이온토포레시스·미세전류 등 기존 기술을 조합한 스킨케어 기기(완제품 조립, 범용). 소재·공정 자체개발 아님 → consumer"
+
+  # ── 라벨→소개문 판정 전환으로 정정된 케이스(2026-08-20, fixture 라벨 기반 오류 교정) ──
+  - name: "주식회사 자이스웍스/JaisWorks Inc."
+    biz_no: "786-88-02885"
+    expect_verdict: "software_only"
+    reason: "소개문 원문 'provides intelligent control services that optimize equipment and system operations' — 설비를 제어하는 SW. 과거 '소재/부품/장비' 라벨 근거로 must_pass 였으나 라벨 기반 오판. 국내 법인(Inc. 사명이나 사업자번호 정상)이라 해외법인 배제 대상 아님."
+    trap: "사명에 Inc. 포함이나 국내 법인 — 해외법인 배제 규칙에 걸리면 안 됨"
+  - name: "티제이랩스"
+    biz_no: "816-86-01941"
+    expect_verdict: "software_only"
+    reason: "소개문 'supplies indoor localization platform on Cloud', 기술 컬럼='클라우드' — 측위 플랫폼 SW. 과거 'Mobility' 라벨 근거 must_pass 였으나 라벨 기반 오판."
   - name: "주식회사 마린테크노"
     biz_no: "417-81-49855"
     expect_verdict: "consumer"

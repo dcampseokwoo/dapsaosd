@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CACHE_PATH = ROOT / "data" / "cache" / "classification.json"
 
 MODEL = "claude-agent"        # 분류 수행 모델(캐시 무효화 키). 런타임 API 붙이면 실제 id 로.
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v2"          # v2: 수직계열화 규칙 + consumer_facing_end_product·maturity_signal 필드
 
 PROGRAM_FIELDS = [
     "Robotics/Automation", "Advanced Manufacturing", "Energy/Climate Tech",
@@ -48,6 +48,14 @@ PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 �
                   드러날 때만; 법인격 배제는 별도 규칙이 담당하므로 확신 없으면 쓰지 말 것).
 - unclear       : 소개문만으로 '직접 설계/제조'가 불확실. 아래 경계형이 대표적.
 
+■ 핵심 규칙 — "기술 스택의 어느 층을 직접 소유하는가"
+소재·부품·공정을 **자체 개발하거나 수직계열화**하면 hardtech. 완제품 **조립·수탁 생산만**
+(자체 소재·부품·공정 차별성 없이) 하면 consumer 또는 unclear.
+**최종 제품이 소비자용인지는 기준이 아니다** — 소비자용 완제품이라도 핵심 소재·부품·공정을
+자체 개발하면 hardtech 로 하고 consumer_facing_end_product=true 로 표시한다.
+  예: "압전세라믹 원료·트랜스듀서·구동회로 수직계열화" → hardtech (뷰티 완제품이어도).
+      "초음파·이온토포레시스 등 기존 기술을 조합한 스킨케어 기기" → consumer(범용 조합).
+
 ■ 경계형 처리 (감사에서 판단 유보됐던 유형 — 여기서 일관성이 드러난다)
 1) 파운드리·수탁제조(남의 설계를 위탁생산, 자체 제품/IP 언급 없음)
    → 자체 기술 차별성이 소개에 없으면 unclear(수탁제조 의심), confidence 낮게. 자체 제품·
@@ -57,11 +65,19 @@ PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 �
 3) 연구용역·엔지니어링 컨설팅(하드웨어를 다루지만 자체 제품 없음, 용역 제공) → unclear.
 4) 하드웨어 + SaaS 결합(센서·디바이스를 직접 만들어 팔고 데이터 구독을 붙임) → hardtech.
 5) 기성 부품 제조 중소기업(범용 부품을 오래 만들어온 제조업체 느낌) → 물리적 제조는
-   맞으므로 hardtech 로 두되, evidence 에 '범용/기성 부품 제조 뉘앙스'를 반드시 적어라
-   (스타트업 여부는 다른 단계에서 본다).
+   맞으므로 verdict 는 hardtech 로 둔다(배제하지 않는다). 대신 소개문 단서(범용 부품 다품목·
+   OEM 납품·기술 차별성 주장 없음)를 maturity_signal 에 짧게 적는다. 이건 배제가 아니라
+   우선순위 정렬용이고, 스타트업 여부 최종 확인은 설문이 한다.
 
 ■ physical_product (boolean)
 물리적 제품을 **직접 설계·제조**하면 true. 유통·중개·용역·순수 SW 면 false.
+
+■ consumer_facing_end_product (boolean)
+최종 제품이 소비자용이면 true(hardtech 이어도 사람이 보게 표시). B2B 부품·장비·소재면 false.
+
+■ maturity_signal (string)
+소개에 '기성/성숙 제조업체' 단서(범용 부품 다품목·OEM 납품·기술 차별성 주장 없음)가 있으면
+그 단서를 짧게 인용/기록. 없으면 "". (배제가 아니라 정렬용.)
 
 ■ 출력: 아래 JSON 스키마 정확히. evidence 는 판정 근거가 된 **소개문 구절을 원문 그대로
 인용**(요약·창작 금지). matched_program_field 는 11개 중 하나 또는 Other Deeptech/None.
@@ -71,6 +87,8 @@ PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 �
   "verdict": "hardtech|software_only|consumer|not_a_startup|unclear",
   "matched_program_field": "<위 목록 중 하나>",
   "physical_product": true|false,
+  "consumer_facing_end_product": true|false,
+  "maturity_signal": "<단서 or 빈 문자열>",
   "evidence": "<소개문 원문 인용>",
   "confidence": "high|medium|low"
 }

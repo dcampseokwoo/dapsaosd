@@ -39,6 +39,10 @@ def _load_outputs() -> dict:
     return by_idx
 
 
+_FIELDS = ("verdict", "matched_program_field", "physical_product",
+           "consumer_facing_end_product", "maturity_signal", "evidence", "confidence")
+
+
 def build_cache(items: dict, outs: dict) -> int:
     cache = uf_classify.load_cache()
     for idx, it in items.items():
@@ -46,11 +50,28 @@ def build_cache(items: dict, outs: dict) -> int:
         if not o:
             continue
         rec = {"biz_no": it["biz_no"], "desc": it["desc"]}
-        uf_classify.put(rec, {k: o.get(k) for k in
-                              ("verdict", "matched_program_field", "physical_product",
-                               "evidence", "confidence")}, cache)
+        uf_classify.put(rec, {k: o.get(k) for k in _FIELDS}, cache)
     uf_classify.save_cache(cache)
     return len(cache)
+
+
+def consistency() -> dict:
+    """표본 40 2회 분류 일치율(pass1 = pilot_out 표본부분, pass2 = pilot_pass2_*)."""
+    items = _load_items()
+    outs = _load_outputs()
+    pass1 = {it["biz_no"]: outs[idx]["verdict"] for idx, it in items.items()
+             if it.get("set") == "sample" and idx in outs}
+    pass2 = {}
+    for k in range(2):
+        p = CACHE_DIR / f"pilot_pass2_{k}.json"
+        if p.exists():
+            for o in json.loads(p.read_text(encoding="utf-8")):
+                pass2[o["biz_no"]] = o["verdict"]
+    common = set(pass1) & set(pass2)
+    agree = sum(1 for b in common if pass1[b] == pass2[b])
+    disagree = [(b, pass1[b], pass2[b]) for b in common if pass1[b] != pass2[b]]
+    return {"n": len(common), "agree": agree,
+            "rate": (agree / len(common) if common else 0), "disagree": disagree}
 
 
 def main():
@@ -112,6 +133,25 @@ def main():
         print(f"  {b:9} {o.get('verdict','?'):13} {(o.get('matched_program_field') or '')[:22]:22} "
               f"{o.get('confidence','?'):6} phys={str(o.get('physical_product'))[:5]:5} "
               f"| {it['name'][:14]:14} | {(o.get('evidence') or '')[:46]}")
+
+    # consumer_facing / maturity 플래그가 붙은 것(사람 검토용)
+    cf = [(it["name"], o) for idx, it in items.items()
+          if (o := outs.get(idx)) and o.get("consumer_facing_end_product")]
+    mat = [(it["name"], o.get("maturity_signal")) for idx, it in items.items()
+           if (o := outs.get(idx)) and (o.get("maturity_signal") or "").strip()]
+    print(f"\n[consumer_facing_end_product=true] {len(cf)}건: "
+          + ", ".join(f"{n}({o['verdict']})" for n, o in cf[:12]))
+    print(f"[maturity_signal 있음] {len(mat)}건: " + "; ".join(f"{n}:{s[:24]}" for n, s in mat[:10]))
+
+    # 일관성(표본 2회)
+    try:
+        c = consistency()
+        print(f"\n[일관성] 표본 {c['n']}건 2회 분류 일치 {c['agree']}/{c['n']} = {100*c['rate']:.0f}%")
+        for b, v1, v2 in c["disagree"]:
+            nm = next((it["name"] for it in items.values() if it["biz_no"] == b), b)
+            print(f"    ≠ {nm}: pass1={v1} / pass2={v2}")
+    except FileNotFoundError:
+        print("\n[일관성] pass2 파일 없음 — 2회차 미완료")
 
     n = build_cache(items, outs)
     print(f"\n캐시 고정: {uf_classify.CACHE_PATH}  ({n} entries)")
