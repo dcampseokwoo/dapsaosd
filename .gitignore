@@ -8,3 +8,5 @@ output/
 data/cache/pilot_input.json
 data/cache/pilot_items.json
 data/cache/pilot_out_*.json
+data/cache/pilot_sample_only.json
+data/cache/pilot_pass2_*.json
