@@ -1,0 +1,527 @@
+{
+  "666-87-01737|114c24aaea3c1bc2|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Energy/Climate Tech",
+    "physical_product": true,
+    "evidence": "HUJECT develops energy-harvesting block systems.",
+    "confidence": "medium"
+  },
+  "318-81-02567|caf616117f9a5497|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Energy/Climate Tech",
+    "physical_product": true,
+    "evidence": "BIZ develops SMRs and provides consulting for nuclear licensing and safety regulation.",
+    "confidence": "medium"
+  },
+  "214-88-22843|a2e98b27d65742ee|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Robotics/Automation",
+    "physical_product": true,
+    "evidence": "Withrobot develops real-time monitoring robot solutions for industrial sites.",
+    "confidence": "medium"
+  },
+  "786-88-02885|67f52ee4f03a7935|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "JaisWorks provides intelligent control services that optimize equipment and system operations using AI and sensor data.",
+    "confidence": "high"
+  },
+  "731-88-02342|b526a167f0c3ef1f|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Energy/Climate Tech",
+    "physical_product": true,
+    "evidence": "READI Robust Machine develops energy recovery systems.",
+    "confidence": "medium"
+  },
+  "295-88-01148|10853492d9edd162|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Energy/Climate Tech",
+    "physical_product": true,
+    "evidence": "EVAR provides electric vehicle charging infrastructure solutions.",
+    "confidence": "medium"
+  },
+  "888-86-02926|58e495ab01bfde98|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Aerospace",
+    "physical_product": true,
+    "evidence": "Unmmanned Exploration Laboratory specializing in lunar exploration. The only space robotixs company in Republic of Korea",
+    "confidence": "high"
+  },
+  "215-81-54636|2009a70d7f676efc|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
+    "physical_product": true,
+    "evidence": "Manufactures probe cards for semiconductor wafer testing",
+    "confidence": "high"
+  },
+  "693-87-01705|cea8f9d86558a046|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Sensor/Edge Device",
+    "physical_product": true,
+    "evidence": "MEMS 센서 설계와 공정개발 역량을 바탕으로 소형·고성능 MEMS 마이크로폰을 개발한 전자부품 기업",
+    "confidence": "high"
+  },
+  "297-81-02412|9e2a2b77bb54fdb5|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Energy/Climate Tech",
+    "physical_product": true,
+    "evidence": "AIoT 음식물처리기와 음식물쓰레기 감량 데이터 관리시스템을 개발·제조하는 친환경 가전기업",
+    "confidence": "medium"
+  },
+  "212-81-20189|f3e6ee33889595b8|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Other Deeptech",
+    "physical_product": true,
+    "evidence": "헤드폰·이어폰을 중심으로 음향 설계부터 무선 연결과 양산까지 제공하는 오디오 전문기업",
+    "confidence": "high"
+  },
+  "688-87-01019|a156b17a2d708076|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Robotics/Automation",
+    "physical_product": true,
+    "evidence": "Develops AI-enabled mobile devices, kids-phone safety services, and HRI-based senior-care robots.",
+    "confidence": "medium"
+  },
+  "213-86-38974|ab27830634a7b1d9|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
+    "physical_product": true,
+    "evidence": "Develops nano-enabled functional textiles and chemicals for moisture, temperature, air, energy, safety, and healthcare applications.",
+    "confidence": "medium"
+  },
+  "611-81-27282|2e6d0ce90cbb1cc3|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Healthtech Device",
+    "physical_product": true,
+    "evidence": "스마트 인솔로 족저압과 체중 이동을 측정해 보행 재활·균형 진단·스포츠 퍼포먼스 분석을 제공하는 기업",
+    "confidence": "high"
+  },
+  "647-85-02411|0647abb7ff5465d0|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Healthtech Device",
+    "physical_product": true,
+    "evidence": "TI develops an anterior capsule cutting instrument for cataract surgery 'imass', and technology for measuring deviations in each axis (X, Y, Z) of the eye with high precision 'igazy'",
+    "confidence": "high"
+  },
+  "816-86-01941|fe33768ba4db1507|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "TJ LABS supplies indoor localization platform on Cloud based on Surface Correlation technology.",
+    "confidence": "high"
+  },
+  "576-88-01483|629239d843344bc9|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Other Deeptech",
+    "physical_product": true,
+    "evidence": "CELLARTGEN develops 'Regeneix', ready-to-use, organ specific hydrogel for 3D cell culture research.",
+    "confidence": "medium"
+  },
+  "560-81-03449|6afa38df4f3ea455|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Amously, a spin-off from SK hynix, develops AI agents to replace engineer roles in semiconductor fabs",
+    "confidence": "high"
+  },
+  "293-88-01763|4da11224a6abc5b4|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Provides a cost-efficient 3D data engine and digital-twin platforms that integrate, analyze, and visualize BIM, point clouds, drone imagery, and GIS data.",
+    "confidence": "high"
+  },
+  "572-88-01778|207e2ce7968d679d|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Provides lightweight 3D CAD visualization and product-data collaboration software for manufacturing design and engineering workflows.",
+    "confidence": "high"
+  },
+  "525-86-00935|e5fd8ee2de38c9e5|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Paran Energy provides an AI-based real-time energy solution platform.",
+    "confidence": "high"
+  },
+  "171-88-01731|4c465472aae0bd3a|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "EcoLinks is a “one-stop” platform solution provider for the financing, installation and maintenance of solar power plants",
+    "confidence": "high"
+  },
+  "520-88-01893|83aafb3e5cf94bef|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Allsu operates a one-stop platform for waste cooking oil collection matching, cooking oil application, auction, and delivery.",
+    "confidence": "high"
+  },
+  "585-87-02233|e990fbd10aa50212|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Banana Parts offers an online marketplace for electrical parts and components.",
+    "confidence": "high"
+  },
+  "151-87-01050|a64c12efd41bce29|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "교사와 학생이 코딩 없이 3D·시뮬레이션 콘텐츠를 만들고 웹·LMS로 배포하는 교육 플랫폼",
+    "confidence": "high"
+  },
+  "486-81-01236|b3cd9033543165c1|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": true,
+    "evidence": "Beaurit provides home training and Pilates video content while manufacturing and selling fitness equipment.",
+    "confidence": "medium"
+  },
+  "303-81-71892|f15ac1874525c9d3|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Healthtech Device",
+    "physical_product": true,
+    "evidence": "압전세라믹부터 완제품까지 자체 생산해 집속·다중 초음파 홈뷰티 디바이스를 개발하는 기업",
+    "confidence": "high"
+  },
+  "209-81-24893|ca4d3c98a465a41e|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Healthtech Device",
+    "physical_product": true,
+    "evidence": "Develops and manufactures professional and home-use skincare devices, including ultrasonic, iontophoresis, heating, and cooling beauty equipment.",
+    "confidence": "high"
+  },
+  "417-81-49855|247ec7a242e28d7b|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": true,
+    "evidence": "MARINECOS develops and manufactures bio-based products across the cosmetics, amino acid fertilizer, and marine collagen sectors.",
+    "confidence": "high"
+  },
+  "584-81-00813|147554e248cf591e|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": true,
+    "evidence": "The Capsule operates capsule-type accommodation facilities and manufactures and delivers THE CAPSULE Capsule Module, a one-person rest area customized for companies.",
+    "confidence": "medium"
+  },
+  "261-81-14845|5a2d9dd627244edc|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": true,
+    "evidence": "Craver. operates a series of beauty & cosmetic brands like SKIN1004 and CommonLabs, manufacturing products and exporting them overseas.",
+    "confidence": "high"
+  },
+  "124-86-36808|3b8dbbea0433355e|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": true,
+    "evidence": "EZCOSTEC is a global OEM/ODM company specializing in skincare manufacturing based on bio-cellulose technology.",
+    "confidence": "high"
+  },
+  "120-81-45616|e2dc27d656616891|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "ENTER-6 is a lifestyle retail company inspired by European streets, offering over 120 domestic and international fashion brands, F&B outlets, and cultural spaces.",
+    "confidence": "high"
+  },
+  "775-88-01284|4183404a8e397b38|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "INTERIOR GENTLEMAN operates 'INGEN', an interior brokerage platform for commercial spaces.",
+    "confidence": "high"
+  },
+  "OC160024|35afc5af01095cad|claude-agent|v1": {
+    "verdict": "unclear",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Zhongxing Machinery International supplied industrial machinery and mechanical components for manufacturing and transportation applications.",
+    "confidence": "low"
+  },
+  "OC180035|0bbaa01875faa711|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Advanced Manufacturing",
+    "physical_product": true,
+    "evidence": "몰드섬유와 종이 기반의 저탄소 맞춤형 패키징을 설계·생산하는 글로벌 포장 기업",
+    "confidence": "medium"
+  },
+  "131-86-30461|ceb7523c2959506a|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": true,
+    "evidence": "GDK Cosmetics provides great, desirable, keen cosmetic products for customers",
+    "confidence": "high"
+  },
+  "213-81-75178|11f20f097d06742d|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": true,
+    "evidence": "Hwajin is a cosmetics company that manufactures and delivers products to consumers through advanced production facilities and dedicated manufacturing lines.",
+    "confidence": "high"
+  },
+  "314-81-73852|7fbb9d1aed5380f4|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
+    "physical_product": true,
+    "evidence": "반도체 공정 소재와 광통신·데이터센터용 광모듈 및 포토닉스 파운드리 서비스를 개발·공급한다",
+    "confidence": "high"
+  },
+  "617-81-69164|aef22f9b9c9c304d|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Develops and manufactures probiotic strains, raw materials, supplements, and microbiome-based health and beauty products for brands and consumers.",
+    "confidence": "high"
+  },
+  "815-81-03223|6af2944d49dc8702|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "operates 'Badream,' a platform offering electric two-wheeler purchase, rental/lease services, and a marketplace for trading used two-wheelers.",
+    "confidence": "high"
+  },
+  "863-81-02688|bd17acaa79209d01|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "기능성 의류를 개발하고 국내외 스포츠·라이프스타일 브랜드를 운영하는 기업",
+    "confidence": "high"
+  },
+  "OC180018|423a2246bddfada1|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Operates a global social investing and trading platform for equities, ETFs, options, cryptocurrencies, and managed portfolios.",
+    "confidence": "high"
+  },
+  "790-86-00752|8a8814559795c89d|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "웹툰을 기획·제작해 일본·중국·유럽·남미 등 글로벌 플랫폼에 수출·유통하는 콘텐츠 기업",
+    "confidence": "medium"
+  },
+  "OC180055|3dabc6190a4ed2ff|claude-agent|v1": {
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": true,
+    "evidence": "수전과 위생도기, 샤워 설비, 밸브 등 중고급 욕실 제품을 설계·제조·유통하는 중국 기업",
+    "confidence": "medium"
+  },
+  "609-86-09516|7994b8e220538f9e|claude-agent|v1": {
+    "verdict": "unclear",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "MTM provides medical consulting services and operates pharmaceutical and medical device distribution businesses.",
+    "confidence": "low"
+  },
+  "135-81-53549|0bdb31df8be74074|claude-agent|v1": {
+    "verdict": "unclear",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "NeoEnBiz provides ecotoxicology testing, environmental monitoring and risk-assessment services for marine and aquatic ecosystems.",
+    "confidence": "low"
+  },
+  "441-88-02041|8fc67b5b4bbe4aac|claude-agent|v1": {
+    "verdict": "unclear",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Flyingnote provides online courses and consulting for cabin crew and airline job placements.",
+    "confidence": "low"
+  },
+  "512-81-26496|12d9438e374251f3|claude-agent|v1": {
+    "verdict": "unclear",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Hypergrowth provides tech consulting by undertaking enterprise digital transformation (DT) and AI-powered process innovation (AX) projects for corporate clients.",
+    "confidence": "low"
+  },
+  "601-88-02866|ed895836116d7e97|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "NexusAI provides services based on LLM technology, including legal consulting, case law search, legal document generation and summarization, and verdict prediction.",
+    "confidence": "medium"
+  },
+  "126-81-47612|3d1f6eae7afedcf3|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Sensor/Edge Device",
+    "physical_product": true,
+    "evidence": "미세먼지·가스 등 환경오염을 감지하는 센서와 IoT 공기질 모니터링 시스템을 개발·제조하는 기업",
+    "confidence": "high"
+  },
+  "565-81-03880|f6d69b8f86f289db|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "SECA provides automated logical-error detection by structuring knowledge across hardware design deliverables.",
+    "confidence": "medium"
+  },
+  "124-87-12711|e54ad08f5ac86abb|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
+    "physical_product": true,
+    "evidence": "Develops semiconductor core-process equipment, including thin-film deposition and process monitoring systems.",
+    "confidence": "high"
+  },
+  "OC220055|8d5ddc46704a348e|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Healthtech Device",
+    "physical_product": true,
+    "evidence": "PranaQ develops AI-powered wearable sleep testing and monitoring devices for sleep disorders including sleep apnea.",
+    "confidence": "high"
+  },
+  "596-88-00192|016c59d948138020|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Healthtech Device",
+    "physical_product": true,
+    "evidence": "단분자 수준의 단백질 상호작용을 고속 측정해 신약개발과 정밀의료를 지원하는 분석 플랫폼 기업",
+    "confidence": "medium"
+  },
+  "135-86-32758|c63cd34249e2bf39|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Industrial Hardware",
+    "physical_product": true,
+    "evidence": "산업용 전자부품을 정밀 가공하고 관련 기계·전기 부품을 공급하는 제조기업",
+    "confidence": "medium"
+  },
+  "416-81-70904|39fcfcac918452e7|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Industrial Hardware",
+    "physical_product": true,
+    "evidence": "건설·산업 현장에서 사용하는 기계와 장비를 설계·제조하는 기업",
+    "confidence": "high"
+  },
+  "123-81-99616|46439bbdbc32e2a7|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
+    "physical_product": true,
+    "evidence": "디스플레이 광학필름과 모바일 기기용 기능성 라벨·점착 테이프를 제조하는 전자부품 소재 기업",
+    "confidence": "high"
+  },
+  "506-81-34778|0bff06430c0d4bb5|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
+    "physical_product": true,
+    "evidence": "산업용 세라믹 부품을 개발·제조하는 기업",
+    "confidence": "high"
+  },
+  "124-81-91617|ac7e96ce38d0c698|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
+    "physical_product": true,
+    "evidence": "광통신 네트워크 부품과 통합 모듈을 개발·생산하는 기업",
+    "confidence": "high"
+  },
+  "OC210039|37ffd2cb2c7a635f|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "Robotics/Automation",
+    "physical_product": false,
+    "evidence": "developed autonomous and remote-driving systems for practical transportation and industrial vehicles",
+    "confidence": "medium"
+  },
+  "140-81-53920|d8e24089692620f8|claude-agent|v1": {
+    "verdict": "unclear",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Offline Popup Store Planning",
+    "confidence": "low"
+  },
+  "766-81-03178|734fde412b64f0b7|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "1:1 video chat and community service with K-POP artists",
+    "confidence": "high"
+  },
+  "408-88-02312|3f2024a8dfdee748|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Business management platform “Business Note” offering data solutions for small businesses",
+    "confidence": "high"
+  },
+  "외국법인_미국6|7c0421f873019631|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "creates websites for freelancers to introduce themselves and easily offer their services",
+    "confidence": "high"
+  },
+  "113-86-60405|48087d1614900922|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Game studio developing and operating global mobile and PC titles based on major entertainment IP",
+    "confidence": "high"
+  },
+  "501-81-18996|3711a9a7468847dc|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "adaptive electronic workbook that helps children study independently on tablets",
+    "confidence": "high"
+  },
+  "108-86-13711|5c033277d67bb585|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "온라인 강의·직영 학원·교재 출판을 통합 운영하는 종합 교육기업",
+    "confidence": "medium"
+  },
+  "345-81-01240|d27db66afec10765|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "loss adjuster matching service for accident compensation",
+    "confidence": "high"
+  },
+  "318-81-05832|4d12374f37cae738|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Sensor/Edge Device",
+    "physical_product": true,
+    "evidence": "자율주행·산업용 라이다 센서와 기상 관측 시스템을 개발하는 기업",
+    "confidence": "high"
+  },
+  "110-86-06950|52ac71e5988e7715|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "Crowd-based Concert Platform",
+    "confidence": "medium"
+  },
+  "436-87-02208|8dcc7380ac3f99d9|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "one-stop platform that brings creators and brands together for global impact",
+    "confidence": "high"
+  },
+  "643-86-01358|e660374ae4690c0d|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "prediction market-based interactive content service",
+    "confidence": "high"
+  },
+  "215-81-72901|2e980a89cbbe1b7d|claude-agent|v1": {
+    "verdict": "hardtech",
+    "matched_program_field": "Industrial Hardware",
+    "physical_product": true,
+    "evidence": "SOLiD delivers innovative wireless communication and DAS solutions for high-density venues and critical infrastructure",
+    "confidence": "medium"
+  },
+  "399-87-00750|14350da7ee77d0b4|claude-agent|v1": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "evidence": "B2B wholesale marketplace for pet supplies",
+    "confidence": "high"
+  }
+}

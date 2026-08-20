@@ -19,6 +19,12 @@ CACHE_DIR = ROOT / "data" / "cache"
 
 def _load_items() -> dict:
     items = json.loads((CACHE_DIR / "pilot_items.json").read_text(encoding="utf-8"))
+    # 골든 레이어(must_pass/must_fail)를 pilot_input.json 에서 보강
+    pin = json.loads((CACHE_DIR / "pilot_input.json").read_text(encoding="utf-8"))
+    layer_by_biz = {g["biz_no"]: g["_golden"] for g in pin["golden"]}
+    for it in items:
+        if it.get("set") == "golden":
+            it["_golden"] = layer_by_biz.get(it["biz_no"], "classification_must_pass")
     return {it["idx"]: it for it in items}
 
 
