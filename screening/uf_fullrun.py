@@ -45,9 +45,14 @@ def aggregate_pass1() -> dict:
 
 
 def is_unstable(o: dict) -> bool:
-    """소개문 상충 신호 → 재검 대상(3회 다수결)."""
-    return (o.get("confidence") != "high" or o.get("verdict") == "unclear"
-            or bool(o.get("consumer_facing_end_product"))
+    """소개문 상충 신호 → 재검 대상(3회 다수결).
+
+    medium confidence 는 불안정과 무관(파일럿 92% 일관성은 confidence 무관하게 유지)이라
+    제외하고, 진짜 흔들리는 신호만 잡는다: low confidence · unclear · 하드테크인데 소비자용
+    (수직계열화 vs 완제품 경계) · maturity_signal(기성 제조 경계).
+    """
+    return (o.get("confidence") == "low" or o.get("verdict") == "unclear"
+            or (o.get("verdict") == "hardtech" and o.get("consumer_facing_end_product"))
             or bool((o.get("maturity_signal") or "").strip()))
 
 
