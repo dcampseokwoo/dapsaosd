@@ -51,27 +51,22 @@ def entity_verdict(row: dict) -> str:
 
 # ───────────────────────────────────────────── 분류 (§1) — baseline
 def classify(rec: dict) -> dict:
-    """소개문 기반 하드테크 분류. 반환 스키마는 §1 그대로.
+    """소개문 기반 하드테크 분류(§1). LLM 판정 캐시(사업자번호+소개문해시+모델+프롬프트버전)에서 읽는다.
 
-    BASELINE: 현재 CB 업종 가드 로직(us_forged._cb_hardtech)에 위임 → 라벨로 판정.
-    한글 레거시 라벨·다중 라벨을 오탈락시키고, SW/소비재를 라벨만 보고 통과시킨다.
-    §1 에서 LLM 소개문 분류로 교체 예정.
+    캐시 미스면 unclear(low)로 보수적 처리 — 라벨 추측으로 통과/탈락시키지 않는다.
     """
-    from screening import us_forged as legacy
-    # 스냅샷 행 키(industry) → legacy 가 기대하는 키(sector)
-    ad = {"sector": rec.get("industry", rec.get("sector", "")),
-          "tech": rec.get("tech", ""), "desc": rec.get("desc", ""),
-          "svc": rec.get("svc", ""), "name_ko": rec.get("name_ko", ""),
-          "name_en": rec.get("name_en", "")}
-    fine_ok = legacy.fine_confirmed(ad)
-    hard, basis = legacy._cb_hardtech(ad["sector"], fine_ok)
-    if hard:
-        return {"verdict": "hardtech", "matched_program_field": "Other Deeptech",
-                "physical_product": True, "confidence": "low",
-                "evidence": f"(baseline: CB 라벨 {basis})"}
-    return {"verdict": "software_only", "matched_program_field": "None",
-            "physical_product": False, "confidence": "low",
-            "evidence": f"(baseline: CB 라벨 {basis} — 하드테크 아님으로 처리)"}
+    from screening import uf_classify
+    c = uf_classify.get_cached({"biz_no": rec.get("biz_no", ""),
+                                "desc": rec.get("desc", "")})
+    if c:
+        c = dict(c)
+        c["matched_program_field"] = uf_classify.normalize_field(
+            c.get("matched_program_field", ""))
+        return c
+    return {"verdict": "unclear", "matched_program_field": "None",
+            "physical_product": False, "consumer_facing_end_product": False,
+            "maturity_signal": "", "confidence": "low",
+            "evidence": "(캐시 미스 — 미분류)"}
 
 
 def hardtech_verdict(row: dict) -> str:

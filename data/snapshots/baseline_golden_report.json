@@ -38,11 +38,11 @@
   },
   "summary": {
     "classification_must_pass": {
-      "pass": 1,
+      "pass": 15,
       "total": 15
     },
     "classification_must_fail": {
-      "pass": 8,
+      "pass": 16,
       "total": 21
     },
     "stage_value_mapping": {
@@ -66,99 +66,99 @@
     "must_pass:666-87-01737": {
       "layer": "classification_must_pass",
       "label": "휴젝트(HUJECT)",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:318-81-02567": {
       "layer": "classification_must_pass",
       "label": "비즈(주)",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:214-88-22843": {
       "layer": "classification_must_pass",
       "label": "위드로봇 주식회사",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:731-88-02342": {
       "layer": "classification_must_pass",
       "label": "레디로버스트머신(주)",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:295-88-01148": {
       "layer": "classification_must_pass",
       "label": "에바(EVAR)",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:888-86-02926": {
       "layer": "classification_must_pass",
       "label": "무인탐사연구소",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:215-81-54636": {
       "layer": "classification_must_pass",
       "label": "코리아 인스트루먼트",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:693-87-01705": {
       "layer": "classification_must_pass",
       "label": "(주)신성사운드모션",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:297-81-02412": {
       "layer": "classification_must_pass",
       "label": "(주)포레",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:688-87-01019": {
       "layer": "classification_must_pass",
       "label": "(주)에이엘티",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:213-86-38974": {
       "layer": "classification_must_pass",
       "label": "벤텍스(주)",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:611-81-27282": {
       "layer": "classification_must_pass",
       "label": "솔티드 주식회사",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:647-85-02411": {
       "layer": "classification_must_pass",
       "label": "티아이",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:576-88-01483": {
       "layer": "classification_must_pass",
       "label": "세라트젠",
-      "pass": false,
-      "got": "software_only",
+      "pass": true,
+      "got": "hardtech",
       "expect": "hardtech"
     },
     "must_pass:303-81-71892": {
@@ -178,50 +178,50 @@
     "must_fail:293-88-01763": {
       "layer": "classification_must_fail",
       "label": "(주)컨워스",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "software_only",
       "expect": "software_only"
     },
     "must_fail:572-88-01778": {
       "layer": "classification_must_fail",
       "label": "(주)엘앰캐드",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "software_only",
       "expect": "software_only"
     },
     "must_fail:525-86-00935": {
       "layer": "classification_must_fail",
       "label": "파란에너지",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "software_only",
       "expect": "software_only"
     },
     "must_fail:171-88-01731": {
       "layer": "classification_must_fail",
       "label": "EcoLinks",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "software_only",
       "expect": "software_only"
     },
     "must_fail:520-88-01893": {
       "layer": "classification_must_fail",
       "label": "올수",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "software_only",
       "expect": "software_only"
     },
     "must_fail:585-87-02233": {
       "layer": "classification_must_fail",
       "label": "바나나파츠",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "software_only",
       "expect": "software_only"
     },
     "must_fail:151-87-01050": {
       "layer": "classification_must_fail",
       "label": "(주)로보트리",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "software_only",
       "expect": "software_only"
     },
     "must_fail:486-81-01236": {
@@ -234,8 +234,8 @@
     "must_fail:209-81-24893": {
       "layer": "classification_must_fail",
       "label": "(주)닥터스텍",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "consumer",
       "expect": "consumer"
     },
     "must_fail:786-88-02885": {
@@ -255,8 +255,8 @@
     "must_fail:212-81-20189": {
       "layer": "classification_must_fail",
       "label": "크레신(주)",
-      "pass": true,
-      "got": "software_only",
+      "pass": false,
+      "got": "hardtech",
       "expect": "consumer"
     },
     "must_fail:417-81-49855": {
@@ -269,29 +269,29 @@
     "must_fail:584-81-00813": {
       "layer": "classification_must_fail",
       "label": "더캡슐",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "consumer",
       "expect": "consumer"
     },
     "must_fail:261-81-14845": {
       "layer": "classification_must_fail",
       "label": "크레이버코퍼레이션",
       "pass": true,
-      "got": "software_only",
+      "got": "consumer",
       "expect": "consumer"
     },
     "must_fail:124-86-36808": {
       "layer": "classification_must_fail",
       "label": "(주)이지코스텍",
-      "pass": true,
-      "got": "software_only",
+      "pass": false,
+      "got": "hardtech",
       "expect": "consumer"
     },
     "must_fail:120-81-45616": {
       "layer": "classification_must_fail",
       "label": "주식회사 엔터식스패션쇼핑몰",
       "pass": true,
-      "got": "software_only",
+      "got": "consumer",
       "expect": "consumer"
     },
     "must_fail:775-88-01284": {
@@ -304,8 +304,8 @@
     "must_fail:OC160024": {
       "layer": "classification_must_fail",
       "label": "Zhongxing Machinery International Co., Ltd.",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "unclear",
       "expect": "not_a_startup"
     },
     "must_fail:OC180035": {

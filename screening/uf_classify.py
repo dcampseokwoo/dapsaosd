@@ -95,6 +95,37 @@ PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 �
 """
 
 
+import re as _re
+
+# 분류기가 자유 표기한 matched_program_field 를 공고 11개 분야로 정규화
+_FIELD_MAP = [
+    (r"robot", "Robotics/Automation"),
+    (r"physical\s*ai|embodied", "Physical AI"),
+    (r"aero|space|위성|우주|drone|satellite", "Aerospace"),
+    (r"quantum|양자", "Quantum"),
+    (r"semic|반도체|wafer|chip|photonic", "Semiconductor/Advanced Materials"),
+    (r"material|소재|ceramic|세라믹|chemical|biomaterial|나노|nano", "Semiconductor/Advanced Materials"),
+    (r"sensor|센서|iot|계측|측정|lidar|라이다", "Sensor/Edge Device"),
+    (r"medical|헬스|health|의료|바이오\s*디바이스|wearable|진단|cgm|임플란트", "Healthtech Device"),
+    (r"energy|배터리|batter|수소|hydrogen|태양|solar|climate|기후|탄소|carbon|ess|전지|storage", "Energy/Climate Tech"),
+    (r"manufactur|제조|양산|공정|장비|설비|dfm|가공", "Advanced Manufacturing"),
+    (r"industrial|산업용|하드웨어|hardware|기계|장치|module|모듈|전자부품|telecom|통신|display|광학", "Industrial Hardware"),
+    (r"process", "Manufacturing Process Innovation"),
+]
+PROGRAM_FIELDS_SET = set(PROGRAM_FIELDS)
+
+
+def normalize_field(raw: str) -> str:
+    """자유 표기 → 공고 11개 분야 중 하나(불명확하면 Other Deeptech)."""
+    if raw in PROGRAM_FIELDS_SET:
+        return raw
+    t = (raw or "").lower()
+    for pat, canon in _FIELD_MAP:
+        if _re.search(pat, t):
+            return canon
+    return "Other Deeptech"
+
+
 def cache_key(biz_no: str, desc: str) -> str:
     h = hashlib.sha256((desc or "").encode("utf-8")).hexdigest()[:16]
     return f"{biz_no}|{h}|{MODEL}|{PROMPT_VERSION}"
