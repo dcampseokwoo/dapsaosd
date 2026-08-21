@@ -1,0 +1,514 @@
+[
+ {
+  "idx": 0,
+  "biz_no": "251-86-01033",
+  "name": "미듬",
+  "desc": "MIDM develops Fever365, a non-contact infrared thermometer for the skin; Jen'y 3D Motion, a home aesthetic iontophoresis self skin care device, and so on.",
+  "industry_hint": "Healthcare, Beauty & Cosmetic",
+  "tech_hint": "제조"
+ },
+ {
+  "idx": 1,
+  "biz_no": "134-87-30550",
+  "name": "문코퍼레이션",
+  "desc": "Personalized skincare subscription service based on individual skin type",
+  "industry_hint": "Beauty & Cosmetic",
+  "tech_hint": "화장품"
+ },
+ {
+  "idx": 2,
+  "biz_no": "205-05-09144",
+  "name": "그레이웨일",
+  "desc": "TalkToHer offers health products and care solutions for women’s well-being.",
+  "industry_hint": "Beauty & Cosmetic, Commerce",
+  "tech_hint": "전자상거래"
+ },
+ {
+  "idx": 3,
+  "biz_no": "787-86-03205",
+  "name": "베이직파이브",
+  "desc": "HairBe provides an AI-based application that analyzes face shape and offers virtual hairstyle try-ons.",
+  "industry_hint": "Beauty & Cosmetic, Commerce",
+  "tech_hint": "AI, AR"
+ },
+ {
+  "idx": 4,
+  "biz_no": "416-88-00896",
+  "name": "리퀴드네이션",
+  "desc": "Dreamary is a mobile hair service booking platform that connects hair designers and consumers, and ZELLU is an anonymous popularity voting app for teenagers in school.",
+  "industry_hint": "Beauty & Cosmetic, Community & Lifestyle",
+  "tech_hint": "리얼타임 커뮤니케이션, 전자상거래"
+ },
+ {
+  "idx": 5,
+  "biz_no": "486-81-01236",
+  "name": "파인유얼뷰티",
+  "desc": "Beaurit provides home training and Pilates video content while manufacturing and selling fitness equipment.",
+  "industry_hint": "Healthcare, Commerce",
+  "tech_hint": "전자상거래, 제조"
+ },
+ {
+  "idx": 6,
+  "biz_no": "660-86-02274",
+  "name": "써밋츠",
+  "desc": "Summits operates 'MyVenus,' Indonesia's first aesthetic medical platform.",
+  "industry_hint": "Beauty & Cosmetic",
+  "tech_hint": "리얼타임 커뮤니케이션"
+ },
+ {
+  "idx": 7,
+  "biz_no": "199-88-02591",
+  "name": "시그니처레이블",
+  "desc": "Signature Label serves as a K-beauty incubator that introduces lesser-known Korean cosmetic brands to global markets.",
+  "industry_hint": "Beauty & Cosmetic",
+  "tech_hint": "제조"
+ },
+ {
+  "idx": 8,
+  "biz_no": "392-87-00889",
+  "name": "브로컬리컴퍼니",
+  "desc": "Blocally delivers vegan cosmetic products brand 'lodition'.",
+  "industry_hint": "Beauty & Cosmetic",
+  "tech_hint": "바이오"
+ },
+ {
+  "idx": 9,
+  "biz_no": "697-88-01077",
+  "name": "코코베리",
+  "desc": "Cocoberry develops eco-friendly bio-based materials using 100% agricultural by-products and utilizes them to create skincare products and pharmaceutical ingredients.",
+  "industry_hint": "Sustainability, Consumer Goods, Beauty & Cosmetic",
+  "tech_hint": "바이오"
+ },
+ {
+  "idx": 10,
+  "biz_no": "636-81-02484",
+  "name": "오알엔피",
+  "desc": "Kared manufactures wellness skincare and cosmetic products.",
+  "industry_hint": "Beauty & Cosmetic",
+  "tech_hint": "제조"
+ },
+ {
+  "idx": 11,
+  "biz_no": "559-86-00700",
+  "name": "레지에나",
+  "desc": "Reziena provides advanced anti-aging and skincare solutions through its Corethera device and cosmetics products.",
+  "industry_hint": "Beauty & Cosmetic, Commerce",
+  "tech_hint": "IoT, 센서"
+ },
+ {
+  "idx": 12,
+  "biz_no": "171-86-01800",
+  "name": "크래쉬컴퍼니",
+  "desc": "Crash Company is developing “hady,” a SaaS solution that integrates the workflow of beauticians",
+  "industry_hint": "Beauty & Cosmetic",
+  "tech_hint": "헤어"
+ },
+ {
+  "idx": 13,
+  "biz_no": "130-86-01717",
+  "name": "리치코스",
+  "desc": "RICHCOS manufactures packaging materials for color cosmetics.",
+  "industry_hint": "Manufacturing",
+  "tech_hint": "제조"
+ },
+ {
+  "idx": 14,
+  "biz_no": "425-81-01361",
+  "name": "베스트이노베이션",
+  "desc": "Best Innovation is a health & beauty company distributing the skincare brand KOPHER and health supplement brand ANDO in Korea and abroad",
+  "industry_hint": "Beauty & Cosmetic",
+  "tech_hint": "화장품"
+ },
+ {
+  "idx": 15,
+  "biz_no": "220-88-54210",
+  "name": "메저커머스",
+  "desc": "The company provides 'Trendier,' market intelligence that analyzes Asian beauty markets, and provides 'MeasureChina,' a data analytics solution that tracks and forecasts trends in China.",
+  "industry_hint": "Data & Analytics, Sales & Marketing",
+  "tech_hint": "AI"
+ },
+ {
+  "idx": 16,
+  "biz_no": "424-88-01391",
+  "name": "어반랩스",
+  "desc": "URBAN LABS develops the plant-based alternative protein 'Cofflour' from coffee grounds and the inner beauty health supplement 'Dayfull.'",
+  "industry_hint": "Consumer Goods, Food & Beverage",
+  "tech_hint": "푸드테크"
+ },
+ {
+  "idx": 17,
+  "biz_no": "507-81-15774",
+  "name": "유유유유유",
+  "desc": "UUUUU operates a gel nail sticker brand targeting the global market.",
+  "industry_hint": "Beauty & Cosmetic",
+  "tech_hint": "제조"
+ },
+ {
+  "idx": 18,
+  "biz_no": "589-88-01121",
+  "name": "본작",
+  "desc": "Bonjac runs 'Selvatico', French naturalistic beauty brand.",
+  "industry_hint": "Beauty & Cosmetic",
+  "tech_hint": "제조"
+ },
+ {
+  "idx": 19,
+  "biz_no": "외국법인_미국17",
+  "name": "Pixell Global",
+  "desc": "Pixell is a company that conducts global influencer brokerage and beauty commerce.",
+  "industry_hint": "Sales & Marketing",
+  "tech_hint": "프로그램개발, 전자상거래"
+ },
+ {
+  "idx": 20,
+  "biz_no": "602-81-68504",
+  "name": "퍼플러스",
+  "desc": "Purplus provides kids cosmetic brand 'cocoheali'.",
+  "industry_hint": "Kids, Beauty & Cosmetic",
+  "tech_hint": "화장품 제조"
+ },
+ {
+  "idx": 21,
+  "biz_no": "826-88-01938",
+  "name": "뉴웨이브커머스",
+  "desc": "Lewkin is an online commerce platform providing Korean fashion and beauty products worldwide.",
+  "industry_hint": "Clothing & Apparel, Commerce",
+  "tech_hint": "전자상거래"
+ },
+ {
+  "idx": 22,
+  "biz_no": "321-86-01569",
+  "name": "큐티스바이오(주)",
+  "desc": "Designs microbial cell factories and scalable fermentation processes to produce sustainable ingredients for health, beauty, and fashion.",
+  "industry_hint": "Biotechnology; Sustainability; Science and Engineering",
+  "tech_hint": "합성생물학·미생물 세포공장 기반 친환경 바이오소재"
+ },
+ {
+  "idx": 23,
+  "biz_no": "832-87-00811",
+  "name": "(주)진이어스",
+  "desc": "Operates aesthetic medical brands and provides clinics with MRO procurement, inventory management, ODM products, medical devices, and design solutions.",
+  "industry_hint": "Beauty/Cosmetic; Healthcare; Professional Services; Commerce and Shopping",
+  "tech_hint": "미용의료 브랜드 운영·병원 MRO·의료기기·헬스케어 디자인"
+ },
+ {
+  "idx": 24,
+  "biz_no": "129-81-56013",
+  "name": "아람휴비스(주)",
+  "desc": "Develops AI-enabled skin, scalp, and hair imaging analyzers and personalized cosmetic recommendation systems.",
+  "industry_hint": "Beauty/Cosmetic; Healthcare; Hardware; Artificial Intelligence",
+  "tech_hint": "AI 기반 피부·두피·모발 영상 진단기와 개인 맞춤형 화장품 처방 시스템"
+ },
+ {
+  "idx": 25,
+  "biz_no": "131-86-11936",
+  "name": "(주)코리아코스팩",
+  "desc": "KoreaCospack is a specialized cosmetics company with an end-to-end one-stop system from R&D to production and fulfillment.",
+  "industry_hint": "Beauty/Cosmetic",
+  "tech_hint": "스킨케어·색조·OTC 화장품 맞춤 제형 개발과 OEM·ODM 원스톱 생산"
+ },
+ {
+  "idx": 26,
+  "biz_no": "124-86-36808",
+  "name": "(주)이지코스텍",
+  "desc": "EZCOSTEC is a global OEM/ODM company specializing in skincare manufacturing based on bio-cellulose technology.",
+  "industry_hint": "Beauty/Cosmetic",
+  "tech_hint": "천연 코코넛 발효 기반 바이오셀룰로오스 시트와 마스크팩·스킨케어 OEM·ODM 제조"
+ },
+ {
+  "idx": 27,
+  "biz_no": "183-86-01860",
+  "name": "세손",
+  "desc": "민감한 영유아 피부를 위한 클린 성분의 프리미엄 베이비·키즈 스킨케어 브랜드를 운영하는 기업",
+  "industry_hint": "Beauty/Cosmetic; Kids; Consumer Goods",
+  "tech_hint": "민감한 영유아 피부를 위한 저자극·클린 포뮬러 스킨케어와 친환경 패키징"
+ },
+ {
+  "idx": 28,
+  "biz_no": "423-86-00298",
+  "name": "(주)이시스코스메틱",
+  "desc": "제품 기획부터 생산·품질·출고까지 화장품 OEM·ODM 턴키 서비스를 제공하는 제조기업",
+  "industry_hint": "Beauty/Cosmetic; Manufacturing",
+  "tech_hint": "화장품 기획부터 처방·생산·품질·출고까지 잇는 OEM·ODM 스마트 턴키와 EPQS 품질관리"
+ },
+ {
+  "idx": 29,
+  "biz_no": "387-87-02833",
+  "name": "(주)블랙후즈",
+  "desc": "AI 심층 인터뷰와 리서치 자동화로 K-뷰티 브랜드의 해외 고객 이해와 시장 진출을 돕는 솔루션",
+  "industry_hint": "Artificial Intelligence; Data and Analytics; Sales and Marketing; Software; Beauty/Cosmetic",
+  "tech_hint": "대화형 AI 조사원이 해외 소비자 심층 인터뷰를 자동 수행하고 정성 데이터 분석·시장 인사이트·세일즈 전환 지원"
+ },
+ {
+  "idx": 30,
+  "biz_no": "602-81-52429",
+  "name": "(주)이오코리아",
+  "desc": "EO Korea provides skincare products for hospitals and aesthetic clinics.",
+  "industry_hint": "Beauty/Cosmetic",
+  "tech_hint": "병원·에스테틱 클리닉용 전문 스킨케어 제품의 제형 개발과 유통"
+ },
+ {
+  "idx": 31,
+  "biz_no": "402-81-96832",
+  "name": "주식회사 이앤코리아",
+  "desc": "ENKorea is a carbon industry company advancing convergence carbon materials through research, development, and strategic investment.",
+  "industry_hint": "Manufacturing",
+  "tech_hint": "융복합 탄소소재 기반 기능성 포장필름·화장품 제조"
+ },
+ {
+  "idx": 32,
+  "biz_no": "417-81-49855",
+  "name": "주식회사 마린테크노",
+  "desc": "MARINECOS develops and manufactures bio-based products across the cosmetics, amino acid fertilizer, and marine collagen sectors.",
+  "industry_hint": "Biotechnology; Beauty/Cosmetic",
+  "tech_hint": "해양 부산물 유래 마린콜라겐 원료·화장품·이너뷰티 제조"
+ },
+ {
+  "idx": 33,
+  "biz_no": "126-81-35848",
+  "name": "주식회사 에스엠씨지",
+  "desc": "SMGC specializes in the manufacturing of glass products.",
+  "industry_hint": "Manufacturing",
+  "tech_hint": "화장품용 유리용기 자동제병·코팅·인쇄"
+ },
+ {
+  "idx": 34,
+  "biz_no": "402-81-76985",
+  "name": "(주)제너럴바이오",
+  "desc": "GENERAL BIO develops and manufactures health functional foods, cosmetics, and household products.",
+  "industry_hint": "Biotechnology",
+  "tech_hint": "제조"
+ },
+ {
+  "idx": 35,
+  "biz_no": "503-81-96630",
+  "name": "(주)엠알이노베이션",
+  "desc": "MR Innovation provides eco-friendly agriculture consulting and produces cosmetics and beauty products.",
+  "industry_hint": "Agriculture and Farming",
+  "tech_hint": "친환경 농업 컨설팅·기능성 농자재 및 화장품 제조"
+ },
+ {
+  "idx": 36,
+  "biz_no": "211-86-22189",
+  "name": "(주)클리오",
+  "desc": "Clio specializes in the sale of beauty and cosmetic products.",
+  "industry_hint": "Beauty/Cosmetic",
+  "tech_hint": "제조"
+ },
+ {
+  "idx": 37,
+  "biz_no": "211-88-62109",
+  "name": "알엘에이피 주식회사(RLAP Inc.)",
+  "desc": "RLAP develops Rovectin, a gentle skincare brand focused on restoring and strengthening sensitive skin barriers.",
+  "industry_hint": "Beauty/Cosmetic; Consumer Goods",
+  "tech_hint": "민감성 피부 장벽 회복을 위한 저자극 스킨케어 제품 개발"
+ },
+ {
+  "idx": 38,
+  "biz_no": "206-86-65605",
+  "name": "(주)엠에스코",
+  "desc": "MSKO provides experimental animals to improve the accuracy and reproducibility of scientific research.",
+  "industry_hint": "Beauty/Cosmetic",
+  "tech_hint": "화장품 브랜드 DPC의 스킨케어·메이크업 제품 기획·판매"
+ },
+ {
+  "idx": 39,
+  "biz_no": "131-86-30461",
+  "name": "지디케이화장품",
+  "desc": "GDK Cosmetics provides great, desirable, keen cosmetic products for customers",
+  "industry_hint": "Beauty/Cosmetic",
+  "tech_hint": "마스크팩 중심 스킨케어·헤어·바디 화장품 OEM·ODM·OBM 기획·제조"
+ },
+ {
+  "idx": 40,
+  "biz_no": "833-87-01017",
+  "name": "비나우",
+  "desc": "넘버즈인·퓌 등 스킨케어와 메이크업 브랜드를 기획·개발해 글로벌 시장에 판매하는 K-뷰티 기업",
+  "industry_hint": "Beauty/Cosmetic; Consumer Goods; Commerce and Shopping; Manufacturing",
+  "tech_hint": "스킨케어·메이크업·헤어케어 브랜드 기획·제품개발·글로벌 D2C 유통"
+ },
+ {
+  "idx": 41,
+  "biz_no": "454-81-00415",
+  "name": "(주)씨앤케이코스메디칼",
+  "desc": "맞춤형 처방 기술을 바탕으로 미백·에스테틱 스킨케어 브랜드 메르헨랩을 개발한 화장품 기업",
+  "industry_hint": "Beauty/Cosmetic; Consumer Goods; Manufacturing",
+  "tech_hint": "맞춤형 화장품 처방·제조 및 미백·에스테틱 스킨케어 제품 개발"
+ },
+ {
+  "idx": 42,
+  "biz_no": "312-86-14304",
+  "name": "(주)뉴앤뉴",
+  "desc": "New&New conducts OEM/ODM business for manufacturers",
+  "industry_hint": "Manufacturing",
+  "tech_hint": "화장품 제형 연구개발과 OEM·ODM·OBM 생산"
+ },
+ {
+  "idx": 43,
+  "biz_no": "213-81-75178",
+  "name": "(주)화진바이오코스메틱",
+  "desc": "Hwajin is a cosmetics company that manufactures and delivers products to consumers through advanced production facilities and dedicated manufacturing lines.",
+  "industry_hint": "Beauty/Cosmetic",
+  "tech_hint": "기능성 화장품·미용기기의 연구개발·제조와 OEM·ODM 생산"
+ },
+ {
+  "idx": 44,
+  "biz_no": "101-81-94737",
+  "name": "바이오플러스",
+  "desc": "BIOPLUS is a global bio-beauty and healthcare company built on leading technology and expertise in biomaterials applications.",
+  "industry_hint": "Biotechnology",
+  "tech_hint": "연구개발"
+ },
+ {
+  "idx": 45,
+  "biz_no": "142-81-26021",
+  "name": "아이엔지알",
+  "desc": "식물 줄기세포에서 기능성 천연 소재를 발굴·대량생산해 뷰티·헬스 원료로 공급하는 소재 기업",
+  "industry_hint": "Biotechnology; Beauty/Cosmetic; Consumer Goods",
+  "tech_hint": "분자스위치·식물세포배양·생물전환 기반 천연 바이오 소재 발굴과 대량생산"
+ },
+ {
+  "idx": 46,
+  "biz_no": "220-88-26825",
+  "name": "블루존와이드(구.네이처앤네이처)",
+  "desc": "해외 뷰티 브랜드 유통 경험과 자체 연구개발을 바탕으로 색조 브랜드 이더앤을 운영하는 화장품 기업",
+  "industry_hint": "Beauty/Cosmetic; Commerce and Shopping; Consumer Goods",
+  "tech_hint": "글로벌 뷰티 브랜드 수입·유통과 자체 R&D 기반 색조·스킨케어 PB 개발"
+ },
+ {
+  "idx": 47,
+  "biz_no": "827-87-01045",
+  "name": "인피니티벤처스(주)",
+  "desc": "Global consumer-goods commerce platform helping K-beauty brands market, sell and distribute across Southeast Asia",
+  "industry_hint": "Commerce and Shopping; Beauty/Cosmetic; Logistics; Sales and Marketing",
+  "tech_hint": "Cross-border B2B2C commerce, fulfillment and digital marketing for Korean consumer brands"
+ },
+ {
+  "idx": 48,
+  "biz_no": "214-88-87680",
+  "name": "주식회사 세이션",
+  "desc": "그루밍·헤어케어·스킨케어 브랜드를 기획하고 국내외에 전개하는 멀티브랜드 K-뷰티 기업",
+  "industry_hint": "Beauty/Cosmetic; Consumer Goods; Commerce and Shopping",
+  "tech_hint": "뷰티 브랜드 기획·제품개발, D2C 커머스 및 디지털·글로벌 마케팅"
+ },
+ {
+  "idx": 49,
+  "biz_no": "129-86-05921",
+  "name": "(주)성운파마코피아",
+  "desc": "의약품 중간체·원료의약품과 발효 효소·마이크로바이옴·화장품 원료를 개발·제조하는 바이오 소재 기업",
+  "industry_hint": "Biotechnology; Manufacturing; Healthcare; Science and Engineering",
+  "tech_hint": "의약품 중간체·원료의약품 합성, 발효 효소·마이크로바이옴 원료 개발"
+ },
+ {
+  "idx": 50,
+  "biz_no": "211-88-73299",
+  "name": "(주)울트라브이",
+  "desc": "PDO 고분자 미세입자 필러와 흡수성 리프팅 실·기능성 화장품을 개발·제조하는 메디컬 에스테틱 기업",
+  "industry_hint": "Healthcare; Beauty/Cosmetic; Manufacturing; Biotechnology",
+  "tech_hint": "PDO 미세입자 필러, PDO·PCL·PLCL 리프팅 실, 기능성 화장품"
+ },
+ {
+  "idx": 51,
+  "biz_no": "726-87-01378",
+  "name": "제노헬릭스",
+  "desc": "small RNA 정밀분석 기술로 난치성 질환 조기진단 제품과 재생·스킨케어 바이오소재를 개발하는 기업",
+  "industry_hint": "Biotechnology; Healthcare",
+  "tech_hint": "small RNA·miRNA 초고감도 탐지·정제, 난치성 질환 조기진단 키트와 엑소좀·PDRN 바이오소재"
+ },
+ {
+  "idx": 52,
+  "biz_no": "825-87-00434",
+  "name": "(주)스포메틱스",
+  "desc": "강한 자외선과 땀에 노출되는 스포츠 환경에 맞춘 선케어·스킨케어 제품을 개발하는 화장품 기업",
+  "industry_hint": "Beauty/Cosmetic; Consumer Goods; Sports",
+  "tech_hint": "스포츠·야외활동 특화 자외선차단·보습 기능성 화장품"
+ },
+ {
+  "idx": 53,
+  "biz_no": "114-86-56016",
+  "name": "(주)오띠인터내셔널",
+  "desc": "Ottie International is a global cosmetics company providing beauty solutions to over 30 countries worldwide.",
+  "industry_hint": "Beauty/Cosmetic",
+  "tech_hint": "Cosmetics formulation, product development, manufacturing, branding, and export for skincare and beauty products."
+ },
+ {
+  "idx": 54,
+  "biz_no": "210-81-66030",
+  "name": "자안그룹(주)",
+  "desc": "JAANH is a global platform and beauty platform company.",
+  "industry_hint": "Beauty/Cosmetic",
+  "tech_hint": "Online luxury-fashion and beauty commerce platforms, global brand licensing and distribution, and private-label product development."
+ },
+ {
+  "idx": 55,
+  "biz_no": "209-81-24893",
+  "name": "(주)닥터스텍",
+  "desc": "Develops and manufactures professional and home-use skincare devices, including ultrasonic, iontophoresis, heating, and cooling beauty equipment.",
+  "industry_hint": "Beauty/Cosmetic; Hardware; Healthcare",
+  "tech_hint": "Ultrasound, iontophoresis, temperature-control, and microcurrent technologies for professional and home-use skincare devices."
+ },
+ {
+  "idx": 56,
+  "biz_no": "124-88-01263",
+  "name": "(주)시선테라퓨틱스",
+  "desc": "Develops PNA-based gene-regulation therapeutics using its POLIGO delivery platform for neurological and other difficult-to-treat diseases.",
+  "industry_hint": "Biotechnology; Healthcare",
+  "tech_hint": "Cell-penetrating and BBB-crossing peptide-nucleic-acid complexes for gene regulation and oligonucleotide therapeutics across neurological, metabolic, ophthalmic, and dermatologic diseases."
+ },
+ {
+  "idx": 57,
+  "biz_no": "842-87-00991",
+  "name": "엠앤에이치바이오(주)",
+  "desc": "Develops functional probiotics, fermented bioactive ingredients, and sustained-release hyaluronic-acid formulations for health and medical applications.",
+  "industry_hint": "Biotechnology; Healthcare; Food and Beverage; Beauty/Cosmetic",
+  "tech_hint": "Probiotic strains, fermented botanical ingredients, and high-molecular-weight hyaluronic-acid controlled drug-delivery formulations."
+ },
+ {
+  "idx": 58,
+  "biz_no": "114-86-53270",
+  "name": "토니모리",
+  "desc": "TONYMOLY is a retail for cosemtic products",
+  "industry_hint": "Beauty/Cosmetic",
+  "tech_hint": "제조"
+ },
+ {
+  "idx": 59,
+  "biz_no": "201-86-33675",
+  "name": "(주)넥스트플레이어",
+  "desc": "Builds and operates health-supplement, inner-beauty, nutrition, and pet-lifestyle brands through digital commerce and performance marketing.",
+  "industry_hint": "Consumer Goods; Healthcare; Food and Beverage; Pet; Commerce and Shopping",
+  "tech_hint": "Data-driven health and beauty consumer-brand development combining trend and media analysis, product formulation and sourcing, performance marketing, direct-to-consumer commerce, and multi-brand portfolio management across supplements, inner beauty, nutrition, and pet food."
+ },
+ {
+  "idx": 60,
+  "biz_no": "214-88-47878",
+  "name": "(주)비앤에이치코스메틱",
+  "desc": "Develops and sells makeup, traditional-dermatology skincare, sensitive-skin care, and fragrance lifestyle products through three beauty brands.",
+  "industry_hint": "Beauty/Cosmetic; Consumer Goods; Commerce and Shopping",
+  "tech_hint": "Multi-brand beauty product-development and commerce platform combining base-makeup adhesion and color technology, Korean traditional-dermatology-inspired skincare, sensitive-skin cleansing and treatment, fragrance and lifestyle products, formulation and brand design, and domestic and global direct-to-consumer distribution."
+ },
+ {
+  "idx": 61,
+  "biz_no": "617-81-69164",
+  "name": "(주)락토메이슨",
+  "desc": "Develops and manufactures probiotic strains, raw materials, supplements, and microbiome-based health and beauty products for brands and consumers.",
+  "industry_hint": "Biotechnology; Food and Beverage; Healthcare; Beauty/Cosmetic; Manufacturing",
+  "tech_hint": "Microbiome and probiotic manufacturing platform spanning functional-strain screening, cultivation, stabilization and formulation, proprietary PROKEEP and PROMUNE processes, high-count raw-material production, finished health and beauty products, and OEM/ODM services for gut, immune, skin, women's and companion-animal health."
+ },
+ {
+  "idx": 62,
+  "biz_no": "220-86-43932",
+  "name": "(주)아이피어리스",
+  "desc": "I PEERES COSMETICS is a specialized OEM/ODM manufacturer of cosmetic products.",
+  "industry_hint": "Beauty/Cosmetic; Manufacturing; Consumer Goods",
+  "tech_hint": "End-to-end cosmetics OEM/ODM manufacturing platform covering formulation research, sample and product development, raw-material and functional-ingredient selection, scale-up, filling and packaging, quality assurance and regulatory-ready production across skincare, makeup, cleansing, hair-care and body-care categories for domestic and global brands."
+ },
+ {
+  "idx": 63,
+  "biz_no": "211-88-55608",
+  "name": "(주)옐로오투오",
+  "desc": "Yello O2O Group operated digital platforms and business solutions connecting consumers with offline healthcare and local services.",
+  "industry_hint": "Commerce and Shopping; Healthcare; Professional Services; Software",
+  "tech_hint": "Operation of an O2O business portfolio connecting online discovery, marketing, booking and management software with offline healthcare, beauty, accommodation and local service providers."
+ }
+]

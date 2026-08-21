@@ -68,7 +68,7 @@ def load_rows(path: Path | str = DEFAULT_SNAPSHOT) -> list[dict]:
         if cell in _COLMAP:
             hdr[_COLMAP[cell]] = c
     rows = []
-    for raw in ws.iter_rows(min_row=header_row + 1, values_only=True):
+    for rowidx, raw in enumerate(ws.iter_rows(min_row=header_row + 1, values_only=True)):
         def g(key):
             i = hdr.get(key)
             v = raw[i - 1] if i and i - 1 < len(raw) else None
@@ -78,6 +78,7 @@ def load_rows(path: Path | str = DEFAULT_SNAPSHOT) -> list[dict]:
         biz, biz_status = normalize_biz_no(g("biz_no"))
         rows.append({
             "biz_no": biz, "biz_status": biz_status, "biz_no_raw": g("biz_no"),
+            "row_idx": rowidx,
             "name_ko": g("name_ko"), "name_en": g("name_en"), "svc": g("svc"),
             "industry": g("industry"), "tech": g("tech"), "stage": g("stage"),
             "foundation_type": g("foundation_type"), "investor": g("investor"),
@@ -86,7 +87,22 @@ def load_rows(path: Path | str = DEFAULT_SNAPSHOT) -> list[dict]:
             "program_history": g("program_history"),
         })
     wb.close()
+    _assign_uid(rows)
     return rows
+
+
+def _assign_uid(rows: list[dict]) -> None:
+    """고유 식별자 uid 부여. placeholder/비고유 사업자번호(해외법인·''·'-' 등)는
+    식별 키로 못 쓰므로 복합 키(사명#행인덱스)로 대체(§4 버그 방지). 유효 사업자번호는
+    중복이어도 유지(진짜 중복 = §2 병합 대상)."""
+    from collections import Counter
+    cnt = Counter(r["biz_no"] for r in rows if r["biz_status"] in ("valid", "foreign"))
+    for r in rows:
+        bn, st = r["biz_no"], r["biz_status"]
+        if st == "valid" or (st == "foreign" and cnt[bn] == 1):
+            r["uid"] = bn
+        else:  # placeholder / empty / malformed / 비고유 foreign
+            r["uid"] = f"{r['name_ko']}#{r['row_idx']}"
 
 
 def index_by_biz(rows: list[dict]) -> dict[str, list[dict]]:

@@ -60,11 +60,14 @@ def resolve_entities(rows: list[dict]) -> list[dict]:
 
     entities = []
     for name, group in by_name.items():
-        identified = [r for r in group if r["biz_status"] in ("valid", "foreign")]
-        unident = [r for r in group if r["biz_status"] in ("empty", "malformed")]
+        # placeholder/비고유 foreign 은 uid 가 복합키라 자동으로 분리됨(§4 식별 버그 방지)
+        identified = [r for r in group
+                      if r["biz_status"] == "valid"
+                      or (r["biz_status"] == "foreign" and r["uid"] == r["biz_no"])]
+        unident = [r for r in group if r not in identified]
         by_biz: dict[str, list[dict]] = defaultdict(list)
         for r in identified:
-            by_biz[r["biz_no"]].append(r)
+            by_biz[r["uid"]].append(r)
         distinct = list(by_biz)
 
         if len(distinct) >= 2:

@@ -82,14 +82,17 @@ def finalize() -> dict:
     biz2desc = {it["biz_no"]: it["desc"] for it in items}
     p1 = _read_outputs("full_out_p1_*.json")
 
-    # 재검 pass2/3 은 ridx 기반 파일(full_out_p2_*, p3_*) — biz_no 로 정렬
-    def by_biz(pat):
+    # 재검(p2/p3)은 ridx 기반으로 매핑(사업자번호 placeholder 충돌 방지, §4 버그).
+    recheck = json.loads((CACHE_DIR / "recheck_items.json").read_text(encoding="utf-8"))
+    key2ridx = {(it["biz_no"], it["desc"]): it["idx"] for it in recheck}
+
+    def by_ridx(pat):
         d = {}
         for p in sorted(CACHE_DIR.glob(pat)):
             for o in json.loads(p.read_text(encoding="utf-8")):
-                d[o["biz_no"]] = o
+                d[o["idx"]] = o
         return d
-    p2, p3 = by_biz("full_out_p2_*.json"), by_biz("full_out_p3_*.json")
+    p2, p3 = by_ridx("full_out_p2_*.json"), by_ridx("full_out_p3_*.json")
 
     cache = uf_classify.load_cache()
     stats = Counter()
@@ -99,10 +102,12 @@ def finalize() -> dict:
         if not o1:
             continue
         passes = [o1]
-        if biz in p2:
-            passes.append(p2[biz])
-        if biz in p3:
-            passes.append(p3[biz])
+        ridx = key2ridx.get((biz, biz2desc.get(biz, "")))
+        if ridx is not None:
+            if ridx in p2:
+                passes.append(p2[ridx])
+            if ridx in p3:
+                passes.append(p3[ridx])
         if len(passes) >= 3:
             verdict, dis = _majority([p["verdict"] for p in passes])
             chosen = next(p for p in passes if p["verdict"] == verdict)

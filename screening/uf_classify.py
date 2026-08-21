@@ -19,8 +19,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CACHE_PATH = ROOT / "data" / "cache" / "classification.json"
 
-MODEL = "claude-agent"        # 분류 수행 모델(캐시 무효화 키). 런타임 API 붙이면 실제 id 로.
-PROMPT_VERSION = "v2"          # v2: 수직계열화 규칙 + consumer_facing_end_product·maturity_signal 필드
+MODEL = "claude-agent"        # 분류 수행 모델(캐시 키 구성). 런타임 API 붙이면 실제 id 로.
+PROMPT_VERSION = "v3"          # v3: 코스메틱/뷰티 기본값 명시 + matched_program_field enum 강제
+#   v2: 수직계열화 규칙 + consumer_facing_end_product·maturity_signal 필드
 
 PROGRAM_FIELDS = [
     "Robotics/Automation", "Advanced Manufacturing", "Energy/Climate Tech",
@@ -55,6 +56,10 @@ PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 �
 자체 개발하면 hardtech 로 하고 consumer_facing_end_product=true 로 표시한다.
   예: "압전세라믹 원료·트랜스듀서·구동회로 수직계열화" → hardtech (뷰티 완제품이어도).
       "초음파·이온토포레시스 등 기존 기술을 조합한 스킨케어 기기" → consumer(범용 조합).
+  **화장품·뷰티·스킨케어 기본값(위 원칙의 명시):** 뷰티/화장품/스킨케어 완제품은 소개문에
+  핵심 소재·부품·공정을 자체 개발/수직계열화한다는 **명시가 없으면 consumer 가 기본값**이다.
+  (에코디엠랩은 '압전세라믹부터 완제품까지 자체 생산' 명시가 있어 hardtech. 그런 명시가
+  없는 화장품 제조사는 '제조'라는 단어가 있어도 consumer.)
 
 ■ 경계형 처리 (감사에서 판단 유보됐던 유형 — 여기서 일관성이 드러난다)
 1) 파운드리·수탁제조(남의 설계를 위탁생산, 자체 제품/IP 언급 없음)
@@ -80,7 +85,11 @@ PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 �
 그 단서를 짧게 인용/기록. 없으면 "". (배제가 아니라 정렬용.)
 
 ■ 출력: 아래 JSON 스키마 정확히. evidence 는 판정 근거가 된 **소개문 구절을 원문 그대로
-인용**(요약·창작 금지). matched_program_field 는 11개 중 하나 또는 Other Deeptech/None.
+인용**(요약·창작 금지). matched_program_field 는 **반드시 아래 목록의 문자열 그대로** 쓴다
+(자유 표기 금지): Robotics/Automation | Advanced Manufacturing | Energy/Climate Tech |
+Industrial Hardware | Semiconductor/Advanced Materials | Sensor/Edge Device | Physical AI |
+Healthtech Device | Manufacturing Process Innovation | Aerospace | Quantum | Other Deeptech |
+None. 딱 맞는 게 없어도 가장 가까운 것을 고르고, 정말 없을 때만 Other Deeptech.
 
 {
   "biz_no": "<입력 그대로>",
@@ -127,8 +136,11 @@ def normalize_field(raw: str) -> str:
 
 
 def cache_key(biz_no: str, desc: str) -> str:
+    """캐시 키 = 사업자번호 + 소개문 해시 + 모델. 프롬프트 버전은 키가 아니라 **항목 필드**로
+    기록한다(v2/v3 선택적 재분류 혼재를 허용·추적). 소개문 해시가 서로 다른 회사를
+    구분하므로 placeholder 사업자번호(해외법인 등)도 캐시에선 충돌하지 않는다."""
     h = hashlib.sha256((desc or "").encode("utf-8")).hexdigest()[:16]
-    return f"{biz_no}|{h}|{MODEL}|{PROMPT_VERSION}"
+    return f"{biz_no}|{h}|{MODEL}"
 
 
 def load_cache() -> dict:
@@ -148,6 +160,7 @@ def get_cached(rec: dict, cache: dict | None = None) -> dict | None:
 
 
 def put(rec: dict, verdict: dict, cache: dict) -> None:
+    verdict.setdefault("prompt_version", PROMPT_VERSION)
     cache[cache_key(rec.get("biz_no", ""), rec.get("desc", ""))] = verdict
 
 
