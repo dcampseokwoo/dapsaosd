@@ -106,6 +106,13 @@ def build(run_ts: str | None = None) -> Path:
     _c(ws, r, 1, "자체 채점(§8)", bold=True, fill=GRY); r += 1
     for k, v in metrics:
         _c(ws, r, 1, k); _c(ws, r, 2, str(v), align="center"); r += 1
+    r += 1
+    _c(ws, r, 1, "⚠ 경고: 투자 스테이지 컬럼은 결측 255건 외에 오기재 사례가 확인됨"
+       "(휴젤=Seed로 기재, 실제 코스닥 상장 대기업). 스테이지 기반 판정은 참고값이며, "
+       "이 리스트를 과신하지 말 것 — 최종 적격은 설문으로 확인.",
+       bold=True, fill=YEL, wrap=True)
+    ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=4)
+    ws.row_dimensions[r].height = 42; r += 1
 
     # ---- 시트2/3 발송 후보 + 연락처 필요 ----
     TFILL = {"T1": GREEN, "T2": YEL, "T3": GRY}
@@ -123,8 +130,8 @@ def build(run_ts: str | None = None) -> Path:
         w.row_dimensions[2].height = 40
         cols = ["티어", "국문명", "사업자번호", "분야", "스테이지", "타겟시장", "confidence",
                 "대표자 이메일", "Website", "1줄 사업 소개(원문)", "판정근거(evidence 전문)",
-                "consumer_facing", "maturity_signal"]
-        _hdr(w, 3, cols, [7, 17, 14, 20, 10, 12, 9, 24, 24, 46, 46, 12, 20])
+                "consumer_facing", "maturity_signal", "상장/대형의심"]
+        _hdr(w, 3, cols, [7, 17, 14, 20, 10, 12, 9, 24, 24, 44, 44, 12, 18, 18])
         rr = 4
         for a in data:  # 이미 티어→분야→사명 순 정렬
             f = TFILL.get(a.get("tier"), GREEN)
@@ -141,6 +148,7 @@ def build(run_ts: str | None = None) -> Path:
             _c(w, rr, 11, a.get("cls_evidence", "") or "", fill=f, size=8, wrap=True)
             _c(w, rr, 12, "⚠" if a.get("cls_consumer_facing_end_product") else "", fill=f, align="center", size=8)
             _c(w, rr, 13, a.get("cls_maturity_signal") or "", fill=f, size=8, wrap=True)
+            _c(w, rr, 14, a.get("established_suspect") or "", fill=f, size=8, wrap=True)
             rr += 1
         w.freeze_panes = "A4"
 
@@ -189,6 +197,39 @@ def build(run_ts: str | None = None) -> Path:
         _c(wd, rr, 3, d["entities"], align="center"); _c(wd, rr, 4, d["identity"], size=8)
         _c(wd, rr, 5, d["flags"], size=8); _c(wd, rr, 6, ", ".join(d["biz_nos"]), size=8)
         rr += 1
+
+    # ---- 시트: 명시 배제(known_exclusions) ----
+    from screening import uf_exclude
+    known = [a for a in assessed if a.get("biz_no") in uf_exclude.KNOWN_EXCLUDED]
+    wk = wb.create_sheet("명시_배제"); wk.sheet_view.showGridLines = False
+    _c(wk, 1, 1, f"명시 배제 {len(known)}건 — config/known_exclusions.yaml (규칙 추론 아니라 "
+       "사업자번호 명시 관리). 무엇을 왜 뺐는지 노출.", bold=True, size=11, wrap=True)
+    wk.merge_cells(start_row=1, start_column=1, end_row=1, end_column=4); wk.row_dimensions[1].height = 26
+    _hdr(wk, 3, ["국문명", "사업자번호", "DB 스테이지", "배제 사유"], [22, 16, 12, 70])
+    rr = 4
+    for a in known:
+        _c(wk, rr, 1, a["name_ko"]); _c(wk, rr, 2, a.get("biz_no", ""), size=8)
+        _c(wk, rr, 3, a.get("stage", ""), align="center", size=8)
+        _c(wk, rr, 4, uf_exclude.KNOWN_EXCLUDED[a["biz_no"]], size=8, wrap=True); rr += 1
+
+    # ---- 시트: 스테이지 미상(발송 리스트) — 사용자 직접 검토용 ----
+    unk = [a for a in send if a.get("stage") in ("알 수 없음", "", None)]
+    unk.sort(key=lambda x: ({"T1": 0, "T2": 1, "T3": 2}.get(x.get("tier"), 9), x["name_ko"]))
+    ws2 = wb.create_sheet("스테이지_미상"); ws2.sheet_view.showGridLines = False
+    _c(ws2, 1, 1, f"발송 리스트 중 스테이지 미상 {len(unk)}건 — 사용자 직접 훑고 배제 목록 "
+       "추가 표시용. (스테이지 컬럼은 오기재 사례 있음: 휴젤=Seed)", bold=True, size=11, wrap=True)
+    ws2.merge_cells(start_row=1, start_column=1, end_row=1, end_column=6); ws2.row_dimensions[1].height = 26
+    _hdr(ws2, 3, ["티어", "국문명", "사업자번호", "분야", "1줄 사업 소개(원문)", "상장/대형의심"],
+         [7, 20, 14, 22, 60, 18])
+    rr = 4
+    for a in unk:
+        f = TFILL.get(a.get("tier"), GRY)
+        _c(ws2, rr, 1, a.get("tier", ""), fill=f, align="center", bold=True)
+        _c(ws2, rr, 2, a["name_ko"], fill=f); _c(ws2, rr, 3, a.get("biz_no", ""), fill=f, size=8)
+        _c(ws2, rr, 4, a.get("cls_matched_program_field", ""), fill=f, size=8)
+        _c(ws2, rr, 5, a.get("desc", ""), fill=f, size=8, wrap=True)
+        _c(ws2, rr, 6, a.get("established_suspect") or "", fill=f, size=8); rr += 1
+    ws2.freeze_panes = "A4"
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     wb.save(OUT)

@@ -10,6 +10,30 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
+
+import yaml
+
+_CFG = Path(__file__).resolve().parent.parent / "config" / "known_exclusions.yaml"
+
+
+def _load_cfg() -> dict:
+    if _CFG.exists():
+        return yaml.safe_load(_CFG.read_text(encoding="utf-8")) or {}
+    return {}
+
+
+_C = _load_cfg()
+KNOWN_EXCLUDED = {e["biz_no"]: e.get("reason", "명시 배제")
+                  for e in _C.get("exclusions", [])}
+ESTABLISHED_SUSPECT = {e["biz_no"]: e.get("note", "상장/대형 의심")
+                       for e in _C.get("established_suspects", [])}
+
+
+def established_suspect(row: dict) -> str | None:
+    """상장/대형 의심(명시 목록) → note. 배제 아니라 T3 강등·플래그용."""
+    return ESTABLISHED_SUSPECT.get(row.get("biz_no", ""))
+
 
 # 법인격(사업 실체가 스타트업이 아님) — 정밀 패턴
 _LEGAL = re.compile(
@@ -20,7 +44,9 @@ _HOLDING_TAIL = re.compile(r"지주\s*$")
 
 
 def entity_exclusion(row: dict) -> tuple[bool, str]:
-    """(배제 여부, 사유). 사업자번호 형식 우선 → 사명 법인격 패턴."""
+    """(배제 여부, 사유). 명시 배제 목록 → 사업자번호 형식 → 사명 법인격 패턴."""
+    if row.get("biz_no") in KNOWN_EXCLUDED:
+        return True, f"명시 배제: {KNOWN_EXCLUDED[row['biz_no']]}"
     if row.get("biz_status") == "foreign":
         return True, f"해외법인(사업자번호 {row.get('biz_no_raw', '')})"
     name = (row.get("name_ko", "") or "").strip()

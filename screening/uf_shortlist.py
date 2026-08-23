@@ -83,6 +83,12 @@ def assess(entity: dict) -> dict:
     out["disposition"] = "send"
     out["tier"] = tier("send", c)
     out["reason"] = ("hardtech 발송" if v == "hardtech" else "unclear → 후순위(T3) 발송")
+    # 상장/대형 의심(명시 목록) → 배제 아니라 플래그 + T3 강등(사용자 직접 판단)
+    susp = uf_exclude.established_suspect(entity)
+    if susp:
+        out["established_suspect"] = susp
+        out["tier"] = "T3"
+        out["reason"] += f" | 상장/대형 의심({susp}) → T3"
     return out
 
 
