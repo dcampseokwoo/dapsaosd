@@ -26,3 +26,8 @@ data/cache/v4_out_*.json
 data/cache/field_items.json
 data/cache/field_out_*.json
 data/cache/field_prompt.txt
+data/cache/v5_items.json
+data/cache/v5_out_*.json
+data/cache/field2_items.json
+data/cache/field2_out_*.json
+data/cache/field_prompt.txt

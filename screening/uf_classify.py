@@ -20,7 +20,8 @@ ROOT = Path(__file__).resolve().parent.parent
 CACHE_PATH = ROOT / "data" / "cache" / "classification.json"
 
 MODEL = "claude-agent"        # 분류 수행 모델(캐시 키 구성). 런타임 API 붙이면 실제 id 로.
-PROMPT_VERSION = "v4"          # v4: OEM 소비재완제품 수탁=consumer(산업부품 OEM 제외) + 용도 축(화장품·미용 소재/기기=consumer)
+PROMPT_VERSION = "v5"          # v5: 용도 축을 소비재 전반으로 확장(생활·운동·교육·취미·의류 = consumer)
+#   v4: OEM 소비재완제품 수탁=consumer(산업부품 OEM 제외) + 용도 축(화장품·미용 소재/기기=consumer)
 #   v3: 코스메틱/뷰티 기본값 명시 + matched_program_field enum 강제
 #   v2: 수직계열화 규칙 + consumer_facing_end_product·maturity_signal 필드
 
@@ -72,6 +73,11 @@ PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 �
       Materials=산업용 소재, 화장품 원료는 '일반 소비재' 배제). 예: 아이엔지알(식물줄기세포
       뷰티 원료)=consumer / 시선테라퓨틱스(PNA 유전자치료제=임상 의료)=hardtech 유지.
       판단이 갈리면 배제하지 말고 consumer_facing=true 로 두어 T2 강등.
+  **v5 — 용도 축을 소비재 전반으로 확장:** 최종 고객이 일반 소비자이고 용도가 생활·운동·
+  교육·취미·의류·식음료·반려동물·주방·가구인 제품은, 그 안에 센서·전자·소재 기술이 들어가도
+  consumer 다. (예: 스마트 텀블러·홈트 사이클·코딩 완구·기능성 니트 원단 → consumer.
+  로보트리(코딩 교육 로봇키트)와 같은 유형.) 산업용·임상 의료용·B2B 인프라 용도가 명시되면
+  예외(hardtech). 소재도 최종 용도가 소비재면(예: 화장품·의류 원사) consumer.
 
 ■ 경계형 처리 (감사에서 판단 유보됐던 유형 — 여기서 일관성이 드러난다)
 1) 파운드리·수탁제조(남의 설계를 위탁생산, 자체 제품/IP 언급 없음)
