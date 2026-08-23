@@ -42,7 +42,7 @@
       "total": 15
     },
     "classification_must_fail": {
-      "pass": 16,
+      "pass": 19,
       "total": 21
     },
     "stage_value_mapping": {
@@ -227,8 +227,8 @@
     "must_fail:486-81-01236": {
       "layer": "classification_must_fail",
       "label": "파인유얼뷰티",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "consumer",
       "expect": "consumer"
     },
     "must_fail:209-81-24893": {
@@ -255,8 +255,8 @@
     "must_fail:212-81-20189": {
       "layer": "classification_must_fail",
       "label": "크레신(주)",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "consumer",
       "expect": "consumer"
     },
     "must_fail:417-81-49855": {
@@ -283,8 +283,8 @@
     "must_fail:124-86-36808": {
       "layer": "classification_must_fail",
       "label": "(주)이지코스텍",
-      "pass": false,
-      "got": "hardtech",
+      "pass": true,
+      "got": "consumer",
       "expect": "consumer"
     },
     "must_fail:120-81-45616": {

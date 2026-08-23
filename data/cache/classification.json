@@ -140,29 +140,14 @@
     "prompt_version": "v2"
   },
   "212-81-20189|f3e6ee33889595b8|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
     "consumer_facing_end_product": true,
-    "maturity_signal": "헤드폰·이어폰 OEM·ODM 솔루션",
+    "maturity_signal": "OEM·ODM 솔루션 (audio finished-goods contract manufacturing)",
     "evidence": "헤드폰·이어폰을 중심으로 음향 설계부터 무선 연결과 양산까지 제공하는 오디오 전문기업이다.",
     "confidence": "high",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v4"
   },
   "688-87-01019|a156b17a2d708076|claude-agent": {
     "verdict": "hardtech",
@@ -383,14 +368,14 @@
     "prompt_version": "v2"
   },
   "486-81-01236|b3cd9033543165c1|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Industrial Hardware",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
     "consumer_facing_end_product": true,
-    "maturity_signal": "content-primary business; manufactures generic home fitness equipment with no tech differentiation claimed",
+    "maturity_signal": "",
     "evidence": "manufacturing and selling fitness equipment",
-    "confidence": "low",
-    "prompt_version": "v3"
+    "confidence": "high",
+    "prompt_version": "v4"
   },
   "209-81-24893|ca4d3c98a465a41e|claude-agent": {
     "verdict": "consumer",
@@ -442,9 +427,9 @@
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "MARINECOS develops and manufactures bio-based products across the cosmetics, amino acid fertilizer, and marine collagen sectors.",
+    "evidence": "develops and manufactures bio-based products across the cosmetics, amino acid fertilizer, and marine collagen sectors",
     "confidence": "medium",
-    "prompt_version": "v3"
+    "prompt_version": "v4"
   },
   "584-81-00813|147554e248cf591e|claude-agent": {
     "verdict": "consumer",
@@ -482,14 +467,14 @@
     "prompt_version": "v2"
   },
   "124-86-36808|3b8dbbea0433355e|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Semiconductor/Advanced Materials",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "skincare manufacturing based on bio-cellulose technology",
-    "confidence": "medium",
-    "prompt_version": "v3"
+    "evidence": "global OEM/ODM company specializing in skincare manufacturing based on bio-cellulose technology",
+    "confidence": "high",
+    "prompt_version": "v4"
   },
   "120-81-45616|e2dc27d656616891|claude-agent": {
     "verdict": "consumer",
@@ -613,14 +598,14 @@
     "prompt_version": "v2"
   },
   "617-81-69164|aef22f9b9c9c304d|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Semiconductor/Advanced Materials",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
-    "consumer_facing_end_product": false,
-    "maturity_signal": "",
+    "consumer_facing_end_product": true,
+    "maturity_signal": "OEM/ODM services for health and beauty finished products",
     "evidence": "Develops and manufactures probiotic strains, raw materials, supplements, and microbiome-based health and beauty products for brands and consumers.",
-    "confidence": "high",
-    "prompt_version": "v3"
+    "confidence": "medium",
+    "prompt_version": "v4"
   },
   "815-81-03223|6af2944d49dc8702|claude-agent": {
     "verdict": "software_only",
@@ -4563,28 +4548,13 @@
   },
   "387-86-00876|c5300c16fc3944e4|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
-    "maturity_signal": "manufactures electronic components, circuits, films and power inductors (범용 부품 다품목, 기술 차별성 주장 없음)",
+    "maturity_signal": "manufactures electronic components, circuits, films and power inductors (multi-product general components)",
     "evidence": "manufactures electronic components, circuits, films and power inductors",
     "confidence": "high",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v4"
   },
   "577-81-00625|d43427fc7a02ac33|claude-agent": {
     "verdict": "software_only",
@@ -6853,9 +6823,9 @@
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "develops eco-friendly bio-based materials using 100% agricultural by-products",
+    "evidence": "develops eco-friendly bio-based materials using 100% agricultural by-products and utilizes them to create skincare products and pharmaceutical ingredients",
     "confidence": "medium",
-    "prompt_version": "v3"
+    "prompt_version": "v4"
   },
   "661-87-01538|1406de857f7650e4|claude-agent": {
     "verdict": "software_only",
@@ -8769,14 +8739,14 @@
     "prompt_version": "v2"
   },
   "130-86-01717|bdf39ef0934f1bcc|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Industrial Hardware",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
-    "consumer_facing_end_product": false,
-    "maturity_signal": "manufactures generic cosmetic packaging materials (B2B component supplier), no tech differentiation claimed",
-    "evidence": "RICHCOS manufactures packaging materials for color cosmetics",
+    "consumer_facing_end_product": true,
+    "maturity_signal": "",
+    "evidence": "manufactures packaging materials for color cosmetics",
     "confidence": "medium",
-    "prompt_version": "v3"
+    "prompt_version": "v4"
   },
   "123-81-38259|31262a2336d1125d|claude-agent": {
     "verdict": "hardtech",
@@ -9247,14 +9217,14 @@
     "prompt_version": "v2"
   },
   "424-88-01391|3ec9e47b6fed14fd|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
     "consumer_facing_end_product": true,
-    "maturity_signal": "foodtech: develops upcycled alternative-protein material from coffee grounds; consumer supplement end product",
-    "evidence": "develops the plant-based alternative protein 'Cofflour' from coffee grounds",
-    "confidence": "medium",
-    "prompt_version": "v3"
+    "maturity_signal": "",
+    "evidence": "develops the plant-based alternative protein 'Cofflour' from coffee grounds and the inner beauty health supplement 'Dayfull.'",
+    "confidence": "high",
+    "prompt_version": "v4"
   },
   "103-87-02332|47b6db0ecbd6a488|claude-agent": {
     "verdict": "hardtech",
@@ -11767,11 +11737,11 @@
     "verdict": "hardtech",
     "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
-    "consumer_facing_end_product": false,
+    "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "Designs microbial cell factories and scalable fermentation processes to produce sustainable ingredients",
-    "confidence": "high",
-    "prompt_version": "v3"
+    "evidence": "Designs microbial cell factories and scalable fermentation processes to produce sustainable ingredients for health, beauty, and fashion.",
+    "confidence": "medium",
+    "prompt_version": "v4"
   },
   "137-81-35737|b04ced9c3cf2539b|claude-agent": {
     "verdict": "hardtech",
@@ -11820,10 +11790,10 @@
     "matched_program_field": "None",
     "physical_product": false,
     "consumer_facing_end_product": false,
-    "maturity_signal": "brand operation plus clinic MRO procurement/inventory/ODM/device supply and design; not clearly self-manufacturing own products",
-    "evidence": "provides clinics with MRO procurement, inventory management, ODM products, medical devices, and design solutions",
-    "confidence": "low",
-    "prompt_version": "v3"
+    "maturity_signal": "",
+    "evidence": "Operates aesthetic medical brands and provides clinics with MRO procurement, inventory management, ODM products, medical devices, and design solutions.",
+    "confidence": "medium",
+    "prompt_version": "v4"
   },
   "215-87-74895|bade3d2a470000c4|claude-agent": {
     "verdict": "hardtech",
@@ -12023,11 +11993,11 @@
     "verdict": "hardtech",
     "matched_program_field": "Healthtech Device",
     "physical_product": true,
-    "consumer_facing_end_product": false,
+    "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "Develops AI-enabled skin, scalp, and hair imaging analyzers",
-    "confidence": "high",
-    "prompt_version": "v3"
+    "evidence": "Develops AI-enabled skin, scalp, and hair imaging analyzers and personalized cosmetic recommendation systems.",
+    "confidence": "medium",
+    "prompt_version": "v4"
   },
   "135-81-54193|0077a48bbe80a4f4|claude-agent": {
     "verdict": "hardtech",
@@ -13998,9 +13968,9 @@
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "carbon industry company advancing convergence carbon materials through research, development",
+    "evidence": "carbon industry company advancing convergence carbon materials through research, development, and strategic investment",
     "confidence": "medium",
-    "prompt_version": "v3"
+    "prompt_version": "v4"
   },
   "503-81-51161|a39eb689cb9b7386|claude-agent": {
     "verdict": "hardtech",
@@ -14046,13 +14016,13 @@
   },
   "126-81-35848|fb7a98f7e661f7b2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Advanced Manufacturing",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
-    "maturity_signal": "specializes in the manufacturing of glass products",
-    "evidence": "SMGC specializes in the manufacturing of glass products.",
-    "confidence": "medium",
-    "prompt_version": "v3"
+    "maturity_signal": "generic 'glass products' manufacturer, no self-developed material/process differentiation stated in desc",
+    "evidence": "specializes in the manufacturing of glass products",
+    "confidence": "low",
+    "prompt_version": "v4"
   },
   "144-81-17625|b7530e289ee82321|claude-agent": {
     "verdict": "hardtech",
@@ -14766,9 +14736,9 @@
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "MSKO provides experimental animals to improve the accuracy and reproducibility of scientific research.",
-    "confidence": "low",
-    "prompt_version": "v3"
+    "evidence": "provides experimental animals to improve the accuracy and reproducibility of scientific research",
+    "confidence": "medium",
+    "prompt_version": "v4"
   },
   "OC180044|fbb3f7ef13b2b288|claude-agent": {
     "verdict": "consumer",
@@ -15179,14 +15149,14 @@
     "prompt_version": "v2"
   },
   "312-86-14304|5ed95ecfb4b871b1|claude-agent": {
-    "verdict": "unclear",
+    "verdict": "consumer",
     "matched_program_field": "None",
     "physical_product": true,
-    "consumer_facing_end_product": false,
-    "maturity_signal": "conducts OEM/ODM business for manufacturers",
-    "evidence": "New&New conducts OEM/ODM business for manufacturers",
-    "confidence": "low",
-    "prompt_version": "v3"
+    "consumer_facing_end_product": true,
+    "maturity_signal": "OEM/ODM business for manufacturers (contract manufacturing)",
+    "evidence": "conducts OEM/ODM business for manufacturers",
+    "confidence": "medium",
+    "prompt_version": "v4"
   },
   "230-81-05060|7ce762d28a94bf17|claude-agent": {
     "verdict": "unclear",
@@ -15379,9 +15349,9 @@
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "BIOPLUS is a global bio-beauty and healthcare company built on leading technology and expertise in biomaterials applications.",
+    "evidence": "global bio-beauty and healthcare company built on leading technology and expertise in biomaterials applications",
     "confidence": "medium",
-    "prompt_version": "v3"
+    "prompt_version": "v4"
   },
   "314-86-53943|efb63615faa82139|claude-agent": {
     "verdict": "software_only",
@@ -15460,14 +15430,14 @@
     "prompt_version": "v2"
   },
   "142-81-26021|217c6d287dff4c68|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Semiconductor/Advanced Materials",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
-    "consumer_facing_end_product": false,
+    "consumer_facing_end_product": true,
     "maturity_signal": "",
     "evidence": "식물 줄기세포에서 기능성 천연 소재를 발굴·대량생산해 뷰티·헬스 원료로 공급하는 소재 기업",
     "confidence": "high",
-    "prompt_version": "v3"
+    "prompt_version": "v4"
   },
   "201-81-22611|936a4a1a8cae39b0|claude-agent": {
     "verdict": "software_only",
@@ -15878,29 +15848,14 @@
     "prompt_version": "v2"
   },
   "211-87-04515|49a947ae52708e33|claude-agent": {
-    "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
-    "physical_product": false,
-    "consumer_facing_end_product": false,
+    "verdict": "hardtech",
+    "matched_program_field": "Healthtech Device",
+    "physical_product": true,
+    "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "Hugel provides total medical aesthetic solution",
+    "evidence": "provides total medical aesthetic solution",
     "confidence": "low",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "low"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "low"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v4"
   },
   "OC210077|1cd1a9e09e509792|claude-agent": {
     "verdict": "unclear",
@@ -17150,21 +17105,21 @@
     "verdict": "hardtech",
     "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
-    "consumer_facing_end_product": false,
+    "consumer_facing_end_product": true,
     "maturity_signal": "",
     "evidence": "의약품 중간체·원료의약품과 발효 효소·마이크로바이옴·화장품 원료를 개발·제조하는 바이오 소재 기업",
-    "confidence": "high",
-    "prompt_version": "v3"
+    "confidence": "medium",
+    "prompt_version": "v4"
   },
   "211-88-73299|598fee5615d8a4a1|claude-agent": {
     "verdict": "hardtech",
     "matched_program_field": "Healthtech Device",
     "physical_product": true,
-    "consumer_facing_end_product": false,
+    "consumer_facing_end_product": true,
     "maturity_signal": "",
     "evidence": "PDO 고분자 미세입자 필러와 흡수성 리프팅 실·기능성 화장품을 개발·제조하는 메디컬 에스테틱 기업",
     "confidence": "high",
-    "prompt_version": "v3"
+    "prompt_version": "v4"
   },
   "114-86-89540|0600e57246405aa9|claude-agent": {
     "verdict": "software_only",
@@ -17314,11 +17269,11 @@
     "verdict": "hardtech",
     "matched_program_field": "Healthtech Device",
     "physical_product": true,
-    "consumer_facing_end_product": false,
+    "consumer_facing_end_product": true,
     "maturity_signal": "",
     "evidence": "small RNA 정밀분석 기술로 난치성 질환 조기진단 제품과 재생·스킨케어 바이오소재를 개발하는 기업",
     "confidence": "medium",
-    "prompt_version": "v3"
+    "prompt_version": "v4"
   },
   "631-88-00909|6ad6407de295931d|claude-agent": {
     "verdict": "hardtech",
@@ -18826,8 +18781,8 @@
     "consumer_facing_end_product": false,
     "maturity_signal": "",
     "evidence": "Develops PNA-based gene-regulation therapeutics using its POLIGO delivery platform for neurological and other difficult-to-treat diseases.",
-    "confidence": "medium",
-    "prompt_version": "v3"
+    "confidence": "high",
+    "prompt_version": "v4"
   },
   "590-81-00894|830efcb278f090c2|claude-agent": {
     "verdict": "software_only",
@@ -18850,11 +18805,11 @@
     "verdict": "hardtech",
     "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
-    "consumer_facing_end_product": false,
+    "consumer_facing_end_product": true,
     "maturity_signal": "",
     "evidence": "Develops functional probiotics, fermented bioactive ingredients, and sustained-release hyaluronic-acid formulations for health and medical applications.",
-    "confidence": "high",
-    "prompt_version": "v3"
+    "confidence": "medium",
+    "prompt_version": "v4"
   },
   "256-86-01080|42ff487e9ed9e323|claude-agent": {
     "verdict": "hardtech",
@@ -19635,28 +19590,13 @@
   },
   "136-81-19675|d68f2d93a7525893|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
-    "maturity_signal": "structural components and OEM assembly of excavators/loaders; mass-production lines",
+    "maturity_signal": "provides OEM assembly of wheel excavators, wheel loaders, and backhoe loaders (industrial parts OEM, mass-production lines)",
     "evidence": "Manufactures structural components for construction equipment and provides OEM assembly of wheel excavators, wheel loaders, and backhoe loaders.",
     "confidence": "high",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v4"
   },
   "312-86-04790|946c8ae8a18b0edb|claude-agent": {
     "verdict": "hardtech",
@@ -20276,14 +20216,14 @@
     "prompt_version": "v2"
   },
   "220-86-43932|9ab8e7c175398b41|claude-agent": {
-    "verdict": "unclear",
+    "verdict": "consumer",
     "matched_program_field": "None",
     "physical_product": true,
-    "consumer_facing_end_product": false,
-    "maturity_signal": "specialized OEM/ODM manufacturer of cosmetic products",
-    "evidence": "I PEERES COSMETICS is a specialized OEM/ODM manufacturer of cosmetic products.",
-    "confidence": "low",
-    "prompt_version": "v3"
+    "consumer_facing_end_product": true,
+    "maturity_signal": "",
+    "evidence": "specialized OEM/ODM manufacturer of cosmetic products",
+    "confidence": "high",
+    "prompt_version": "v4"
   },
   "142-81-40004|642cf74b23ddcfa0|claude-agent": {
     "verdict": "unclear",
