@@ -1,7 +1,8 @@
 """US FORGED — 산출물 워크북(§6) + 자체 채점·리젝트 감사(§8).
 
-시트: 1) 요약+provenance+자체채점  2) 발송_후보(이메일 보유)  3) 연락처_확보_필요
-      4) 검토(unclear)  5) 리젝트_감사(무작위 30, §8-⑤)  6) 중복_엔티티(§2)
+시트: 1) 요약+provenance+자체채점  2) 발송_리스트(이메일 보유)  3) 연락처_확보_필요
+      4) 리젝트_감사(무작위 30, §8-⑤)  5) 중복_엔티티(§2)  6) 명시_배제(known_exclusions)
+      7) 치료제_배제(therapeutics, v6)  8) 스테이지_미상
 
 출력 원칙(§0): "선발/요건충족" 표현 금지. 모든 통과행에 unverifiable_requirements 병기.
 """
@@ -107,12 +108,13 @@ def build(run_ts: str | None = None) -> Path:
     for k, v in metrics:
         _c(ws, r, 1, k); _c(ws, r, 2, str(v), align="center"); r += 1
     r += 1
-    _c(ws, r, 1, "⚠ 경고: 투자 스테이지 컬럼은 결측 255건 외에 오기재 사례가 확인됨"
-       "(휴젤=Seed로 기재, 실제 코스닥 상장 대기업). 스테이지 기반 판정은 참고값이며, "
-       "이 리스트를 과신하지 말 것 — 최종 적격은 설문으로 확인.",
+    _c(ws, r, 1, "⚠ 경고: 투자 스테이지 컬럼('Seed' 값 자체)은 신뢰 불가. 결측 255건 외에 "
+       "상장 대기업이 'Seed'로 오기재된 사례가 최소 3건 확인됨 — 휴젤(코스닥, 매출 4,251억)·"
+       "올릭스(코스닥 226950, RNAi 신약)·한국비엔씨(코스닥 256840). 이 3건은 명시 배제 처리했으나, "
+       "동일 유형이 더 있을 수 있으니 스테이지 기반 판정을 과신하지 말 것 — 최종 적격은 설문으로 확인.",
        bold=True, fill=YEL, wrap=True)
     ws.merge_cells(start_row=r, start_column=1, end_row=r, end_column=4)
-    ws.row_dimensions[r].height = 42; r += 1
+    ws.row_dimensions[r].height = 56; r += 1
 
     # ---- 시트2/3 발송 후보 + 연락처 필요 ----
     TFILL = {"T1": GREEN, "T2": YEL, "T3": GRY}
@@ -211,6 +213,23 @@ def build(run_ts: str | None = None) -> Path:
         _c(wk, rr, 1, a["name_ko"]); _c(wk, rr, 2, a.get("biz_no", ""), size=8)
         _c(wk, rr, 3, a.get("stage", ""), align="center", size=8)
         _c(wk, rr, 4, uf_exclude.KNOWN_EXCLUDED[a["biz_no"]], size=8, wrap=True); rr += 1
+
+    # ---- 시트: 치료제·신약 배제(therapeutics, v6) ----
+    ther = sorted([a for a in assessed if a["disposition"] == "excluded_therapeutics"],
+                  key=lambda x: x["name_ko"])
+    wt = wb.create_sheet("치료제_배제"); wt.sheet_view.showGridLines = False
+    _c(wt, 1, 1, f"치료제·신약 배제 {len(ther)}건 (v6) — 치료제·신약 후보물질·백신·항체·의약품 "
+       "'자체'를 개발/제조하는 기업은 물리적 하드웨어가 아니므로 발송 제외. "
+       "단, 진단기기·수술기구·분석장비·약물전달 디바이스·의료용 소재처럼 '기기·소재'를 만드는 "
+       "곳은 hardtech로 발송 리스트에 유지함(경계는 배제 안 하고 T3).", bold=True, size=11, wrap=True)
+    wt.merge_cells(start_row=1, start_column=1, end_row=1, end_column=4); wt.row_dimensions[1].height = 48
+    _hdr(wt, 3, ["국문명", "사업자번호", "1줄 사업 소개(원문)", "판정근거(evidence)"], [22, 16, 60, 50])
+    rr = 4
+    for a in ther:
+        _c(wt, rr, 1, a["name_ko"]); _c(wt, rr, 2, a.get("biz_no", ""), size=8)
+        _c(wt, rr, 3, a.get("desc", ""), size=8, wrap=True)
+        _c(wt, rr, 4, a.get("cls_evidence", "") or "", size=8, wrap=True); rr += 1
+    wt.freeze_panes = "A4"
 
     # ---- 시트: 스테이지 미상(발송 리스트) — 사용자 직접 검토용 ----
     unk = [a for a in send if a.get("stage") in ("알 수 없음", "", None)]

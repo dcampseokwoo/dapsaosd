@@ -10,6 +10,7 @@ disposition:
   excluded_entity : 해외법인·비스타트업 법인격(§4)
   excluded_stage  : 스테이지 이탈(시리즈A+·Pre-A 예외 미충족)
   excluded_field  : software_only / consumer (공고 명시 배제)
+  excluded_therapeutics : 치료제·신약·백신 자체개발(v6 — 하드테크 아님, 발송 제외)
   not_a_startup   : 분류상 비스타트업
 """
 from __future__ import annotations
@@ -71,6 +72,10 @@ def assess(entity: dict) -> dict:
     v = c["verdict"]
     if v == "not_a_startup":
         out.update(disposition="not_a_startup", reason="분류: 비스타트업", tier="—")
+        return out
+    if v == "therapeutics":
+        out.update(disposition="excluded_therapeutics",
+                   reason="분류: therapeutics(치료제·신약·백신 자체개발 — 발송 제외)", tier="—")
         return out
     if v in ("software_only", "consumer"):
         out.update(disposition="excluded_field", reason=f"분류: {v}(공고 명시 배제)", tier="—")

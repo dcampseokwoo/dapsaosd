@@ -41,6 +41,42 @@ def is_similar_biz(a: str, b: str) -> bool:
     return sum(1 for x, y in zip(da, db) if x != y) <= 2
 
 
+def is_one_digit_diff(a: str, b: str) -> bool:
+    """두 사업자번호가 정확히 1자리만 다름(오타 강의심 → 병합). 예: 661↔667, 367↔364."""
+    da, db = _digits(a), _digits(b)
+    if len(da) != 10 or len(db) != 10 or da == db:
+        return False
+    return sum(1 for x, y in zip(da, db) if x != y) == 1
+
+
+def _norm_name(name: str) -> str:
+    """법인격·공백 제거한 정규화 사명(그룹핑 키). '주식회사 워커린스페이스'='워커린스페이스'."""
+    return re.sub(r"주식회사|\(주\)|㈜|㈔|\(유\)|유한회사|\s", "", name or "")
+
+
+def _load_manual_merges() -> list[dict]:
+    """config 의 수동 병합 목록(1자리차로 못 잡는 확인된 동일 회사). {name, biz_nos}."""
+    from pathlib import Path
+    import yaml
+    p = Path(__file__).resolve().parent.parent / "config" / "known_exclusions.yaml"
+    if not p.exists():
+        return []
+    return (yaml.safe_load(p.read_text(encoding="utf-8")) or {}).get("duplicate_merges", [])
+
+
+_MANUAL_MERGE_SETS = None
+
+
+def _manual_merge_of(biz: str) -> frozenset | None:
+    global _MANUAL_MERGE_SETS
+    if _MANUAL_MERGE_SETS is None:
+        _MANUAL_MERGE_SETS = [frozenset(m.get("biz_nos", [])) for m in _load_manual_merges()]
+    for s in _MANUAL_MERGE_SETS:
+        if biz in s:
+            return s
+    return None
+
+
 def _merge_same_biz(rows: list[dict]) -> dict:
     """같은 사업자번호 여러 행 → 보수적 병합. 스테이지 충돌 시 후기, 업종/소개는 합집합."""
     best = max(rows, key=lambda r: uf_stage.stage_rank(r.get("stage")))
@@ -52,60 +88,83 @@ def _merge_same_biz(rows: list[dict]) -> dict:
     return ent
 
 
+def _cluster(uids: list[str]) -> list[list[str]]:
+    """식별 uid 들을 병합 클러스터로 묶는다: 동일 uid(기본) + 1자리차 + 수동병합 목록."""
+    parent = {u: u for u in uids}
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]; x = parent[x]
+        return x
+
+    def union(a, b):
+        parent[find(a)] = find(b)
+
+    for i, a in enumerate(uids):
+        ma = _manual_merge_of(a)
+        for b in uids[i + 1:]:
+            if is_one_digit_diff(a, b) or (ma and b in ma):
+                union(a, b)
+    groups: dict[str, list[str]] = defaultdict(list)
+    for u in uids:
+        groups[find(u)].append(u)
+    return list(groups.values())
+
+
 def resolve_entities(rows: list[dict]) -> list[dict]:
-    """행 리스트 → 신원 판정된 엔티티 리스트. 각 엔티티에 identity/flags/merged_from."""
+    """행 리스트 → 신원 판정된 엔티티 리스트. 각 엔티티에 identity/flags/merged_from.
+
+    정규화 사명으로 그룹핑(표기 차 흡수) → 식별 행을 클러스터(동일 사업자번호 / 1자리차 오타
+    / 수동병합 목록)로 묶어 병합. 1자리 초과 근접(오믈렛류)은 병합 않고 suspect 플래그만.
+    """
     by_name: dict[str, list[dict]] = defaultdict(list)
     for r in rows:
-        by_name[r["name_ko"]].append(r)
+        by_name[_norm_name(r["name_ko"])].append(r)
 
     entities = []
-    for name, group in by_name.items():
-        # placeholder/비고유 foreign 은 uid 가 복합키라 자동으로 분리됨(§4 식별 버그 방지)
+    for _nm, group in by_name.items():
         identified = [r for r in group
                       if r["biz_status"] == "valid"
                       or (r["biz_status"] == "foreign" and r["uid"] == r["biz_no"])]
         unident = [r for r in group if r not in identified]
-        by_biz: dict[str, list[dict]] = defaultdict(list)
+        by_uid: dict[str, list[dict]] = defaultdict(list)
         for r in identified:
-            by_biz[r["uid"]].append(r)
-        distinct = list(by_biz)
+            by_uid[r["uid"]].append(r)
+        uids = list(by_uid)
+        clusters = _cluster(uids)          # 병합 후 클러스터(각각 1개 엔티티)
 
-        if len(distinct) >= 2:
-            # 1) name_collision — 병합 금지, 각 사업자번호가 별개 엔티티
-            sim_pairs = [(a, b) for i, a in enumerate(distinct)
-                         for b in distinct[i + 1:] if is_similar_biz(a, b)]
-            sim_bizes = {x for pair in sim_pairs for x in pair}
-            for biz, rws in by_biz.items():
-                ent = _merge_same_biz(rws) if len(rws) > 1 else dict(rws[0])
-                ent["identity"] = "name_collision"
-                ent["flags"] = ["name_collision"]
-                if biz in sim_bizes:
-                    ent["flags"].append("similar_biz_no_suspect")
-                ent.setdefault("merged_from", sorted({r["biz_no"] for r in rws}) if len(rws) > 1 else [])
-                entities.append(ent)
-            for r in unident:   # 귀속 불가한 결측 행
-                e = dict(r); e["identity"] = "needs_review"
-                e["flags"] = ["name_collision", "unattributable"]
-                entities.append(e)
+        # 1자리 초과 근접(병합 안 됨) → suspect 플래그
+        sim_bizes = set()
+        for i, a in enumerate(uids):
+            for b in uids[i + 1:]:
+                if is_similar_biz(a, b) and not is_one_digit_diff(a, b):
+                    sim_bizes.update({a, b})
 
-        elif len(distinct) == 1:
-            # 2) 유효 하나 → 정본. 결측 행은 참고만(정본 안 덮음)
-            biz = distinct[0]
-            rws = by_biz[biz]
+        multi = len(clusters) >= 2
+        for cl in clusters:
+            rws = [r for u in cl for r in by_uid[u]]
             ent = _merge_same_biz(rws) if len(rws) > 1 else dict(rws[0])
-            ent["identity"] = "canonical_valid"
-            ent["flags"] = []
-            ent.setdefault("merged_from", sorted({r["biz_no"] for r in rws}) if len(rws) > 1 else [])
-            if unident:
+            ent["identity"] = "name_collision" if multi else "canonical_valid"
+            ent["flags"] = ["name_collision"] if multi else []
+            if any(u in sim_bizes for u in cl):
+                ent["flags"].append("similar_biz_no_suspect")
+            ent.setdefault("merged_from",
+                           sorted({r["biz_no"] for r in rws}) if len(rws) > 1 else [])
+            # 유효 하나뿐(단일 클러스터)일 때만 결측 행을 참고로 첨부
+            if not multi and unident:
                 ent["flags"].append("has_reference_rows")
                 ent["reference_rows"] = [{"stage": r.get("stage"),
                                           "biz_status": r["biz_status"]} for r in unident]
             entities.append(ent)
 
-        else:
-            # 3) 유효 사업자번호 없음 → 전부 결측/오류. 사람 검토
+        if not clusters:               # 유효 사업자번호 없음
             for r in unident:
                 e = dict(r); e["identity"] = "needs_review"; e["flags"] = ["no_valid_biz_no"]
+                entities.append(e)
+        elif multi:                    # name_collision 그룹의 귀속 불가 결측 행
+            for r in unident:
+                e = dict(r); e["identity"] = "needs_review"
+                e["flags"] = ["name_collision", "unattributable"]
                 entities.append(e)
 
     return entities

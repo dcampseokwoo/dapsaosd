@@ -9120,29 +9120,15 @@
     "prompt_version": "v2"
   },
   "367-87-02674|abb9569ebb5b58fa|claude-agent": {
-    "verdict": "unclear",
-    "matched_program_field": "Industrial Hardware",
+    "verdict": "therapeutics",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "developing immuno-oncology drugs, antibody-drug conjugates, and anti-cancer immunotherapies based on StealthBody platform technology",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "evidence": "immuno-oncology drugs, antibody-drug conjugates, and anti-cancer immunotherapies",
+    "confidence": "high",
+    "biz_no": "367-87-02674",
+    "prompt_version": "v6"
   },
   "364-87-02674|3cd2c134d2419292|claude-agent": {
     "verdict": "unclear",
@@ -9239,29 +9225,15 @@
     "prompt_version": "v2"
   },
   "703-81-01918|908096a3c1339bfb|claude-agent": {
-    "verdict": "unclear",
-    "matched_program_field": "Industrial Hardware",
+    "verdict": "therapeutics",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "develops and researches animal vaccines",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "evidence": "GeNiner develops and researches animal vaccines",
+    "confidence": "high",
+    "biz_no": "703-81-01918",
+    "prompt_version": "v6"
   },
   "527-81-01895|7ddc95f4caabc707|claude-agent": {
     "verdict": "software_only",
@@ -11831,17 +11803,11 @@
     "matched_program_field": "Other Deeptech",
     "physical_product": true,
     "consumer_facing_end_product": false,
-    "maturity_signal": "",
-    "evidence": "Develops oral biologics and functional materials using microbial nanovesicles and drug-delivery platform technology for gastrointestinal and metabolic diseases.",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "maturity_signal": "oral biologics(치료제)와 기능성 소재·약물전달 플랫폼 병행 — therapeutics 경계",
+    "evidence": "Develops oral biologics and functional materials using microbial nanovesicles and drug-delivery platform technology",
+    "confidence": "low",
+    "biz_no": "563-86-02707",
+    "prompt_version": "v6"
   },
   "129-81-72027|6aa1df498e78e312|claude-agent": {
     "verdict": "hardtech",
@@ -12320,29 +12286,15 @@
     "prompt_version": "v2"
   },
   "264-81-10528|09a027d41ededc8d|claude-agent": {
-    "verdict": "unclear",
+    "verdict": "therapeutics",
     "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
-    "maturity_signal": "항체 기술을 연구·라이선싱(신약 R&D·라이선싱, 하드웨어 아님)",
-    "evidence": "항체 기술을 연구·라이선싱하는 신약개발 기업",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "maturity_signal": "",
+    "evidence": "당화된 면역관문 단백질을 표적하는 항체 기술을 연구·라이선싱하는 신약개발 기업",
+    "confidence": "high",
+    "biz_no": "264-81-10528",
+    "prompt_version": "v6"
   },
   "118-81-15730|b697d1f40cd72e1a|claude-agent": {
     "verdict": "unclear",
@@ -12582,29 +12534,15 @@
     "prompt_version": "v2"
   },
   "112-81-22382|441a8012cb0fdd99|claude-agent": {
-    "verdict": "unclear",
+    "verdict": "therapeutics",
     "matched_program_field": "Other Deeptech",
-    "physical_product": true,
+    "physical_product": false,
     "consumer_facing_end_product": false,
-    "maturity_signal": "의약품 제조(제약, 하드웨어·소재·장비·디바이스 아님)",
-    "evidence": "pharmaceutical manufacturer producing a range of therapeutic drugs",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "maturity_signal": "",
+    "evidence": "pharmaceutical manufacturer producing a range of therapeutic drugs, including prescription (ETC) and over-the-counter medicines",
+    "confidence": "high",
+    "biz_no": "112-81-22382",
+    "prompt_version": "v6"
   },
   "134-86-70123|5b04d7aea6eb3606|claude-agent": {
     "verdict": "hardtech",
@@ -12691,29 +12629,15 @@
     "prompt_version": "v2"
   },
   "207-81-59154|df35631a4df32010|claude-agent": {
-    "verdict": "unclear",
+    "verdict": "therapeutics",
     "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
-    "maturity_signal": "치료제 표적 발굴(신약 R&D)",
+    "maturity_signal": "",
     "evidence": "치료제를 발굴하는 시스템생물학 기반 바이오기업",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "confidence": "high",
+    "biz_no": "207-81-59154",
+    "prompt_version": "v6"
   },
   "214-86-65741|3a1d1b6f393d73fe|claude-agent": {
     "verdict": "software_only",
@@ -14277,29 +14201,15 @@
     "prompt_version": "v3"
   },
   "686-81-00439|920c065a82599859|claude-agent": {
-    "verdict": "unclear",
-    "matched_program_field": "Healthtech Device",
+    "verdict": "therapeutics",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "InThera develops high-yield recombinant VLP and protein-nanoparticle vaccine platforms for infectious diseases.",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "low"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "evidence": "recombinant VLP and protein-nanoparticle vaccine platforms for infectious diseases",
+    "confidence": "high",
+    "biz_no": "686-81-00439",
+    "prompt_version": "v6"
   },
   "119-86-44096|34c3e7349b7c8224|claude-agent": {
     "verdict": "software_only",
@@ -14319,29 +14229,15 @@
     "prompt_version": "v2"
   },
   "250-86-00462|1a3060f2ac367e90|claude-agent": {
-    "verdict": "unclear",
-    "matched_program_field": "Healthtech Device",
+    "verdict": "therapeutics",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "AM Sciences developed first-in-class small-molecule drug candidates for liver diseases, including chronic hepatitis B.",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "low"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "evidence": "first-in-class small-molecule drug candidates for liver diseases, including chronic hepatitis B",
+    "confidence": "high",
+    "biz_no": "250-86-00462",
+    "prompt_version": "v6"
   },
   "209-87-01102|26364b03e673e085|claude-agent": {
     "verdict": "software_only",
@@ -14986,14 +14882,15 @@
     "prompt_version": "v2"
   },
   "123-87-01278|b4ac40f95fccb0ef|claude-agent": {
-    "verdict": "unclear",
+    "verdict": "therapeutics",
     "matched_program_field": "Other Deeptech",
-    "physical_product": true,
+    "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
     "evidence": "백신과 치료제·사료첨가제를 연구개발하고 생산하는 동물의약품 기업",
-    "confidence": "medium",
-    "prompt_version": "v5"
+    "confidence": "high",
+    "biz_no": "123-87-01278",
+    "prompt_version": "v6"
   },
   "514-86-00648|254906ab18bca51f|claude-agent": {
     "verdict": "hardtech",
@@ -16528,29 +16425,15 @@
     "prompt_version": "v3"
   },
   "407-87-02006|85a4e8eed426096d|claude-agent": {
-    "verdict": "unclear",
-    "matched_program_field": "Healthtech Device",
+    "verdict": "therapeutics",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
-    "maturity_signal": "신약(therapeutics) R&D - 하드웨어·소재·장비·디바이스가 아님",
-    "evidence": "합성치사 기전을 활용해 암세포 선택성이 높은 표적항암제를 개발하는 바이오기업",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "maturity_signal": "",
+    "evidence": "암세포 선택성이 높은 표적항암제를 개발하는 바이오기업",
+    "confidence": "high",
+    "biz_no": "407-87-02006",
+    "prompt_version": "v6"
   },
   "826-88-01087|cb3eee82d28ec866|claude-agent": {
     "verdict": "consumer",
@@ -16777,29 +16660,15 @@
     "prompt_version": "v2"
   },
   "550-88-00634|0e9642cefac1ce9e|claude-agent": {
-    "verdict": "unclear",
-    "matched_program_field": "Healthtech Device",
+    "verdict": "therapeutics",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
-    "maturity_signal": "신약(therapeutics) R&D - 하드웨어·소재·장비·디바이스가 아님",
-    "evidence": "RORα 활성화 기전의 저분자 후보물질로 MASH 등 대사·난치성 질환 치료제를 개발하는 바이오기업",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "maturity_signal": "",
+    "evidence": "MASH 등 대사·난치성 질환 치료제를 개발하는 바이오기업",
+    "confidence": "high",
+    "biz_no": "550-88-00634",
+    "prompt_version": "v6"
   },
   "599-88-01088|0b3ce1c20a5ee74a|claude-agent": {
     "verdict": "software_only",
@@ -16836,29 +16705,15 @@
     "prompt_version": "v2"
   },
   "620-81-59361|5a1dbc291760cc85|claude-agent": {
-    "verdict": "unclear",
+    "verdict": "therapeutics",
     "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "글로벌 임상·허가와 상용화를 담당하는 자회사",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "evidence": "아일리아 바이오시밀러 ALT-L9의 글로벌 임상·허가와 상용화를 담당하는 자회사",
+    "confidence": "high",
+    "biz_no": "620-81-59361",
+    "prompt_version": "v6"
   },
   "107-87-53264|5e1e9061fa0997bf|claude-agent": {
     "verdict": "software_only",
@@ -17076,29 +16931,15 @@
     "prompt_version": "v2"
   },
   "389-87-01524|f4330bdc78c32874|claude-agent": {
-    "verdict": "unclear",
+    "verdict": "therapeutics",
     "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
     "evidence": "면역항암제와 차세대 ADC용 항암 후보물질을 개발하는 바이오텍",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "confidence": "high",
+    "biz_no": "389-87-01524",
+    "prompt_version": "v6"
   },
   "207-81-99442|a622d57c122fb560|claude-agent": {
     "verdict": "software_only",
@@ -17946,14 +17787,15 @@
     "prompt_version": "v2"
   },
   "598-86-00345|f541e21915912b30|claude-agent": {
-    "verdict": "unclear",
-    "matched_program_field": "Robotics/Automation",
-    "physical_product": true,
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": false,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
     "evidence": "VR 게임과 모션 시뮬레이터를 개발하고 테마파크·교육 체험관을 구축하는 기업",
-    "confidence": "low",
-    "prompt_version": "v5"
+    "confidence": "medium",
+    "biz_no": "598-86-00345",
+    "prompt_version": "v6"
   },
   "312-81-49598|e79396ba23f1291b|claude-agent": {
     "verdict": "hardtech",
@@ -18565,39 +18407,26 @@
     "prompt_version": "v2"
   },
   "582-81-01645|451af684ef79d96c|claude-agent": {
-    "verdict": "unclear",
+    "verdict": "therapeutics",
     "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
-    "maturity_signal": "신약·바이오마커 개발(하드웨어·디바이스 아님)",
-    "evidence": "Develops DRG2-based companion biomarkers and first-in-class oncology drugs for hard-to-treat breast and colorectal cancers.",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "maturity_signal": "",
+    "evidence": "first-in-class oncology drugs for hard-to-treat breast and colorectal cancers",
+    "confidence": "high",
+    "biz_no": "582-81-01645",
+    "prompt_version": "v6"
   },
   "124-88-01263|8a7fc18d92ba8a8f|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Healthtech Device",
-    "physical_product": true,
+    "verdict": "therapeutics",
+    "matched_program_field": "Other Deeptech",
+    "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "Develops PNA-based gene-regulation therapeutics using its POLIGO delivery platform for neurological and other difficult-to-treat diseases.",
+    "evidence": "PNA-based gene-regulation therapeutics using its POLIGO delivery platform",
     "confidence": "high",
-    "prompt_version": "v4"
+    "biz_no": "124-88-01263",
+    "prompt_version": "v6"
   },
   "590-81-00894|830efcb278f090c2|claude-agent": {
     "verdict": "software_only",
@@ -19476,29 +19305,15 @@
     "prompt_version": "v3"
   },
   "204-86-58020|d0afbb3a35da13f9|claude-agent": {
-    "verdict": "unclear",
-    "matched_program_field": "Healthtech Device",
+    "verdict": "therapeutics",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
-    "maturity_signal": "therapeutics/small-molecule drug discovery, not a hardware/device/material manufacturer",
-    "evidence": "Develops first-in-class anticancer drugs that target cancer stem cells to address recurrence, metastasis, and therapy resistance.",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "maturity_signal": "",
+    "evidence": "first-in-class anticancer drugs that target cancer stem cells",
+    "confidence": "high",
+    "biz_no": "204-86-58020",
+    "prompt_version": "v6"
   },
   "111-81-33789|f222cbeafffdbfb3|claude-agent": {
     "verdict": "consumer",
@@ -19999,29 +19814,15 @@
     "prompt_version": "v2"
   },
   "104-81-51381|3b31dd8f415de2ac|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Semiconductor/Advanced Materials",
-    "physical_product": true,
-    "consumer_facing_end_product": false,
-    "maturity_signal": "diversified across aerospace, fashion, retail with investment/operating (holding-like) capabilities",
+    "verdict": "consumer",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "consumer_facing_end_product": true,
+    "maturity_signal": "",
     "evidence": "DAE MYUNG Chemical is a company focusing on aerospace, fashion, retail business",
-    "confidence": "low",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "low"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "confidence": "medium",
+    "biz_no": "104-81-51381",
+    "prompt_version": "v6"
   },
   "220-86-43932|9ab8e7c175398b41|claude-agent": {
     "verdict": "consumer",

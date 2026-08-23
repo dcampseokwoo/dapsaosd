@@ -20,16 +20,23 @@
 | §6 | 출력 스키마(evidence 전문·이메일·uid·소개원문·티어) | ✅ |
 | §8 | 자체 채점 + 리젝트 감사(무작위 30) | ✅ |
 
-**최신 산출물**: `output/screening/us_forged_shortlist.xlsx` (프롬프트 v5 반영)
-- 발송 리스트 **381** (T1 **174** · T2 **132** · T3 **75**)
-- 이메일 보유 **181** / 연락처 확보 필요 **200**
+**최신 산출물**: `output/screening/us_forged_shortlist.xlsx` (프롬프트 v6 반영)
+- 발송 리스트 **352** (T1 **162** · T2 **128** · T3 **62**)
+- 이메일 보유 **172** / 연락처 확보 필요 **180**
 - 핵심 지표: 골든 must_pass **15/15**, must_fail **19/21**(잔여: 마린테크노=T2 플래그 /
-  Lihua=§4 배제), 스테이지 이탈 잔류 **0**, 소재/부품/장비 **4/7**(감사 0/7)
+  Lihua=§4 배제), 스테이지 이탈 잔류 **0**, 래칫 62/62(회귀 없음)
+- v6 결과: 치료제·신약 바이오텍 **15곳 발송 제외**(`excluded_therapeutics`, `치료제_배제`
+  시트). 기기·소재·분석장비·약물전달 디바이스는 hardtech 유지(퀀타매트릭스·켈스·아이메디컴·
+  티아이·엔도핀·브이에스아이·셀라이온바이오메드 등).
 - v4/v5 결과: 뷰티/미용 신호 T1=0. 소비재(스마트 텀블러·홈트·코딩완구·기능성 원단 등)
   용도 축으로 consumer 배제. 산업부품 OEM(선진정공·코엠고)은 hardtech 유지.
 - 분야 컬럼(Q1): Other Deeptech 268→**32**(진짜 미분류만), blank **0**. 11개 분야 중
   Quantum만 0(시드 DB에 없음). 원료·시약은 Healthtech Device 아님으로 정정.
-- 휴젤 명시 배제(config), 상장/대형 의심 10곳 established_suspect 플래그 → T3.
+- 명시 배제 **8곳**(휴젤 + 상장사 7: 솔루엠·쏠리드·휴마시스·필옵틱스·해성옵틱스·올릭스·
+  한국비엔씨), established_suspect **15곳** → T3. 스테이지 'Seed' 오기재 확인 3건(휴젤·
+  올릭스·한국비엔씨) 요약 경고에 명시.
+- 중복 병합 강화: 정규화 사명 그룹핑(표기차 흡수, 워커린스페이스) + 사업자번호 1자리차
+  자동 병합(아폴론·크로스포인트) + 수동 병합 목록(티아이). 4쌍 중복 해소.
 
 ---
 
@@ -40,10 +47,10 @@
 | 모듈 | 역할 |
 |---|---|
 | `screening/uf_snapshot.py` | 스냅샷 xlsx 로더 + 사업자번호 정규화(valid/foreign/malformed) + **uid**(placeholder는 사명#행인덱스) + provenance/run_metadata + resolve_snapshot |
-| `screening/uf_dedup.py` | §2 신원 판정 중복 병합(name_collision/canonical_valid), 근접유사 사업자번호 플래그, duplicate_report |
+| `screening/uf_dedup.py` | §2 신원 판정 중복 병합. **정규화 사명(_norm_name: 주식회사·(주)·공백 제거)으로 그룹핑** → 클러스터(동일 사업자번호 / **1자리차 오타 is_one_digit_diff** / config `duplicate_merges` 수동목록)로 병합. 2자리차 이상 근접은 병합 안 하고 similar_biz_no_suspect 플래그. name_collision/canonical_valid, duplicate_report |
 | `screening/uf_exclude.py` | §4 해외법인(OC*·외국법인_*·해외법인=사업자번호 형식) + 법인격(투자목적회사·조합·SPC·N호·말미 지주) 배제 |
 | `screening/uf_stage.py` | §3 stage_bucket(IN_SCOPE/UNKNOWN/EXCEPTION/OUT_OF_SCOPE, 미매칭 예외), pre_a_bucket(미국+physical), stage_rank |
-| `screening/uf_classify.py` | §1 분류 **프롬프트 전문(v3)** + 캐시 read/write + normalize_field(자유표기→11 enum) |
+| `screening/uf_classify.py` | §1 분류 **프롬프트 전문(v6)** + 캐시 read/write + normalize_field(자유표기→11 enum). verdict에 **therapeutics** 포함 |
 | `screening/uf_engine.py` | 레이어 facade. `classify()`는 **캐시 읽기**(미스→unclear). stage_bucket/entity_verdict/hardtech_verdict |
 | `screening/uf_golden.py` | 골든셋 로더 + evaluate_all(레이어별 케이스 평가, 래칫·리포트 공용) |
 | `screening/uf_pilot.py` | 파일럿 표본(경계 5유형 층화 + 시드 고정) |
@@ -74,7 +81,15 @@
    없으면 fixture 를 고치지 말고 **프롬프트를 고친다.** (골든셋 상단 주석에도 명시.)
 6. **업종(CB) 라벨은 보조 신호일 뿐, 절대 단독 판정 근거로 쓰지 않는다.** 이게 원래
    결함의 뿌리였다(한글 레거시 라벨·다중 라벨이 진짜 하드테크를 전멸시킴).
+7. **치료제·신약 바이오텍은 therapeutics(발송 제외, v6).** 치료제·신약 후보물질·백신·
+   항체·의약품 **자체**를 개발/제조하면 물리적 하드웨어가 아니므로 verdict=therapeutics →
+   `excluded_therapeutics`. **단 진단기기·수술기구·분석장비·약물전달 디바이스·의료용
+   소재처럼 '기기·소재'를 만드는 곳은 hardtech 유지.** '약을 만든다'=therapeutics,
+   '약을 만들 기기·소재·장비를 만든다'=hardtech. 갈리면 배제 말고 hardtech+low→T3.
 
+**verdict**: hardtech / software_only / consumer / **therapeutics** / not_a_startup / unclear.
+**disposition**: send / excluded_entity / excluded_stage / excluded_field /
+**excluded_therapeutics** / not_a_startup.
 **티어 정의**: T1 = hardtech·confidence high·플래그 없음 / T2 = hardtech인데
 consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence low.
 
@@ -99,6 +114,10 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
     (화장품·미용·에스테틱·이너뷰티 용도 소재·기기=consumer, 산업/임상의료 병기 시 예외).
   - **v5**: 용도 축을 **소비재 전반**으로 확장(생활·운동·교육·취미·의류·식음료·반려·주방·
     가구 용도면 센서·전자·소재 내장돼도 consumer). 재분류: 소비재 신호 항목만(나머지 무손상).
+  - **v6**: **therapeutics verdict 추가**(치료제·신약·백신·항체·의약품 자체개발=발송 제외,
+    기기·소재는 hardtech 유지). 재분류: therapeutics 신호 발송항목 18건만 v6로 덮어씀
+    (15 therapeutics 배제 + 엔비언스 hardtech·low + 대명화학·예쉬컴퍼니 consumer).
+    나머지 캐시는 v5 그대로(선택적 재분류 — 키에 prompt_version 안 넣는 설계 덕).
   - 분야 라벨 재배정(Q1): `data/cache/field_prompt.txt`(라벨 전용, verdict 불변). 원료·시약은
     Healthtech Device 금지 → 소재/Other. Other Deeptech 허용하되 빈칸 금지.
 - **재분류 범위 좁히기**: 신호 있는 항목만 파일로 추려 배치 분류 후 캐시에 덮어쓴다
@@ -114,11 +133,16 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
 
 1. **상장사/대기업 혼입 — 스테이지 데이터 오류(부분 처리됨).** §3로 안 잡힘(스테이지 값
    문제). 처리: `config/known_exclusions.yaml`(사업자번호 명시 관리, 골든셋 방식):
-   - **exclusions**: 휴젤(코스닥 상장 보톡스, 매출 4,251억·직원 594, DB 스테이지 'Seed' 오기)
+   - **exclusions**(8): 휴젤 + 상장사 7(솔루엠 코스피248070·쏠리드 코스닥050890·휴마시스
+     205470·필옵틱스 161580·해성옵틱스 076610·올릭스 226950·한국비엔씨 256840)
      → excluded_entity, `명시_배제` 시트 노출. 새 상장사 발견 시 여기에 사업자번호로 추가.
-   - **established_suspects**(10): 알테오젠바이오로직스·녹십자수의약품·로킷헬스케어·세미파이브·
-     알피니언메디칼·콘텔라·테크로스·대한조선·창명해운·현대피팅 → 배제 아니라 established_suspect
-     플래그 + **T3 강등**(사용자 직접 판단).
+     **스테이지 'Seed' 오기재 확인 3건: 휴젤·올릭스·한국비엔씨**(요약 경고에 명시).
+   - **established_suspects**(15): 알테오젠바이오로직스·녹십자수의약품·로킷헬스케어·세미파이브·
+     알피니언메디칼·콘텔라·테크로스·대한조선·창명해운·현대피팅 + 네패스라웨·아리셀·우양에이치씨·
+     코세스지티·이너트론 → 배제 아니라 established_suspect 플래그 + **T3 강등**(사용자 직접 판단).
+     (알테오젠바이오로직스·녹십자수의약품은 v6에서 therapeutics로도 배제됨.)
+   - **duplicate_merges**(수동 병합): 티아이(647-85-02411 개인 + 671-81-00456 법인 = 동일
+     안과 의료기기 회사). 1자리차 알고리즘이 못 잡는 확인된 동일 기업만 여기에 명시.
    - **미해결**: 스테이지 오기재는 엔진 밖 문제 → **디캠프 DB 관리자에게 별도 통보 필요**.
      `스테이지_미상` 시트(발송 리스트 중 스테이지 미상 ~255)를 사용자가 훑어 배제 목록 추가.
      기성 제조 중소기업 클러스터(서진산업·신영금속·우창공업 등)는 maturity_signal 로 표시됨.
@@ -164,7 +188,11 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
    python -c "from screening import uf_forged_xlsx as X; print(X.build())"   # 워크북 재생성
    ```
 3. **새 세션 첫 메시지 예시**:
-   > "docs/us_forged/HANDOFF.md 읽고 이어서 작업하자. 다음은 [화장품/의료미용 프롬프트
-   > 보강 (크레신·이지코스텍·울트라브이·아람휴비스) / Other Deeptech 분야 세분 / §7
-   > diff candidate_impact 구현] 중 무엇을 하면 돼. 캐시는 예산 자산이니 재분류 범위를
-   > 먼저 좁혀서 계획을 보고해줘."
+   > "docs/us_forged/HANDOFF.md 읽고 이어서 작업하자. 다음은 [남은 established_suspect·
+   > 스테이지 미상 시트 사용자 검토 반영 / §7 diff candidate_impact 구현 / 신규 상장사·
+   > therapeutics 추가 발견 시 config 반영] 중 무엇을 하면 돼. 캐시는 예산 자산이니
+   > 재분류 범위를 먼저 좁혀서 계획을 보고해줘."
+
+**최근 완료(최종 라운드)**: ① 중복 4쌍 병합(정규화 사명+1자리차+수동목록) ② 상장사 7곳
+명시배제 + established_suspect 5곳 추가 + 요약 경고 강화 ③ therapeutics verdict(v6)로
+신약 바이오텍 15곳 발송 제외 ④ 필드/verdict 재확인(대명화학·예쉬컴퍼니 consumer 전환).

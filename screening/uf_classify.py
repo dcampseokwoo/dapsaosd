@@ -20,7 +20,8 @@ ROOT = Path(__file__).resolve().parent.parent
 CACHE_PATH = ROOT / "data" / "cache" / "classification.json"
 
 MODEL = "claude-agent"        # 분류 수행 모델(캐시 키 구성). 런타임 API 붙이면 실제 id 로.
-PROMPT_VERSION = "v5"          # v5: 용도 축을 소비재 전반으로 확장(생활·운동·교육·취미·의류 = consumer)
+PROMPT_VERSION = "v6"          # v6: therapeutics verdict 추가(신약·치료제·백신·의약품 자체개발 = 발송 제외)
+#   v5: 용도 축을 소비재 전반으로 확장(생활·운동·교육·취미·의류 = consumer)
 #   v4: OEM 소비재완제품 수탁=consumer(산업부품 OEM 제외) + 용도 축(화장품·미용 소재/기기=consumer)
 #   v3: 코스메틱/뷰티 기본값 명시 + matched_program_field enum 강제
 #   v2: 수직계열화 규칙 + consumer_facing_end_product·maturity_signal 필드
@@ -31,7 +32,7 @@ PROGRAM_FIELDS = [
     "Physical AI", "Healthtech Device", "Manufacturing Process Innovation",
     "Aerospace", "Quantum", "Other Deeptech", "None",
 ]
-VERDICTS = ("hardtech", "software_only", "consumer", "not_a_startup", "unclear")
+VERDICTS = ("hardtech", "software_only", "consumer", "therapeutics", "not_a_startup", "unclear")
 
 # ── 분류 프롬프트(전문). 사용자 검토 대상. ────────────────────────────────
 PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 후보를 1차 분류하는
@@ -47,6 +48,9 @@ PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 �
                   사업의 핵심. 하드웨어를 만들고 SW/데이터 구독을 얹은 형태도 hardtech.
 - software_only : SW/앱/플랫폼으로 하드웨어를 제어·최적화·분석·중개만. 직접 제조 안 함.
 - consumer      : 일반 소비재(화장품·식품·의류·숙박·유통 소비재 등).
+- therapeutics  : **치료제·신약 후보물질·백신·항체·의약품 자체**를 개발/제조하는 것이 사업의
+                  핵심(v6). 물리적 기기·소재가 아니라 '약(藥)/생물학적 제제' 자체가 제품이므로
+                  하드테크가 아니고 발송 대상에서 제외한다. (아래 v6 규칙에서 경계 상세.)
 - not_a_startup : 투자목적회사·조합·해외법인 등 사업 실체가 스타트업이 아님(신호가 소개에
                   드러날 때만; 법인격 배제는 별도 규칙이 담당하므로 확신 없으면 쓰지 말 것).
 - unclear       : 소개문만으로 '직접 설계/제조'가 불확실. 아래 경계형이 대표적.
@@ -78,6 +82,20 @@ PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 �
   consumer 다. (예: 스마트 텀블러·홈트 사이클·코딩 완구·기능성 니트 원단 → consumer.
   로보트리(코딩 교육 로봇키트)와 같은 유형.) 산업용·임상 의료용·B2B 인프라 용도가 명시되면
   예외(hardtech). 소재도 최종 용도가 소비재면(예: 화장품·의류 원사) consumer.
+
+  **v6 — 치료제·신약 바이오텍은 therapeutics(발송 제외):**
+  치료제·신약 후보물질·백신·항체·세포/유전자 치료제·의약품 **그 자체**를 개발/제조하는 것이
+  핵심이면 verdict=therapeutics(하드테크 아님, 발송 제외). "develops novel therapeutics",
+  "신약", "항암제", "antibody-drug conjugate(ADC)", "백신", "유전자치료제", "면역항암제"
+  같은 표현이 사업의 중심이면 여기에 해당한다.
+  **단, 물리적 기기·소재를 만드는 곳은 hardtech 로 유지한다(핵심 구분):**
+    - 진단기기·수술기구·의료 분석장비·임플란트·웨어러블 의료기기 → hardtech(기기 자체가 제품).
+    - 약물전달용 디바이스·미세바늘 패치·이식형 펌프 등 '기기' → hardtech.
+    - 신약을 위한 원료·시약·배지·분석 플랫폼·장비를 파는 곳(약 자체를 파는 게 아님) → hardtech.
+    - 세포·오가노이드·바이오소재를 '재료/도구'로 공급 → hardtech(therapeutics 아님).
+  즉 '약을 만든다'=therapeutics, '약을 만들 기기·소재·장비를 만든다'=hardtech.
+  판단이 갈리면(치료제 개발 + 자체 기기/플랫폼 병행 등) therapeutics 로 배제하지 말고
+  hardtech + confidence=low 로 두어 발송 리스트 T3 에 남긴다(발송은 무료, 배제는 신중).
 
 ■ 경계형 처리 (감사에서 판단 유보됐던 유형 — 여기서 일관성이 드러난다)
 1) 파운드리·수탁제조(남의 설계를 위탁생산, 자체 제품/IP 언급 없음)
@@ -111,7 +129,7 @@ None. 딱 맞는 게 없어도 가장 가까운 것을 고르고, 정말 없을 
 
 {
   "biz_no": "<입력 그대로>",
-  "verdict": "hardtech|software_only|consumer|not_a_startup|unclear",
+  "verdict": "hardtech|software_only|consumer|therapeutics|not_a_startup|unclear",
   "matched_program_field": "<위 목록 중 하나>",
   "physical_product": true|false,
   "consumer_facing_end_product": true|false,
