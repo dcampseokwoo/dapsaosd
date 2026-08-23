@@ -21,3 +21,5 @@ output/*
 !output/screening/
 output/screening/*
 !output/screening/us_forged_shortlist.xlsx
+data/cache/v4_items.json
+data/cache/v4_out_*.json

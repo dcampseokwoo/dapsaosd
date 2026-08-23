@@ -20,7 +20,8 @@ ROOT = Path(__file__).resolve().parent.parent
 CACHE_PATH = ROOT / "data" / "cache" / "classification.json"
 
 MODEL = "claude-agent"        # 분류 수행 모델(캐시 키 구성). 런타임 API 붙이면 실제 id 로.
-PROMPT_VERSION = "v3"          # v3: 코스메틱/뷰티 기본값 명시 + matched_program_field enum 강제
+PROMPT_VERSION = "v4"          # v4: OEM 소비재완제품 수탁=consumer(산업부품 OEM 제외) + 용도 축(화장품·미용 소재/기기=consumer)
+#   v3: 코스메틱/뷰티 기본값 명시 + matched_program_field enum 강제
 #   v2: 수직계열화 규칙 + consumer_facing_end_product·maturity_signal 필드
 
 PROGRAM_FIELDS = [
@@ -60,6 +61,17 @@ PROMPT = """당신은 디캠프 x HAX 'US FORGED' Hardtech Pre-Program 지원 �
   핵심 소재·부품·공정을 자체 개발/수직계열화한다는 **명시가 없으면 consumer 가 기본값**이다.
   (에코디엠랩은 '압전세라믹부터 완제품까지 자체 생산' 명시가 있어 hardtech. 그런 명시가
   없는 화장품 제조사는 '제조'라는 단어가 있어도 consumer.)
+
+  **v4 — 수직계열화 원칙에 '용도 축' 명시(새 규칙 아님, 구체화):**
+  (1) OEM/ODM 수탁: **소비재 완제품(화장품·오디오·생활용품 등)을 수탁 제조**하면
+      사용 기술(bio-cellulose 등) 언급이 있어도 consumer(자체 제품이 아니라 수탁).
+      **단, 산업용 부품·소재·장비를 OEM 납품하는 것은 해당하지 않는다**(부품업체엔 당연).
+      예: 크레신(오디오 완제품 ODM)=consumer / 선진정공(산업 구조부품 OEM)=hardtech 유지.
+  (2) 용도 축: 소재·부품·기기의 **최종 용도가 화장품·미용·에스테틱·이너뷰티**이면,
+      **산업용 또는 임상 의료용 용도가 함께 명시되지 않는 한 consumer**(공고 Advanced
+      Materials=산업용 소재, 화장품 원료는 '일반 소비재' 배제). 예: 아이엔지알(식물줄기세포
+      뷰티 원료)=consumer / 시선테라퓨틱스(PNA 유전자치료제=임상 의료)=hardtech 유지.
+      판단이 갈리면 배제하지 말고 consumer_facing=true 로 두어 T2 강등.
 
 ■ 경계형 처리 (감사에서 판단 유보됐던 유형 — 여기서 일관성이 드러난다)
 1) 파운드리·수탁제조(남의 설계를 위탁생산, 자체 제품/IP 언급 없음)
