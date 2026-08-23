@@ -6,6 +6,43 @@
 
 ---
 
+## 0. 작업 완료 상태 ✅ (v1-final-352)
+
+**엔진 작업 종료.** 최종 산출물 검수 완료. 완성 지점 = 태그 `v1-final-352`
+(브랜치 `claude/file-batch-send-ank4hr` = `us-forged-engine`).
+
+- 최종 산출물: `output/screening/us_forged_shortlist.xlsx`
+- 발송 리스트 **352**(T1 162 · T2 128 · T3 62), 이메일 172 / 연락처 필요 180
+- 골든 must_pass 15/15 · must_fail 19/21 · 래칫 62/62(회귀 없음) · 스테이지 이탈 0
+- **DB 원천 문제는 `docs/us_forged/DB_ISSUES.md`** 로 분리(디캠프 DB 관리자 전달용):
+  ⓐ "Seed" 스테이지 오기재 8건(배제한 상장사 전부가 Seed — 패턴) ⓑ 사업자번호 중복·오타
+  21건 ⓒ 타겟 국가 98.5% 결측.
+
+### 재개할 때 (필요할 때만)
+
+**① 스냅샷이 갱신되면(새 GBD DB xlsx):**
+```
+# 1. 새 파일을 data/snapshots/ 에 두고 uf_snapshot.DEFAULT_SNAPSHOT 경로 갱신
+# 2. 신규/변경 행만 분류(캐시는 biz_no+소개문해시 키라 기존 행은 캐시 적중, 예산 절약)
+python -c "from screening import uf_shortlist as S; print(S.summarize(S.build()))"  # 캐시 미스 확인
+#    → 캐시 미스(신규 행)만 소개문으로 분류해 uf_classify.put() 후 save_cache()
+# 3. 워크북 재생성 + 회귀 확인
+python -c "from screening import uf_forged_xlsx as X; print(X.build())"
+python -m pytest tests/ -q && python -m tests.golden_ratchet
+```
+전체 재분류(1,159 전건)는 **금지** — 예산 자산. 캐시 미스만.
+
+**② 배제 기업을 추가할 때(신규 상장사·therapeutics 발견):** 코드 수정 없이
+`config/known_exclusions.yaml` 편집:
+- `exclusions`: 확실한 배제(상장사 등) → `excluded_entity` + `명시_배제` 시트. `{biz_no, name, reason}`.
+- `established_suspects`: 배제까진 아닌 의심 → T3 강등 + 플래그. `{biz_no, name, note}`.
+- `duplicate_merges`: 1자리차로 못 잡는 확인된 동일 회사 → 강제 병합. `{name, biz_nos:[...], note}`.
+- 신약 바이오텍은 소개문 재분류로 `therapeutics` 판정(프롬프트 v6). 예: `uf_classify.put()`
+  으로 해당 biz_no에 `verdict=therapeutics` 기록(§4 참조).
+편집 후 `X.build()` 재실행하면 반영. yaml만 바꾸면 되고 테스트/래칫은 자동 통과.
+
+---
+
 ## 1. 현재 상태 (spec §0~§8)
 
 | 섹션 | 내용 | 상태 |
