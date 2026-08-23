@@ -23,3 +23,6 @@ output/screening/*
 !output/screening/us_forged_shortlist.xlsx
 data/cache/v4_items.json
 data/cache/v4_out_*.json
+data/cache/field_items.json
+data/cache/field_out_*.json
+data/cache/field_prompt.txt
