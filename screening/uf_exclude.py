@@ -1,0 +1,31 @@
+"""US FORGED — §4 배제 규칙(비스타트업 법인·해외법인).
+
+판별 기준은 **사업자번호 형식**이지 사명이 아니다(Rooy, Inc. 같은 국내 법인의 영문명은
+배제하면 안 됨). 해외법인은 사업자번호 3형식으로 잡는다: OC*·외국법인_*·해외법인
+(전수 스캔상 각각 169·27·11 = 207건, uf_snapshot.normalize_biz_no 가 foreign 으로 분류).
+
+법인격(투자목적회사·투자조합·SPC·N호 유한회사·지주[사명 끝])은 사명 패턴으로 배제하되
+오탐(홀릭스팩토리의 '스팩', 이노스페이스 등)을 피하도록 정밀 패턴만 쓴다.
+"""
+from __future__ import annotations
+
+import re
+
+# 법인격(사업 실체가 스타트업이 아님) — 정밀 패턴
+_LEGAL = re.compile(
+    r"투자목적회사|투자조합|벤처투자조합|신기술사업투자조합|사모투자|성장투자목적|"
+    r"기업인수목적|유한책임회사|\d+\s*호\s*(?:유한회사|유한|투자조합|조합)")
+# 지주는 사명 '끝'에 올 때만(××지주). 중간의 '지주'(지주막하 등) 오탐 방지.
+_HOLDING_TAIL = re.compile(r"지주\s*$")
+
+
+def entity_exclusion(row: dict) -> tuple[bool, str]:
+    """(배제 여부, 사유). 사업자번호 형식 우선 → 사명 법인격 패턴."""
+    if row.get("biz_status") == "foreign":
+        return True, f"해외법인(사업자번호 {row.get('biz_no_raw', '')})"
+    name = (row.get("name_ko", "") or "").strip()
+    if _LEGAL.search(name):
+        return True, "비스타트업 법인격(투자목적회사·조합·SPC 등)"
+    if _HOLDING_TAIL.search(name):
+        return True, "지주회사(사명 말미 '지주')"
+    return False, ""
