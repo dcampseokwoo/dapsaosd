@@ -702,7 +702,7 @@
   },
   "609-86-09516|7994b8e220538f9e|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -727,7 +727,7 @@
   },
   "135-81-53549|0bdb31df8be74074|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "testing/monitoring/consulting services, no own physical product",
@@ -1268,7 +1268,7 @@
   },
   "517-81-02408|58544cc5d6e82c5b|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -2307,7 +2307,7 @@
   },
   "221-81-40364|25e5f28468553628|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "comprehensive manufacturing services (contract/foundry manufacturing, no own product/IP)",
@@ -2713,29 +2713,14 @@
     "prompt_version": "v2"
   },
   "528-88-00938|2a8f617c0978bae2|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Industrial Hardware",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
     "consumer_facing_end_product": true,
-    "maturity_signal": "makes cycling equipment (consumer fitness device, no core material/component differentiation stated)",
-    "evidence": "Real Design Tech makes ULTIRACER, a cycling equipment for home training.",
+    "maturity_signal": "",
+    "evidence": "Real Design Tech makes ULTIRACER, a cycling equipment for home training",
     "confidence": "high",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v5"
   },
   "136-86-02301|96b0cc3e9347eac3|claude-agent": {
     "verdict": "hardtech",
@@ -2857,7 +2842,7 @@
   },
   "172-87-00849|0418cd136655ecba|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -3271,7 +3256,7 @@
   },
   "439-87-02852|fdbb358a632fce64|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Robotics/Automation",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -3347,7 +3332,7 @@
   },
   "337-88-03080|071d4fab3c1ea5f1|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -3836,7 +3821,7 @@
   },
   "410-87-08840|4a896a6a4b48ebe4|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -5253,29 +5238,14 @@
     "prompt_version": "v2"
   },
   "634-88-00058|7c88b23412461987|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Healthtech Device",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "develops smart tumblers that help users manage their weight",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "evidence": "Eight Cups develops smart tumblers that help users manage their weight",
+    "confidence": "high",
+    "prompt_version": "v5"
   },
   "126-86-44944|02db6d21066b3629|claude-agent": {
     "verdict": "hardtech",
@@ -6082,7 +6052,7 @@
   },
   "441-86-02877|987040b19f9adaeb|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -6794,7 +6764,7 @@
   },
   "255-87-02235|7cf247e504ce03ab|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -9354,7 +9324,7 @@
   },
   "428-86-00954|591fb28f30d4c91b|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Medical Devices",
+    "matched_program_field": "Other Deeptech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -11643,7 +11613,7 @@
   },
   "754-87-00035|a1d979d2c803942d|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -11770,24 +11740,17 @@
   },
   "374-86-01317|bebb9c65d87a6a75|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Physical AI",
+    "matched_program_field": "Robotics/Automation",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "Develops electrification kits, indoor positioning, and autonomous mobility solutions for shared vehicles, wheelchairs, golf carts, and smart farms.",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "evidence": "Develops electrification kits, indoor positioning, and autonomous mobility solutions",
+    "confidence": "high",
+    "prompt_version": "v5"
   },
   "832-87-00811|b31332d51bfe046b|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -11865,7 +11828,7 @@
   },
   "563-86-02707|27594092275865ea|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Healthtech Device",
+    "matched_program_field": "Other Deeptech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12358,7 +12321,7 @@
   },
   "264-81-10528|09a027d41ededc8d|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "항체 기술을 연구·라이선싱(신약 R&D·라이선싱, 하드웨어 아님)",
@@ -12383,28 +12346,13 @@
   },
   "118-81-15730|b697d1f40cd72e1a|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
-    "consumer_facing_end_product": false,
-    "maturity_signal": "원료 개발·유통(제약 원료, 유통 병행)",
-    "evidence": "원료와 건강기능식품·메디컬 코스메틱 원료를 개발·유통하는 제약기업",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "low"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "consumer_facing_end_product": true,
+    "maturity_signal": "",
+    "evidence": "전문·일반의약품용 원료와 건강기능식품·메디컬 코스메틱 원료를 개발·유통하는 제약기업",
+    "confidence": "low",
+    "prompt_version": "v5"
   },
   "168-81-00469|2580c408c4dd567f|claude-agent": {
     "verdict": "not_a_startup",
@@ -12635,7 +12583,7 @@
   },
   "112-81-22382|441a8012cb0fdd99|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "의약품 제조(제약, 하드웨어·소재·장비·디바이스 아님)",
@@ -12744,7 +12692,7 @@
   },
   "207-81-59154|df35631a4df32010|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "치료제 표적 발굴(신약 R&D)",
@@ -12965,7 +12913,7 @@
   },
   "127-81-98486|cf5ee8759ed193b0|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -13025,7 +12973,7 @@
   },
   "177-86-03709|eed6eca16af92bd3|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "선박 보유·운영 해상운송 서비스(직접 제조 아님)",
@@ -13304,7 +13252,7 @@
   },
   "419-81-02384|96a9b025c997773a|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "홈테스트 키트 자체 제조 여부 불명, AI 분석 솔루션 중심",
@@ -13880,7 +13828,7 @@
   },
   "143-81-01703|0897e6d7e50247df|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "실험동물 공급·비임상 시험 CRO 용역(자체 제품 아님)",
@@ -14275,29 +14223,14 @@
     "prompt_version": "v2"
   },
   "220-87-00148|ca7fb9b84134d031|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Industrial Hardware",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "Motionblue developed block-based coding education and physical game systems that connect software with interactive toys.",
-    "confidence": "medium",
-    "disagreement": true,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "software_only",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "consumer",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "evidence": "block-based coding education and physical game systems that connect software with interactive toys",
+    "confidence": "high",
+    "prompt_version": "v5"
   },
   "201-86-23309|fe7cfd610b8d4265|claude-agent": {
     "verdict": "consumer",
@@ -14429,28 +14362,13 @@
   },
   "243-87-01984|de51afda022d4e71|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "GREEN VET provides veterinary diagnostic testing, digital pathology, health screening, and animal-care products for clinics.",
+    "evidence": "veterinary diagnostic testing, digital pathology, health screening, and animal-care products for clinics",
     "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "low"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v5"
   },
   "175-86-02515|da7e38f11b9d008a|claude-agent": {
     "verdict": "hardtech",
@@ -14513,7 +14431,7 @@
   },
   "135-86-23114|465a3fe063a1c8b1|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14732,7 +14650,7 @@
   },
   "206-86-65605|4c28f0e1b3805792|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14776,7 +14694,7 @@
   },
   "769-81-00923|d1097c7a7afa443d|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14818,7 +14736,7 @@
   },
   "212-86-00290|4ecd40c08d6ad14b|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "R&D lab licensing standards patents, no own physical product",
@@ -14927,28 +14845,13 @@
   },
   "301-81-63737|e6e627d0d3fbbbec|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Industrial Hardware",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": false,
     "consumer_facing_end_product": false,
-    "maturity_signal": "research-stage framing",
-    "evidence": "fnpco conducts researches for food, genomics, and bio-materials to transform bio-agricultural products into industrial raw materials.",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "low"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "maturity_signal": "",
+    "evidence": "conducts researches for food, genomics, and bio-materials to transform bio-agricultural products into industrial raw materials",
+    "confidence": "low",
+    "prompt_version": "v5"
   },
   "206-86-41898|f13cf1a3aa2b39de|claude-agent": {
     "verdict": "consumer",
@@ -15029,21 +14932,14 @@
     "prompt_version": "v3"
   },
   "207-81-53499|38d59d2e74c9c5bd|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Advanced Materials",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
-    "consumer_facing_end_product": false,
+    "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "기능성 니트 원단을 원사부터 봉제까지 일괄 개발·생산",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "evidence": "기능성 니트 원단을 원사부터 봉제까지 일괄 개발·생산하는 섬유기업",
+    "confidence": "high",
+    "prompt_version": "v5"
   },
   "454-81-00415|6e2f542014df9895|claude-agent": {
     "verdict": "consumer",
@@ -15091,28 +14987,13 @@
   },
   "123-87-01278|b4ac40f95fccb0ef|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Healthtech Device",
+    "matched_program_field": "Other Deeptech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "돼지·소·가금류·반려동물용 백신과 치료제·사료첨가제를 연구개발하고 생산",
+    "evidence": "백신과 치료제·사료첨가제를 연구개발하고 생산하는 동물의약품 기업",
     "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "low"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v5"
   },
   "514-86-00648|254906ab18bca51f|claude-agent": {
     "verdict": "hardtech",
@@ -15160,7 +15041,7 @@
   },
   "230-81-05060|7ce762d28a94bf17|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -15244,7 +15125,7 @@
   },
   "138-81-38912|63b96cf5e2558102|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16190,7 +16071,7 @@
   },
   "129-86-60114|efe448f17301a11e|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16672,29 +16553,14 @@
     "prompt_version": "v2"
   },
   "826-88-01087|cb3eee82d28ec866|claude-agent": {
-    "verdict": "unclear",
-    "matched_program_field": "None",
-    "physical_product": false,
-    "consumer_facing_end_product": false,
-    "maturity_signal": "AI 디바이스+콘텐츠 결합 에듀테크 서비스(자체 디바이스 제조 불명확)",
+    "verdict": "consumer",
+    "matched_program_field": "Physical AI",
+    "physical_product": true,
+    "consumer_facing_end_product": true,
+    "maturity_signal": "",
     "evidence": "AI 음성·대화형 디바이스와 전문 콘텐츠를 결합해 어린이 영어학습을 지원하는 에듀테크 서비스",
     "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "low"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "unclear",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v5"
   },
   "854-88-00929|89bcbc34956c6c0a|claude-agent": {
     "verdict": "hardtech",
@@ -16736,16 +16602,9 @@
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "유해 화학성분을 줄인 천연 원료 기반 공예·산업용 친환경 접착제를 개발·생산하는 기업",
-    "confidence": "high",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      }
-    ],
-    "prompt_version": "v2"
+    "evidence": "공예·산업용 친환경 접착제를 개발·생산하는 기업",
+    "confidence": "medium",
+    "prompt_version": "v5"
   },
   "608-81-71083|267c8fc3bd17c4bc|claude-agent": {
     "verdict": "hardtech",
@@ -16770,16 +16629,9 @@
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "장시간 비행 드론을 기반으로 항공측량·지도제작·탐사와 드론 교육을 제공하는 기업",
+    "evidence": "장시간 비행 드론을 기반으로 항공측량·지도제작·탐사",
     "confidence": "high",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v5"
   },
   "608-81-96764|f26bf68e48c8e7e9|claude-agent": {
     "verdict": "hardtech",
@@ -16985,7 +16837,7 @@
   },
   "620-81-59361|5a1dbc291760cc85|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17225,7 +17077,7 @@
   },
   "389-87-01524|f4330bdc78c32874|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17570,16 +17422,9 @@
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
-    "evidence": "3D 프린터와 고기능성 광경화 레진, 검사계측 장비를 개발·제조",
+    "evidence": "3D 프린터와 고기능성 광경화 레진, 검사계측 장비를 개발·제조하는 기업",
     "confidence": "high",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v5"
   },
   "113-86-46500|0dd4e37c412908dc|claude-agent": {
     "verdict": "hardtech",
@@ -17693,29 +17538,14 @@
     "prompt_version": "v3"
   },
   "114-87-18853|8d9c235069a5de3e|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Industrial Hardware",
+    "verdict": "consumer",
+    "matched_program_field": "None",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
-    "evidence": "캐릭터 디자인을 접목한 탁상용 소형 공기청정기와 생활가전을 개발·판매하는 기업",
+    "evidence": "탁상용 소형 공기청정기와 생활가전을 개발·판매하는 기업",
     "confidence": "high",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "consumer",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "high"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "prompt_version": "v5"
   },
   "654-88-00367|d2b4c8ef1de0a581|claude-agent": {
     "verdict": "hardtech",
@@ -18033,7 +17863,7 @@
   },
   "110-81-36497|ad4590dd8b2a8eef|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "해상운송·포워딩·통관 종합물류 서비스(제조 아님)",
@@ -18075,7 +17905,7 @@
   },
   "310-88-00531|eec937da5dfb7d2f|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "해외 자동차부품 생산법인 투자·관리(지주·관리 성격, 직접 제조 아님)",
@@ -18116,29 +17946,14 @@
     "prompt_version": "v2"
   },
   "598-86-00345|f541e21915912b30|claude-agent": {
-    "verdict": "hardtech",
-    "matched_program_field": "Industrial Hardware",
+    "verdict": "unclear",
+    "matched_program_field": "Robotics/Automation",
     "physical_product": true,
     "consumer_facing_end_product": true,
-    "maturity_signal": "모션 시뮬레이터 개발+VR 콘텐츠·구축(제조 vs 통합 경계)",
+    "maturity_signal": "",
     "evidence": "VR 게임과 모션 시뮬레이터를 개발하고 테마파크·교육 체험관을 구축하는 기업",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "unclear",
-        "confidence": "low"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      },
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "confidence": "low",
+    "prompt_version": "v5"
   },
   "312-81-49598|e79396ba23f1291b|claude-agent": {
     "verdict": "hardtech",
@@ -18352,7 +18167,7 @@
   },
   "503-81-97041|67d663639713d12d|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Healthtech Device",
+    "matched_program_field": "Other Deeptech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18692,7 +18507,7 @@
   },
   "389-88-00478|ba45814ddb1306d5|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Healthtech Device",
+    "matched_program_field": "Other Deeptech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18751,7 +18566,7 @@
   },
   "582-81-01645|451af684ef79d96c|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "신약·바이오마커 개발(하드웨어·디바이스 아님)",
@@ -18898,7 +18713,7 @@
   },
   "312-86-43454|c3eeb9bdd8fe45e1|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "반도체 부품·PCB 수탁 제조·조립·검사(자체 제품·독자 공정 미언급)",
@@ -18962,15 +18777,8 @@
     "consumer_facing_end_product": false,
     "maturity_signal": "",
     "evidence": "Leading UI provides user interfaces that meet user requirements.",
-    "confidence": "medium",
-    "disagreement": false,
-    "history": [
-      {
-        "verdict": "hardtech",
-        "confidence": "medium"
-      }
-    ],
-    "prompt_version": "v2"
+    "confidence": "high",
+    "prompt_version": "v5"
   },
   "OC150006|7ca9faf3fbcf70fc|claude-agent": {
     "verdict": "unclear",
@@ -19178,7 +18986,7 @@
   },
   "535-88-00386|07c03382e8c1daf7|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "IR 콘텐츠·커뮤니케이션 서비스(제조 아님)",
@@ -19371,7 +19179,7 @@
   },
   "113-86-62174|953704015cddc218|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "사업개발·브랜드기획·PM 서비스(제조 아님)",
@@ -19413,7 +19221,7 @@
   },
   "128-86-02203|2fc39d73c8f68970|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "outsourced semiconductor test-house/engineering services, no own product",
@@ -19963,7 +19771,7 @@
   },
   "134-86-09759|50692fff7fc60134|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20227,7 +20035,7 @@
   },
   "142-81-40004|642cf74b23ddcfa0|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "surveillance integration: supplying and configuring cameras (SI/distribution), own manufacturing not clear",
@@ -20337,7 +20145,7 @@
   },
   "220-88-88762|7cb66019dbdd6b83|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20430,7 +20238,7 @@
   },
   "517-87-00756|6e72cc522c59a638|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "None",
+    "matched_program_field": "Other Deeptech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20790,5 +20598,95 @@
     "evidence": "Yello O2O Group operated digital platforms and business solutions connecting consumers with offline healthcare and local services.",
     "confidence": "high",
     "prompt_version": "v3"
+  },
+  "520-87-03235|408af67c4ed7e541|claude-agent": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "consumer_facing_end_product": true,
+    "maturity_signal": "",
+    "evidence": "AI-based service that identifies symptoms and easily checks disease/drug information",
+    "confidence": "high",
+    "prompt_version": "v5"
+  },
+  "-|6bc6bc0b9253150e|claude-agent": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "consumer_facing_end_product": false,
+    "maturity_signal": "",
+    "evidence": "Cattle Feed Group Buying for Ranchers",
+    "confidence": "high",
+    "prompt_version": "v5"
+  },
+  "-|b3c556716b638881|claude-agent": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "consumer_facing_end_product": true,
+    "maturity_signal": "",
+    "evidence": "ClipChannel – Korean GIF Sharing",
+    "confidence": "high",
+    "prompt_version": "v5"
+  },
+  "740-81-03365|8c83f7bfdbf0237f|claude-agent": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "consumer_facing_end_product": false,
+    "maturity_signal": "",
+    "evidence": "AIGment provides AI automation for manufacturing procurement, including market analysis, cost reduction, and closing reports",
+    "confidence": "high",
+    "prompt_version": "v5"
+  },
+  "236-87-03233|02de33755bb68122|claude-agent": {
+    "verdict": "hardtech",
+    "matched_program_field": "Aerospace",
+    "physical_product": true,
+    "consumer_facing_end_product": false,
+    "maturity_signal": "",
+    "evidence": "on-orbit servicing and in-space assembly and manufacturing solutions to extend the life of space assets",
+    "confidence": "high",
+    "prompt_version": "v5"
+  },
+  "761-81-03149|33951cc6ef0efeb1|claude-agent": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "consumer_facing_end_product": false,
+    "maturity_signal": "",
+    "evidence": "Fully automated business solution for cross-border e-commerce sellers",
+    "confidence": "high",
+    "prompt_version": "v5"
+  },
+  "336-81-02944|57696628562e6e41|claude-agent": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "consumer_facing_end_product": false,
+    "maturity_signal": "",
+    "evidence": "Delivering proven AI innovation backed by deep gaming expertise and vertical AI technologies",
+    "confidence": "high",
+    "prompt_version": "v5"
+  },
+  "633-81-02170|a720b6358be11484|claude-agent": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "consumer_facing_end_product": true,
+    "maturity_signal": "",
+    "evidence": "Ddonas' is a senior creator platform for people in their 50s and 60s",
+    "confidence": "high",
+    "prompt_version": "v5"
+  },
+  "159-88-01629|b9e9f71ad9a43077|claude-agent": {
+    "verdict": "software_only",
+    "matched_program_field": "None",
+    "physical_product": false,
+    "consumer_facing_end_product": true,
+    "maturity_signal": "",
+    "evidence": "ABLY BLACK operates 'Shop Scanner,' a fashion brand lowest-price comparison service",
+    "confidence": "high",
+    "prompt_version": "v5"
   }
 }

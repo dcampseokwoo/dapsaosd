@@ -31,3 +31,5 @@ data/cache/v5_out_*.json
 data/cache/field2_items.json
 data/cache/field2_out_*.json
 data/cache/field_prompt.txt
+data/cache/v5b_items.json
+data/cache/v5b_out_*.json

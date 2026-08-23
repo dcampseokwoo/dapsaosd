@@ -20,14 +20,16 @@
 | §6 | 출력 스키마(evidence 전문·이메일·uid·소개원문·티어) | ✅ |
 | §8 | 자체 채점 + 리젝트 감사(무작위 30) | ✅ |
 
-**최신 산출물**: `output/screening/us_forged_shortlist.xlsx` (프롬프트 v4 반영)
-- 발송 리스트 **396** (T1 **177** · T2 **142** · T3 **77**)
-- 이메일 보유 **189** / 연락처 확보 필요 **207**
+**최신 산출물**: `output/screening/us_forged_shortlist.xlsx` (프롬프트 v5 반영)
+- 발송 리스트 **381** (T1 **174** · T2 **132** · T3 **75**)
+- 이메일 보유 **181** / 연락처 확보 필요 **200**
 - 핵심 지표: 골든 must_pass **15/15**, must_fail **19/21**(잔여: 마린테크노=T2 플래그 /
-  Lihua=§4 배제), 스테이지 이탈 잔류 **0**, 소재/부품/장비 **4/7**(감사 0/7),
-  Semiconductor 0→**34**·Aerospace 0→**2**
-- v4 결과: 뷰티/미용 신호 **T1 = 0**(6→0). 경계(울트라브이·아람휴비스·마린테크노·
-  성운파마코피아)는 T2 + consumer_facing 플래그. 산업부품 OEM(선진정공·코엠고)은 hardtech 유지.
+  Lihua=§4 배제), 스테이지 이탈 잔류 **0**, 소재/부품/장비 **4/7**(감사 0/7)
+- v4/v5 결과: 뷰티/미용 신호 T1=0. 소비재(스마트 텀블러·홈트·코딩완구·기능성 원단 등)
+  용도 축으로 consumer 배제. 산업부품 OEM(선진정공·코엠고)은 hardtech 유지.
+- 분야 컬럼(Q1): Other Deeptech 268→**32**(진짜 미분류만), blank **0**. 11개 분야 중
+  Quantum만 0(시드 DB에 없음). 원료·시약은 Healthtech Device 아님으로 정정.
+- 휴젤 명시 배제(config), 상장/대형 의심 10곳 established_suspect 플래그 → T3.
 
 ---
 
@@ -95,7 +97,10 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
     `matched_program_field` **11 enum 강제**
   - **v4**: OEM/ODM **소비재 완제품** 수탁=consumer(산업부품 OEM 제외) + **용도 축**
     (화장품·미용·에스테틱·이너뷰티 용도 소재·기기=consumer, 산업/임상의료 병기 시 예외).
-    재분류 범위: 발송 리스트 ∩ 뷰티/OEM 신호 26건만(나머지 무손상).
+  - **v5**: 용도 축을 **소비재 전반**으로 확장(생활·운동·교육·취미·의류·식음료·반려·주방·
+    가구 용도면 센서·전자·소재 내장돼도 consumer). 재분류: 소비재 신호 항목만(나머지 무손상).
+  - 분야 라벨 재배정(Q1): `data/cache/field_prompt.txt`(라벨 전용, verdict 불변). 원료·시약은
+    Healthtech Device 금지 → 소재/Other. Other Deeptech 허용하되 빈칸 금지.
 - **재분류 범위 좁히기**: 신호 있는 항목만 파일로 추려 배치 분류 후 캐시에 덮어쓴다
   (예: 뷰티 신호 64건 → `beauty_out_*.json` → `uf_classify.put`). 전체(1,159) 재실행
   금지. 불안정 서브셋 선별은 `uf_fullrun.recheck_subset()`(low/unclear/consumer_facing/
@@ -117,9 +122,10 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
    - **미해결**: 스테이지 오기재는 엔진 밖 문제 → **디캠프 DB 관리자에게 별도 통보 필요**.
      `스테이지_미상` 시트(발송 리스트 중 스테이지 미상 ~255)를 사용자가 훑어 배제 목록 추가.
      기성 제조 중소기업 클러스터(서진산업·신영금속·우창공업 등)는 maturity_signal 로 표시됨.
-2. **Other Deeptech 분야 세분(Q1) — 해결됨.** 발송 리스트 Other Deeptech 268→**0**
-   재배정(verdict 불변, enum 강제). 분포: Semiconductor 83·Healthtech 79·Industrial HW
-   63·Energy 44·Sensor 23·Advanced Mfg 21·Robotics 14·Aerospace 12·Physical AI 5.
+2. **분야 세분(Q1) + 소비재 v5 — 해결됨.** Other Deeptech 268→**32**(진짜 미분류만),
+   blank **0**. 11개 분야 중 Quantum만 0(시드 DB에 없음). 원료·시약 Healthtech 오분류 정정
+   (에이피테크놀로지·웰진 등). 소비재(에잇컵스·리얼디자인테크·모션블루·제일저지 등) v5로
+   consumer 배제. 캐시미스 9건 재분류(워커린스페이스→Aerospace 등). verdict·티어 불변 원칙 유지.
    잔여 0: Manufacturing Process Innovation·Quantum(시드 KR DB에 드문 카테고리, 실제 부재
    가능성). 재배정은 `data/cache/field_prompt.txt`(분야 라벨 전용) 로.
 3. **골든 must_fail 19/21**: 잔여 2건 — 마린테크노(화장품 원료, 분류기 hardtech이나 T2+
