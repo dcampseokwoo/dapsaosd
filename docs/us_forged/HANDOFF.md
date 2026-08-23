@@ -1,0 +1,151 @@
+# US FORGED 후보 선별 엔진 — 인수인계 (HANDOFF)
+
+> 이 문서만 읽고 이어서 작업할 수 있게 쓴다. 대상 프로그램: 디캠프 x HAX Hardtech
+> Pre-Program "US FORGED". 작업 지시서 원본: `docs/us_forged/US_FORGED_ENGINE_SPEC.md`,
+> 공고문: `docs/us_forged/US_FORGED_공고문.docx`.
+
+---
+
+## 1. 현재 상태 (spec §0~§8)
+
+| 섹션 | 내용 | 상태 |
+|---|---|---|
+| §0 | 목적 재정의(선발 아님=배제+정렬), selected→send 명명 | ✅ |
+| §5 | 골든셋 하네스 + 래칫 baseline(전부통과 아니라 "baseline보다 나빠지지 않음") | ✅ |
+| §7 | 스냅샷 고정 + diff 모드 **인터페이스만**(candidate_impact 는 shortlist_fn 주입형, 미구현) | ✅(부분) |
+| §2 | 중복/신원 판정(병합 전 신원 우선) | ✅ |
+| §3 | 스테이지 재작성(명시 매핑·미매칭 예외·Pre-A 예외버킷) | ✅ |
+| §1 | 라벨 폐기 → 소개문 LLM 분류(1,159 전건 + 3회 다수결) | ✅ |
+| §4 | 배제 강화(해외법인 3형식·법인격) | ✅ |
+| §6 | 출력 스키마(evidence 전문·이메일·uid·소개원문·티어) | ✅ |
+| §8 | 자체 채점 + 리젝트 감사(무작위 30) | ✅ |
+
+**최신 산출물**: `output/screening/us_forged_shortlist.xlsx`
+- 발송 리스트 **405** (T1 **183** · T2 **142** · T3 **80**)
+- 이메일 보유 **192** / 연락처 확보 필요 **213**
+- 배제: 스테이지 이탈 2,112 · 분야(SW/소비재) 660 · 해외법인/법인격 214 · 비스타트업 25
+- 핵심 지표: 골든 must_pass **15/15**, must_fail 16/21, 스테이지 이탈 잔류 **0**,
+  소재/부품/장비 **4/7**(감사 0/7), Semiconductor 0→**34**·Aerospace 0→**2**
+
+---
+
+## 2. 파일 지도 & 실행
+
+**파이프라인 순서** (`uf_shortlist.assess`): **dedup(§2) → 배제(§4) → 스테이지(§3) → 분류(§1) → 티어**
+
+| 모듈 | 역할 |
+|---|---|
+| `screening/uf_snapshot.py` | 스냅샷 xlsx 로더 + 사업자번호 정규화(valid/foreign/malformed) + **uid**(placeholder는 사명#행인덱스) + provenance/run_metadata + resolve_snapshot |
+| `screening/uf_dedup.py` | §2 신원 판정 중복 병합(name_collision/canonical_valid), 근접유사 사업자번호 플래그, duplicate_report |
+| `screening/uf_exclude.py` | §4 해외법인(OC*·외국법인_*·해외법인=사업자번호 형식) + 법인격(투자목적회사·조합·SPC·N호·말미 지주) 배제 |
+| `screening/uf_stage.py` | §3 stage_bucket(IN_SCOPE/UNKNOWN/EXCEPTION/OUT_OF_SCOPE, 미매칭 예외), pre_a_bucket(미국+physical), stage_rank |
+| `screening/uf_classify.py` | §1 분류 **프롬프트 전문(v3)** + 캐시 read/write + normalize_field(자유표기→11 enum) |
+| `screening/uf_engine.py` | 레이어 facade. `classify()`는 **캐시 읽기**(미스→unclear). stage_bucket/entity_verdict/hardtech_verdict |
+| `screening/uf_golden.py` | 골든셋 로더 + evaluate_all(레이어별 케이스 평가, 래칫·리포트 공용) |
+| `screening/uf_pilot.py` | 파일럿 표본(경계 5유형 층화 + 시드 고정) |
+| `screening/uf_fullrun.py` | 전체 분류 집계 + 불안정 서브셋 선별 + **3회 다수결 finalize**(disagreement 플래그·이력) |
+| `screening/uf_shortlist.py` | **파이프라인 조립**: assess()/build()/tier(). disposition= send/excluded_* |
+| `screening/uf_forged_xlsx.py` | §6/§8 산출물 워크북 빌드 |
+| `screening/uf_diff.py` | §7 스냅샷 diff(column_diff 구현 / candidate_impact 인터페이스만) |
+
+**워크북 빌드**: `python -c "from screening import uf_forged_xlsx as X; print(X.build())"`
+**테스트**: `python -m pytest tests/ -q` / **래칫**: `python -m tests.golden_ratchet`
+
+---
+
+## 3. 합의된 판정 규칙 (반드시 지킬 것)
+
+1. **이 엔진은 "선발"이 아니라 "배제 + 우선순위 정렬"이다.** 공고 핵심 요건 중
+   **Lab-scale 프로토타입 · 미국 진출 의지 · 창업자/CTO 기술 전문성**은 GBD DB에
+   컬럼 자체가 없어 **원리적으로 검증 불가**(타겟 국가 98% 결측). 출력물에
+   "선발/요건충족" 표현 금지, 통과 판정엔 이 미검증 요건을 함께 노출.
+2. **판정 기준**: "미국 고객에게 팔 수 있는 **물리적 제품·소재·장비·디바이스를 직접
+   설계·제조하는가**." SW로 하드웨어를 제어·분석·중개만 하면 software_only.
+3. **수직계열화 규칙**: 소재·부품·공정을 **자체 개발/수직계열화**하면 hardtech,
+   **완제품 조립·수탁(OEM/ODM)만** 하면 consumer. 최종 제품이 소비자용인지는 기준이
+   아니다(소비자용이라도 핵심 소재 자체개발이면 hardtech + consumer_facing 플래그).
+4. **애매하면 배제가 아니라 후순위(T3) 또는 플래그.** 이메일 발송은 비용이 없으므로
+   unclear·저신뢰는 발송 리스트에 넣고 순위만 낮춘다. (제3의 "검토" 버킷 없음.)
+5. **골든셋 수정은 DB 원문(1줄 소개·기술 컬럼)에 명시적 근거가 있을 때만.** 근거가
+   없으면 fixture 를 고치지 말고 **프롬프트를 고친다.** (골든셋 상단 주석에도 명시.)
+6. **업종(CB) 라벨은 보조 신호일 뿐, 절대 단독 판정 근거로 쓰지 않는다.** 이게 원래
+   결함의 뿌리였다(한글 레거시 라벨·다중 라벨이 진짜 하드테크를 전멸시킴).
+
+**티어 정의**: T1 = hardtech·confidence high·플래그 없음 / T2 = hardtech인데
+consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence low.
+
+---
+
+## 4. 분류 캐시 관리 — **⚠ 예산 자산. 함부로 무효화하지 말 것**
+
+`data/cache/classification.json` (약 618KB, 1,159건 + 골든/뷰티 재분류). **예산을
+들여 만든 자산이다. 캐시 키를 바꾸거나 대량 재분류를 돌리기 전에 반드시 계획 보고.**
+
+- **캐시 키** = `사업자번호(biz_no) | 소개문 SHA256[:16] | 모델명`
+  - 프롬프트 버전은 **키가 아니라 항목 필드**(`prompt_version`)로 기록 → v2/v3 선택적
+    재분류를 혼재·추적. (v2/v3 를 키에 넣으면 부분 재분류가 캐시 전체를 무효화함.)
+  - **식별은 uid**(placeholder 사업자번호 = 사명#행인덱스)로 dedup/finalize 에서 처리.
+    캐시 키의 biz_no+소개문해시는 placeholder라도 소개문이 달라 충돌하지 않음.
+- **프롬프트 버전 이력** (`uf_classify.PROMPT`, `PROMPT_VERSION`):
+  - **v1**: 핵심 판정 질문 + 경계 5유형(수탁/상사/용역/하드+SaaS/기성제조)
+  - **v2**: 수직계열화 규칙 + `consumer_facing_end_product`·`maturity_signal` 필드
+  - **v3**: 화장품/뷰티 기본값 명시(소재 자체개발 명시 없으면 consumer) +
+    `matched_program_field` **11 enum 강제**
+- **재분류 범위 좁히기**: 신호 있는 항목만 파일로 추려 배치 분류 후 캐시에 덮어쓴다
+  (예: 뷰티 신호 64건 → `beauty_out_*.json` → `uf_classify.put`). 전체(1,159) 재실행
+  금지. 불안정 서브셋 선별은 `uf_fullrun.recheck_subset()`(low/unclear/consumer_facing/
+  maturity), 3회 다수결은 `uf_fullrun.finalize()`.
+- 분류 실행 방식(현 세션): 서브에이전트가 `data/cache/classify_prompt.txt`(=PROMPT)와
+  항목 JSON을 읽어 배치별 결과 파일 기록 → 집계. 런타임 API 키는 repo에 없음(캐시 우선).
+
+---
+
+## 5. 미해결 이슈
+
+1. **화장품/의료미용 T1 6곳** (플래그 없이 상위): 울트라브이(PDO 필러)·아람휴비스(피부
+   영상 진단기)·락토메이슨·성운파마코피아·아이엔지알·큐티스바이오. 분류기가 B2B 메디컬
+   소재/기기로 봐 hardtech·consumer_facing=False. **의료미용 vs 소비재 경계** —
+   프롬프트 보강 후보(다음 작업).
+2. **Other Deeptech 130/192**: 분야 세분 미완(Q1). verdict 재판정 아니라 **분야 라벨만
+   재배정**(enum 강제)하면 됨 — 싸다. 지표 ②(분야 0 없음)의 측정 가능성에 필요.
+3. **골든 must_fail 16/21**: 파인유얼뷰티(피트니스인데 분류기 hardtech 오판 — 골든
+   consumer 유지)·마린테크노(화장품 원료 = consumer 유지)·크레신/이지코스텍(OEM/ODM
+   명시 → **프롬프트에 "OEM/ODM 수탁 명시 시 기술 언급 있어도 consumer" 한 줄 추가
+   합의됨, 미반영**)·Lihua(§4가 배제하므로 파이프라인상 문제 아님).
+4. **사업자번호 오타 의심**: 오믈렛 `563-88-23981` vs `563-88-02981`(similar_biz_no_
+   suspect), 랜딩 `725-870-2428`(malformed), 스피드플로어 앞뒤 공백. 중복_엔티티 시트에
+   노출됨 — DB 관리자 정정 대상.
+
+---
+
+## 6. 작업 관행
+
+- **코드 수정 전 계획을 보고하고 승인받는다.** 큰 변경(분류 방식·캐시 키)은 특히.
+- **커밋 시 래칫이 자동 실행**(pre-commit 훅). "baseline보다 나빠지지 않음"을 검사 —
+  회귀 시 커밋 차단. 개선했으면 `python -m tests.golden_ratchet --update-baseline`.
+- **fixture와 데이터가 충돌하면 데이터(DB 원문)부터 확인**하고 사용자에게 알린다.
+  골든셋이 항상 옳다고 가정하지 않는다(지금까지 fixture 오류 5건 교정).
+- **지출 한도가 불안정**하다. 대량 서브에이전트 실행 전 핑으로 확인하고, 실패 시
+  누락 배치만 재개(파일이 이미 있는 배치는 건너뜀).
+
+---
+
+## 7. 재개 방법
+
+1. 저장소 클론 후 개발 의존성 설치:
+   ```
+   pip install -r requirements-dev.txt        # pytest, PyYAML, openpyxl
+   ln -sf ../../scripts/pre-commit-golden.sh .git/hooks/pre-commit   # 래칫 훅(선택)
+   ```
+2. 상태 확인:
+   ```
+   python -m pytest tests/ -q
+   python -m tests.golden_ratchet             # baseline 대비 회귀 없음 확인
+   python -c "from screening import uf_shortlist as S; print(S.summarize(S.build()))"
+   python -c "from screening import uf_forged_xlsx as X; print(X.build())"   # 워크북 재생성
+   ```
+3. **새 세션 첫 메시지 예시**:
+   > "docs/us_forged/HANDOFF.md 읽고 이어서 작업하자. 다음은 [화장품/의료미용 프롬프트
+   > 보강 (크레신·이지코스텍·울트라브이·아람휴비스) / Other Deeptech 분야 세분 / §7
+   > diff candidate_impact 구현] 중 무엇을 하면 돼. 캐시는 예산 자산이니 재분류 범위를
+   > 먼저 좁혀서 계획을 보고해줘."

@@ -4,7 +4,6 @@ __pycache__/
 checkpoints/
 data/*.xlsx
 !data/*.csv
-output/
 data/cache/pilot_input.json
 data/cache/pilot_items.json
 data/cache/pilot_out_*.json
@@ -17,3 +16,8 @@ data/cache/beauty_items.json
 data/cache/beauty_out_*.json
 data/cache/recheck_items.json
 data/cache/pilot_sample_only.json
+# output 은 전부 무시하되 최종 산출물 워크북만 예외 추적
+output/*
+!output/screening/
+output/screening/*
+!output/screening/us_forged_shortlist.xlsx
