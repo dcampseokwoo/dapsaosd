@@ -28,42 +28,61 @@ def _stage_note(target: str) -> list[str]:
     return notes
 
 
+def tier(disposition: str, cls: dict) -> str:
+    """발송 리스트 우선순위 티어(컬럼). T1 최우선 → T3 후순위."""
+    if disposition != "send":
+        return "—"
+    v, conf = cls.get("verdict"), cls.get("confidence")
+    flagged = cls.get("consumer_facing_end_product") or bool((cls.get("maturity_signal") or "").strip())
+    if v == "hardtech" and conf == "high" and not flagged:
+        return "T1"
+    if v == "hardtech":
+        return "T2"          # hardtech 인데 consumer_facing/maturity 플래그
+    return "T3"              # unclear 또는 confidence low
+
+
 def assess(entity: dict) -> dict:
-    """엔티티 하나 → 최종 판정 dict(모든 필드 포함)."""
+    """엔티티 하나 → 최종 판정 dict. 목적: 배제 + 우선순위 정렬(제3의 '검토' 버킷 없음).
+
+    disposition: send(발송 리스트) / excluded_entity / excluded_stage / excluded_field /
+                 not_a_startup. 애매(unclear·저신뢰)는 배제하지 않고 send 에 넣어 T3 로 강등.
+    """
     rec = {"biz_no": entity["biz_no"], "desc": entity.get("desc", "")}
-    c = uf_engine.classify(rec)
     stage_b = uf_stage.stage_bucket(entity.get("stage"))
     excl, ereason = uf_exclude.entity_exclusion(entity)
+    us = "미국" in (entity.get("target") or "")
 
-    out = {**entity, **{f"cls_{k}": v for k, v in c.items()},
-           "stage_bucket": stage_b, "unverifiable_requirements": UNVERIFIABLE}
+    out = {**entity, "stage_bucket": stage_b, "unverifiable_requirements": UNVERIFIABLE}
 
-    # 1) §4 배제 우선
+    # 1) §4 배제 우선 (분류 불필요)
     if excl:
-        out["disposition"] = "excluded_entity"; out["reason"] = ereason
+        out.update(disposition="excluded_entity", reason=ereason, tier="—")
         return out
-    # 2) §3 스테이지 이탈
+    # 2) §3 스테이지 이탈. Pre-A(EXCEPTION)는 미국 아니면 여기서 이탈(분류 불필요).
     if stage_b == uf_stage.OUT_OF_SCOPE:
-        out["disposition"] = "excluded_stage"; out["reason"] = f"스테이지 이탈({entity.get('stage')})"
+        out.update(disposition="excluded_stage", reason=f"스테이지 이탈({entity.get('stage')})", tier="—")
+        return out
+    if stage_b == uf_stage.EXCEPTION and not us:
+        out.update(disposition="excluded_stage", reason="Pre-A 예외 미충족(미국 타겟 아님)", tier="—")
         return out
     # 3) 분류
+    c = uf_engine.classify(rec)
+    out.update({f"cls_{k}": v for k, v in c.items()})
     v = c["verdict"]
     if v == "not_a_startup":
-        out["disposition"] = "not_a_startup"; out["reason"] = "분류: 비스타트업"
+        out.update(disposition="not_a_startup", reason="분류: 비스타트업", tier="—")
         return out
     if v in ("software_only", "consumer"):
-        out["disposition"] = "excluded_field"; out["reason"] = f"분류: {v}"
+        out.update(disposition="excluded_field", reason=f"분류: {v}(공고 명시 배제)", tier="—")
         return out
-    if v == "unclear":
-        out["disposition"] = "review"; out["reason"] = "분류 불확실(저신뢰 — 사람 검토)"
+    # Pre-A + 미국 이지만 물리제품 아니면 이탈
+    if stage_b == uf_stage.EXCEPTION and not c.get("physical_product"):
+        out.update(disposition="excluded_stage", reason="Pre-A 예외 미충족(물리제품 아님)", tier="—")
         return out
-    # v == hardtech → Pre-A 예외 확정
-    if stage_b == uf_stage.EXCEPTION:
-        if uf_stage.pre_a_bucket(entity.get("target", ""), c.get("physical_product")) != "stage_exception":
-            out["disposition"] = "excluded_stage"
-            out["reason"] = "Pre-A 예외 미충족(미국+물리제품 아님)"
-            return out
-    out["disposition"] = "outreach"; out["reason"] = "hardtech 발송 후보"
+    # hardtech / unclear → 발송 리스트(unclear 는 T3 로 강등, 배제 아님)
+    out["disposition"] = "send"
+    out["tier"] = tier("send", c)
+    out["reason"] = ("hardtech 발송" if v == "hardtech" else "unclear → 후순위(T3) 발송")
     return out
 
 
