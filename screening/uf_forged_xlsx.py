@@ -109,42 +109,46 @@ def build(run_ts: str | None = None) -> Path:
 
     # ---- 시트2/3 발송 후보 + 연락처 필요 ----
     TFILL = {"T1": GREEN, "T2": YEL, "T3": GRY}
+    NOTE = ("티어: T1 hardtech·high·플래그없음 / T2 hardtech+consumer_facing|maturity / "
+            "T3 unclear|저신뢰. 애매해도 배제 아니라 후순위 발송. ‘요건충족/선발’ 아님. "
+            "※ 모든 대상은 Lab-scale 프로토타입·미국 진출 의지·창업자/CTO 기술 차별성이 "
+            "DB 미검증 — 설문으로 확인(타겟시장에 ‘미국’ 기재된 소수는 진출 의지 일부 확인됨).")
 
-    def _write_candidates(sheet, data, title):
+    def _write_candidates(sheet, data, title, need_website=False):
         w = wb.create_sheet(sheet); w.sheet_view.showGridLines = False
         _c(w, 1, 1, title, bold=True, size=12)
-        w.merge_cells(start_row=1, start_column=1, end_row=1, end_column=12)
-        _c(w, 2, 1, "티어: T1 hardtech·high·플래그없음 / T2 hardtech+consumer_facing|maturity / "
-           "T3 unclear|저신뢰. 애매해도 배제 아니라 후순위로 발송. '요건충족/선발' 아님 — "
-           "검증불가 요건은 설문으로 확인.", size=8, wrap=True)
-        w.merge_cells(start_row=2, start_column=1, end_row=2, end_column=12)
-        w.row_dimensions[2].height = 26
-        _hdr(w, 3, ["티어", "국문명", "분야", "스테이지", "타겟시장", "confidence",
-                    "판정근거(evidence)", "검증불가 요건", "연락처", "consumer_facing",
-                    "maturity_signal", "merged_from"],
-             [7, 18, 22, 11, 12, 9, 38, 28, 10, 12, 20, 14])
+        w.merge_cells(start_row=1, start_column=1, end_row=1, end_column=13)
+        _c(w, 2, 1, NOTE, size=8, wrap=True)
+        w.merge_cells(start_row=2, start_column=1, end_row=2, end_column=13)
+        w.row_dimensions[2].height = 40
+        cols = ["티어", "국문명", "사업자번호", "분야", "스테이지", "타겟시장", "confidence",
+                "대표자 이메일", "Website", "1줄 사업 소개(원문)", "판정근거(evidence 전문)",
+                "consumer_facing", "maturity_signal"]
+        _hdr(w, 3, cols, [7, 17, 14, 20, 10, 12, 9, 24, 24, 46, 46, 12, 20])
         rr = 4
         for a in data:  # 이미 티어→분야→사명 순 정렬
             f = TFILL.get(a.get("tier"), GREEN)
             _c(w, rr, 1, a.get("tier", ""), fill=f, align="center", bold=True)
             _c(w, rr, 2, a["name_ko"], fill=f)
-            _c(w, rr, 3, a.get("cls_matched_program_field", ""), fill=f)
-            _c(w, rr, 4, a.get("stage", ""), fill=f, align="center")
-            _c(w, rr, 5, a.get("target") or "미상", fill=f, align="center", size=8)
-            _c(w, rr, 6, a.get("cls_confidence", ""), fill=f, align="center", size=8)
-            _c(w, rr, 7, (a.get("cls_evidence") or "")[:58], fill=f, size=8)
-            _c(w, rr, 8, "; ".join(a.get("unverifiable_requirements", [])), fill=f, size=8)
-            _c(w, rr, 9, _contact_status(a), fill=f, align="center", size=8)
-            _c(w, rr, 10, "⚠" if a.get("cls_consumer_facing_end_product") else "", fill=f, align="center", size=8)
-            _c(w, rr, 11, (a.get("cls_maturity_signal") or "")[:22], fill=f, size=8)
-            _c(w, rr, 12, ",".join(a.get("merged_from", []) or []), fill=f, size=8)
+            _c(w, rr, 3, a.get("biz_no", ""), fill=f, size=8)
+            _c(w, rr, 4, a.get("cls_matched_program_field", ""), fill=f)
+            _c(w, rr, 5, a.get("stage", ""), fill=f, align="center")
+            _c(w, rr, 6, a.get("target") or "미상", fill=f, align="center", size=8)
+            _c(w, rr, 7, a.get("cls_confidence", ""), fill=f, align="center", size=8)
+            _c(w, rr, 8, a.get("email", ""), fill=f, size=8)
+            _c(w, rr, 9, a.get("website", ""), fill=f, size=8)
+            _c(w, rr, 10, a.get("desc", ""), fill=f, size=8, wrap=True)
+            _c(w, rr, 11, a.get("cls_evidence", "") or "", fill=f, size=8, wrap=True)
+            _c(w, rr, 12, "⚠" if a.get("cls_consumer_facing_end_product") else "", fill=f, align="center", size=8)
+            _c(w, rr, 13, a.get("cls_maturity_signal") or "", fill=f, size=8, wrap=True)
             rr += 1
         w.freeze_panes = "A4"
 
     _write_candidates("발송_리스트", with_email,
                       f"발송 리스트(이메일 보유) {len(with_email)}개사 — T1→T3 우선순위 정렬")
     _write_candidates("연락처_확보_필요", no_email,
-                      f"발송 리스트(이메일 결측) {len(no_email)}개사 — Website 확보 후 발송 (T1→T3)")
+                      f"발송 리스트(이메일 결측) {len(no_email)}개사 — Website 필수, 확보 후 발송 (T1→T3)",
+                      need_website=True)
 
     # ---- 시트5 리젝트 감사(§8-⑤): 무작위 30(sw15/consumer10/notstartup5) ----
     rnd = random.Random(20260821)
