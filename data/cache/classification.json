@@ -1,7 +1,7 @@
 {
   "666-87-01737|114c24aaea3c1bc2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18,7 +18,7 @@
   },
   "318-81-02567|caf616117f9a5497|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -99,7 +99,7 @@
   },
   "693-87-01705|cea8f9d86558a046|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -116,7 +116,7 @@
   },
   "297-81-02412|9e2a2b77bb54fdb5|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -203,7 +203,7 @@
   },
   "647-85-02411|0647abb7ff5465d0|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -582,7 +582,7 @@
   },
   "314-81-73852|7fbb9d1aed5380f4|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -879,7 +879,7 @@
   },
   "596-88-00192|016c59d948138020|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "바이오칩·이미징 기반 단백질 상호작용 측정 플랫폼(분석장비)",
@@ -904,7 +904,7 @@
   },
   "135-86-32758|c63cd34249e2bf39|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "산업용 전자부품을 정밀 가공하고 관련 기계·전기 부품을 공급하는 제조기업 - 범용 산업부품 가공·공급, 기술 차별성 주장 없음",
@@ -954,7 +954,7 @@
   },
   "123-81-99616|46439bbdbc32e2a7|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "디스플레이 광학필름·기능성 라벨·점착 테이프 정밀가공 소재기업",
@@ -996,7 +996,7 @@
   },
   "124-81-91617|ac7e96ce38d0c698|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -1166,7 +1166,7 @@
   },
   "318-81-05832|4d12374f37cae738|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -1234,7 +1234,7 @@
   },
   "215-81-72901|2e980a89cbbe1b7d|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -1293,7 +1293,7 @@
   },
   "260-87-00980|7d5e2eb92abc7c9c|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Robotics/Automation",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "core business is seaweed farming/selling; device productization unclear",
@@ -1318,7 +1318,7 @@
   },
   "244-86-02072|0e592c60f2fed252|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Physical AI",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -1411,7 +1411,7 @@
   },
   "308-87-01578|b0ce95d121678920|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -1453,7 +1453,7 @@
   },
   "382-86-03640|3287c9f14c7fc27c|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -1470,7 +1470,7 @@
   },
   "445-86-01604|d88cc108ef781e13|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -1487,7 +1487,7 @@
   },
   "321-87-01950|1f09912c56ec58ab|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -1698,7 +1698,7 @@
   },
   "210-86-00052|8572b99a0555390f|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -1757,7 +1757,7 @@
   },
   "358-81-00757|bfd87bec07344833|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -2001,7 +2001,7 @@
   },
   "829-81-01826|80c3c66eaa4d7a91|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -2035,7 +2035,7 @@
   },
   "828-87-00831|b2048266adcbac35|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Aerospace",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -2052,7 +2052,7 @@
   },
   "686-81-01855|71a8b62ae2bedf28|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -2069,7 +2069,7 @@
   },
   "506-81-91901|cee9c23003adc100|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -2290,7 +2290,7 @@
   },
   "298-88-02753|97e2b1d4cc756220|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -2553,7 +2553,7 @@
   },
   "265-87-00137|9fcb960f4b03efec|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Robotics/Automation",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "manufactures various types of robots (broad multi-purpose lineup, no specific tech differentiation stated)",
@@ -2595,7 +2595,7 @@
   },
   "145-88-02482|697041b8115d019b|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -2714,7 +2714,7 @@
   },
   "528-88-00938|2a8f617c0978bae2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "makes cycling equipment (consumer fitness device, no core material/component differentiation stated)",
@@ -2739,7 +2739,7 @@
   },
   "136-86-02301|96b0cc3e9347eac3|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -2756,7 +2756,7 @@
   },
   "526-86-01349|e8850ae93609c380|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Robotics/Automation",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -2815,7 +2815,7 @@
   },
   "501-04-52159|ae81f285e99c25f7|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -2882,7 +2882,7 @@
   },
   "157-81-02870|0f3dedfec6fc46df|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -3153,7 +3153,7 @@
   },
   "876-86-02578|33f765c9929927d0|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Physical AI",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -3457,7 +3457,7 @@
   },
   "215-87-94756|730abebc4306c9f2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -3607,7 +3607,7 @@
   },
   "169-87-00144|241621cee4ba1f50|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -4277,7 +4277,7 @@
   },
   "219-87-01322|1c8703482a606e57|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -4294,7 +4294,7 @@
   },
   "209-88-00323|0def3bcbe9188172|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -4370,7 +4370,7 @@
   },
   "851-87-00656|6359b9205029abbc|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -4881,7 +4881,7 @@
   },
   "558-86-02189|1a6130c01d691005|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -5008,7 +5008,7 @@
   },
   "812-88-02637|dc8010fc007a491a|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -5203,7 +5203,7 @@
   },
   "795-88-02365|a3af03b855ed51ef|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Aerospace",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -5254,7 +5254,7 @@
   },
   "634-88-00058|7c88b23412461987|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -5279,7 +5279,7 @@
   },
   "126-86-44944|02db6d21066b3629|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -5330,7 +5330,7 @@
   },
   "236-87-03233|7f0407c0bdf477da|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Aerospace",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -5415,7 +5415,7 @@
   },
   "754-88-02030|7535de8c5789edde|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -5525,7 +5525,7 @@
   },
   "339-81-03016|afc075bf19dc1275|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Aerospace",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -5640,7 +5640,7 @@
   },
   "665-81-03195|8e1b1b4ca47aa2d3|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -6285,7 +6285,7 @@
   },
   "288-81-03192|179494609b6d47f8|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -6556,7 +6556,7 @@
   },
   "807-87-03184|af6d10464d0719a2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Aerospace",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -6573,7 +6573,7 @@
   },
   "842-86-01334|e45eda6268976cd1|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Robotics/Automation",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -6590,7 +6590,7 @@
   },
   "508-15-61484|a9db005409631182|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -6607,7 +6607,7 @@
   },
   "432-87-02036|f06315ec5b0a2989|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -6624,7 +6624,7 @@
   },
   "597-81-00560|c8fe76b942da62cd|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -6975,7 +6975,7 @@
   },
   "467-81-02743|d26f0330291fe8b6|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -7017,7 +7017,7 @@
   },
   "444-87-03358|afa2fb3b595340f1|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -7120,7 +7120,7 @@
   },
   "496-88-01547|362876dc97766a6a|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Robotics/Automation",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -8131,7 +8131,7 @@
   },
   "792-86-02829|92791b6aa6dc890b|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -8190,7 +8190,7 @@
   },
   "861-86-01714|fcc712b0e7cf6e38|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -8258,7 +8258,7 @@
   },
   "545-81-02441|e7e9c744feffb047|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -8283,7 +8283,7 @@
   },
   "406-88-01961|28f425fa406381de|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -8393,7 +8393,7 @@
   },
   "676-86-00951|b7b38cd8e11bce24|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -8639,7 +8639,7 @@
   },
   "589-87-00218|73125397ca70b5fc|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -8715,7 +8715,7 @@
   },
   "504-81-19301|fd61883bf4b6e1fc|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "단열도어·방화도어 다품목 제조, 기술 차별성 주장 없음 (기성 제조업체 추정)",
@@ -8750,7 +8750,7 @@
   },
   "123-81-38259|31262a2336d1125d|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "무대기계 제어시스템·사료생산설비·곡물이송장비 다품목 제조 (기성 산업장비 제조업체 추정)",
@@ -9151,7 +9151,7 @@
   },
   "367-87-02674|abb9569ebb5b58fa|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -9176,7 +9176,7 @@
   },
   "364-87-02674|3cd2c134d2419292|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -9270,7 +9270,7 @@
   },
   "703-81-01918|908096a3c1339bfb|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -9329,7 +9329,7 @@
   },
   "878-87-01252|71b85bcf1e4fb521|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -9552,7 +9552,7 @@
   },
   "286-87-01787|afe18ea2d3c2e61d|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -10206,7 +10206,7 @@
   },
   "595-88-01596|008dd16736d9b3fa|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -10301,7 +10301,7 @@
   },
   "741-88-00017|88a8561e616b4414|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -10445,7 +10445,7 @@
   },
   "358-81-01421|f4f11f72659eb90d|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -10462,7 +10462,7 @@
   },
   "307-81-51786|cacf6a328d789a14|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -10487,7 +10487,7 @@
   },
   "579-86-01800|d53b3eb08f63349b|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -10504,7 +10504,7 @@
   },
   "247-81-02149|c210041f1f4fb53f|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -10521,7 +10521,7 @@
   },
   "836-87-00851|207897312d267e34|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -10538,7 +10538,7 @@
   },
   "423-87-00640|a68d4903a1cbc8fd|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -10580,7 +10580,7 @@
   },
   "129-86-08739|5bd0f195b1ef82a3|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -10597,7 +10597,7 @@
   },
   "215-87-84485|9d4b4be707fc9fec|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -10665,7 +10665,7 @@
   },
   "810-88-01423|73a2f92a1bb1c1d6|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -10860,7 +10860,7 @@
   },
   "762-88-01842|de07e237f1c893fd|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -11550,7 +11550,7 @@
   },
   "725-88-01713|65bcb4c36cc6f092|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -11710,7 +11710,7 @@
   },
   "129-81-41975|a9537ca0626f733a|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Mobility",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "provides M2M modules and automotive electronics solutions for public safety and telematics applications",
@@ -11770,7 +11770,7 @@
   },
   "374-86-01317|bebb9c65d87a6a75|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Mobility",
+    "matched_program_field": "Physical AI",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -11797,7 +11797,7 @@
   },
   "215-87-74895|bade3d2a470000c4|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Physical AI",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -11865,7 +11865,7 @@
   },
   "563-86-02707|27594092275865ea|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -11882,7 +11882,7 @@
   },
   "129-81-72027|6aa1df498e78e312|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Mobility",
+    "matched_program_field": "Physical AI",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -11941,7 +11941,7 @@
   },
   "216-81-07039|bb5e90273f96e522|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "ports, catheters, infusion and drainage sets, respiratory-care products, and other disposable medical devices (다품목 의료소모품 제조)",
@@ -11966,7 +11966,7 @@
   },
   "609-81-89169|093497b65c874422|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "금형·사출·코팅·조립 일괄생산 수탁 성격, 자체 완제품/IP 불명확",
@@ -12001,7 +12001,7 @@
   },
   "135-81-54193|0077a48bbe80a4f4|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12018,7 +12018,7 @@
   },
   "124-81-73680|360bec249fc37a1c|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12094,7 +12094,7 @@
   },
   "211-88-75676|d0205ea8df9eccb3|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "자원순환·도시광산(유가금속 회수)",
@@ -12119,7 +12119,7 @@
   },
   "420-81-02481|7024bf52a9a04f6a|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12180,7 +12180,7 @@
   },
   "134-87-02511|f79fd6066c7b751e|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12231,7 +12231,7 @@
   },
   "140-81-87376|ac2b5a85ad55c617|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12282,7 +12282,7 @@
   },
   "705-86-00943|dd59f5bae9c9f41b|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12458,7 +12458,7 @@
   },
   "766-88-02732|af85a259c34813e4|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12500,7 +12500,7 @@
   },
   "134-86-36988|3c48fb99daef54a9|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12542,7 +12542,7 @@
   },
   "824-87-02502|20ab787f5ddb1d4d|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12559,7 +12559,7 @@
   },
   "206-86-08415|9c327fb8c6d6091c|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12576,7 +12576,7 @@
   },
   "123-86-13175|61ba9dd6333ca511|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12593,7 +12593,7 @@
   },
   "119-86-35864|1a90e66979a2991d|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12660,7 +12660,7 @@
   },
   "134-86-70123|5b04d7aea6eb3606|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12702,7 +12702,7 @@
   },
   "206-81-25312|180ccb92fbb76c89|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12813,7 +12813,7 @@
   },
   "381-88-02114|7bf9518e59894936|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12830,7 +12830,7 @@
   },
   "129-86-87622|ecf474ef21d9ac20|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "디자인하우스 턴키(설계~제조·테스트·패키징) 수탁 성격",
@@ -12880,7 +12880,7 @@
   },
   "134-81-33443|44d205e8af021b13|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12897,7 +12897,7 @@
   },
   "139-81-39345|66bb13432bb2a2cd|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12931,7 +12931,7 @@
   },
   "134-81-05200|690df5744db0e66f|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech/None",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -12990,7 +12990,7 @@
   },
   "417-81-03223|cd43d0eecb668cd5|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "국내외 완성차 아닌 상선 조선사, 대형 조선업체",
@@ -13067,7 +13067,7 @@
   },
   "123-81-00637|ee7fb6908c57a5cd|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "완성차 업체에 공급하는 자동차 부품 제조(OEM 납품)",
@@ -13109,7 +13109,7 @@
   },
   "615-81-66797|8f0638032a23b196|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -13126,7 +13126,7 @@
   },
   "669-81-00526|ab61f3525b743530|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -13168,7 +13168,7 @@
   },
   "490-81-00105|f63dd731319698f9|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -13202,7 +13202,7 @@
   },
   "363-87-02142|252562c83a912e4c|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -13270,7 +13270,7 @@
   },
   "617-86-14723|8036e8034c2d97ab|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -13499,7 +13499,7 @@
   },
   "556-88-00535|35d3947fc201fedc|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -13550,7 +13550,7 @@
   },
   "622-81-03072|2b8fcc011e7c0bce|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -13727,7 +13727,7 @@
   },
   "436-86-01309|5afd0c5e2079afdb|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -13761,7 +13761,7 @@
   },
   "144-81-14730|104f228365da7f8a|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -13778,7 +13778,7 @@
   },
   "124-86-90516|5a33ed839b819535|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "RNAi 치료제 개발 바이오(하드웨어·소재·장비·디바이스 아님)",
@@ -13803,7 +13803,7 @@
   },
   "214-87-18925|15ca2958976b4abf|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "치료·진단용 바이오제품 개발(하드웨어 아님, 경계형)",
@@ -13863,7 +13863,7 @@
   },
   "135-86-20077|b20600b48de73fe1|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -13939,7 +13939,7 @@
   },
   "124-81-64712|d6b89c759ae6ee4e|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "펨토초 레이저 초정밀 가공·절삭공구",
@@ -13974,7 +13974,7 @@
   },
   "503-81-51161|a39eb689cb9b7386|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "자동차용 프레스 금형 설계·정밀 프레스 가공",
@@ -13999,7 +13999,7 @@
   },
   "106-81-50525|84bbf30d5afa8bf6|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14026,7 +14026,7 @@
   },
   "144-81-17625|b7530e289ee82321|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14053,7 +14053,7 @@
   },
   "401-81-38881|4ddc9b6f63d51885|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14121,7 +14121,7 @@
   },
   "608-81-55690|c1c603006f6d3cb2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "railway support insulators and power/control equipment, established component manufacturer",
@@ -14173,7 +14173,7 @@
   },
   "107-81-87457|e16516f76597c24a|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14200,7 +14200,7 @@
   },
   "502-86-32415|f632cfa57beeea22|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14234,7 +14234,7 @@
   },
   "141-81-43497|b705a9f21dfd72e7|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "restores and custom-builds classic vehicles (customization/restoration)",
@@ -14259,7 +14259,7 @@
   },
   "124-86-60822|021b566e93efd5c2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14276,7 +14276,7 @@
   },
   "220-87-00148|ca7fb9b84134d031|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -14345,7 +14345,7 @@
   },
   "686-81-00439|920c065a82599859|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14387,7 +14387,7 @@
   },
   "250-86-00462|1a3060f2ac367e90|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14454,7 +14454,7 @@
   },
   "175-86-02515|da7e38f11b9d008a|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14488,7 +14488,7 @@
   },
   "341-88-00404|94c384ff84224498|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "electrical and electronic products and components (generic multi-product), no differentiation claim",
@@ -14555,7 +14555,7 @@
   },
   "124-86-85288|bf291d0960a6bd64|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14606,7 +14606,7 @@
   },
   "317-81-16582|d662e9f68e4a20f1|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14640,7 +14640,7 @@
   },
   "606-81-60601|217e6eb84a6624d7|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "industrial forged flanges (단조 플랜지), established component manufacturer for marine/petrochemical/power/nuclear",
@@ -14665,7 +14665,7 @@
   },
   "129-81-93304|c3339b8cc248e1bc|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14690,7 +14690,7 @@
   },
   "502-81-90477|b798252b9b31436c|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14843,7 +14843,7 @@
   },
   "214-87-06910|aa17626552cd4290|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -14868,7 +14868,7 @@
   },
   "134-86-31381|4dce9b9dab27cce1|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14910,7 +14910,7 @@
   },
   "128-86-02052|490e4abe0e934a69|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -14927,7 +14927,7 @@
   },
   "301-81-63737|e6e627d0d3fbbbec|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "research-stage framing",
@@ -15091,7 +15091,7 @@
   },
   "123-87-01278|b4ac40f95fccb0ef|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -15133,7 +15133,7 @@
   },
   "131-86-59129|92bf369d4accfd67|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Sustainability",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -15185,7 +15185,7 @@
   },
   "570-87-00058|ed4a92f8f728b5b0|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Consumer Electronics",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -15943,7 +15943,7 @@
   },
   "645-86-04079|6fcba98d41965d3f|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -15960,7 +15960,7 @@
   },
   "714-81-00087|173c7a1188bbf8ea|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Aerospace",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16021,7 +16021,7 @@
   },
   "234-81-08282|3bb963dcb02a81f2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -16063,7 +16063,7 @@
   },
   "230-88-00856|4584657463e38cff|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16080,7 +16080,7 @@
   },
   "138-81-43394|d526232b542b6198|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16097,7 +16097,7 @@
   },
   "215-87-83754|fd41c2eaf4b9dbc9|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16114,7 +16114,7 @@
   },
   "591-88-01008|3671163616a211e4|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16131,7 +16131,7 @@
   },
   "214-86-64403|e6bd93acaac367e2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16148,7 +16148,7 @@
   },
   "603-81-78586|1c82cab44cc3e536|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "Precision manufacturer of stainless-steel valves, fittings and equipment parts for industrial, semiconductor and marine applications - general multi-application precision parts, no differentiation claim",
@@ -16215,7 +16215,7 @@
   },
   "135-86-46965|7f51cecedc2a38eb|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16232,7 +16232,7 @@
   },
   "204-86-29170|6d791918633d8282|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16266,7 +16266,7 @@
   },
   "671-81-00456|a34861e1db640a66|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16283,7 +16283,7 @@
   },
   "113-81-87092|d7e9e6bcf33e01c1|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16300,7 +16300,7 @@
   },
   "506-81-54298|944dd5d41917261b|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "재활용 내화물·금속·광물 소재 제조 겸 판매",
@@ -16325,7 +16325,7 @@
   },
   "307-81-51511|7981b132e7b1acd7|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16342,7 +16342,7 @@
   },
   "742-88-01213|02d8958d7ae7b3f5|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -16367,7 +16367,7 @@
   },
   "246-81-00532|3b17f5ac7e1188dd|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "supplying automotive and electronics customers from Korean and Vietnamese production sites - component supplier",
@@ -16392,7 +16392,7 @@
   },
   "230-81-04019|b3edb5a28b69eb9b|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16579,7 +16579,7 @@
   },
   "385-88-00855|5c0586c4c3118873|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16648,7 +16648,7 @@
   },
   "407-87-02006|85a4e8eed426096d|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "신약(therapeutics) R&D - 하드웨어·소재·장비·디바이스가 아님",
@@ -16698,7 +16698,7 @@
   },
   "854-88-00929|89bcbc34956c6c0a|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Robotics/Automation",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16715,7 +16715,7 @@
   },
   "632-88-00033|b5cf97a039a0d629|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Aerospace",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16732,7 +16732,7 @@
   },
   "613-81-55256|380e331c380f214b|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16749,7 +16749,7 @@
   },
   "608-81-71083|267c8fc3bd17c4bc|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16766,7 +16766,7 @@
   },
   "314-86-42766|0e03c1c3d62e2465|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Aerospace",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16783,7 +16783,7 @@
   },
   "608-81-96764|f26bf68e48c8e7e9|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "기획부터 PCB·임베디드 소프트웨어·양산까지 지원 - 설계-양산 수탁/EMS 성격",
@@ -16808,7 +16808,7 @@
   },
   "775-88-00500|3e26c4859862fc0a|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16825,7 +16825,7 @@
   },
   "609-81-44482|4424086d77285184|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "2018년 폐업",
@@ -16867,7 +16867,7 @@
   },
   "209-81-60749|a7f0818ec3485464|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -16909,7 +16909,7 @@
   },
   "139-81-23033|96df506c685eac74|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -16926,7 +16926,7 @@
   },
   "550-88-00634|0e9642cefac1ce9e|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "신약(therapeutics) R&D - 하드웨어·소재·장비·디바이스가 아님",
@@ -16968,7 +16968,7 @@
   },
   "124-81-89654|c54b7bdbbec1afce|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17044,7 +17044,7 @@
   },
   "119-81-88916|12c59daef3bbf2f2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17061,7 +17061,7 @@
   },
   "135-86-02098|890ab3668f8310bc|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17078,7 +17078,7 @@
   },
   "124-86-58215|f0f24f3aebd30f42|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "biomaterial-based R&D 서술로 자체 제조 불명확",
@@ -17191,7 +17191,7 @@
   },
   "107-81-48060|1b9a45cc695a9cac|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17277,7 +17277,7 @@
   },
   "631-88-00909|6ad6407de295931d|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17328,7 +17328,7 @@
   },
   "107-87-19548|1bafe8db15d556fe|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17396,7 +17396,7 @@
   },
   "312-86-13095|71cce4ff38cddb8c|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17413,7 +17413,7 @@
   },
   "836-87-02107|eb5e833eda16022d|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17430,7 +17430,7 @@
   },
   "132-86-13048|340e4aaf019c3e01|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17481,7 +17481,7 @@
   },
   "220-88-62200|d7d36e2f215dbe38|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17515,7 +17515,7 @@
   },
   "224-81-64370|b8c948e0758efc5a|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17549,7 +17549,7 @@
   },
   "615-81-76368|57e7e72b21801d53|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17566,7 +17566,7 @@
   },
   "314-86-50005|a0e05b5f718a002e|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17583,7 +17583,7 @@
   },
   "113-86-46500|0dd4e37c412908dc|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "산업용 냉장·냉동 설비·특수목적 기계 제조업체",
@@ -17608,7 +17608,7 @@
   },
   "128-86-07697|231e10f25dabcd1a|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "반도체 소자·전자부품 범용 제조 서술",
@@ -17667,7 +17667,7 @@
   },
   "204-81-41709|cf9efc6b2cb9201e|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17694,7 +17694,7 @@
   },
   "114-87-18853|8d9c235069a5de3e|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -17719,7 +17719,7 @@
   },
   "654-88-00367|d2b4c8ef1de0a581|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17736,7 +17736,7 @@
   },
   "510-81-32099|c809ebb76c725d99|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Advanced Manufacturing",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17753,7 +17753,7 @@
   },
   "668-81-00805|319a3757329cd1d5|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17804,7 +17804,7 @@
   },
   "303-81-72663|dd8c0ce01c5cfd06|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17923,7 +17923,7 @@
   },
   "119-86-40692|a52a15abfc47bee6|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17957,7 +17957,7 @@
   },
   "656-87-00726|69b1e1c4bf0b6ed2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -17974,7 +17974,7 @@
   },
   "781-87-00279|70a584c6e59c0385|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -17999,7 +17999,7 @@
   },
   "231-81-04458|b6daafd6e9a450b4|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18100,7 +18100,7 @@
   },
   "609-81-63363|c4c726226f90c453|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Aerospace",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18117,7 +18117,7 @@
   },
   "598-86-00345|f541e21915912b30|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "모션 시뮬레이터 개발+VR 콘텐츠·구축(제조 vs 통합 경계)",
@@ -18142,7 +18142,7 @@
   },
   "312-81-49598|e79396ba23f1291b|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "건축용 로이·복층유리 가공·제조업체(범용 건자재, 기술 차별성 미언급)",
@@ -18167,7 +18167,7 @@
   },
   "302-81-24794|95286755d75c856e|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18201,7 +18201,7 @@
   },
   "122-86-04673|893e8a0d7e82f727|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "차량용 블랙박스·영상기기 제조(범용 전장 완제품)",
@@ -18260,7 +18260,7 @@
   },
   "615-81-49347|63f42f106ca7c30e|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "조선기자재 강주물 의장품 제조업체(범용 부품 제조)",
@@ -18285,7 +18285,7 @@
   },
   "119-81-03993|17f8be99d6563a60|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "냉동·공조·배관용 동관 다품목 제조업체(범용 부품, 기술 차별성 미언급)",
@@ -18310,7 +18310,7 @@
   },
   "610-81-21529|efc213ad0e6c5562|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "변압기·모터용 에나멜 동선 제조업체(범용 소재, 기술 차별성 미언급)",
@@ -18352,7 +18352,7 @@
   },
   "503-81-97041|67d663639713d12d|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18411,7 +18411,7 @@
   },
   "403-81-55912|1503f36cd30d1066|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18428,7 +18428,7 @@
   },
   "606-81-04822|4325d2a0112f3809|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "범용 울타리·게이트 제조·설치(금속가공, 기술 차별성 미언급)",
@@ -18453,7 +18453,7 @@
   },
   "312-86-13718|a17a247b782895c7|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -18478,7 +18478,7 @@
   },
   "120-86-59376|82fc23c9319efb77|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -18503,7 +18503,7 @@
   },
   "312-86-30788|deb66974861f990b|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "엔진·바디·전장 등 자동차 부품 다품목 공급 제조업체(OEM 납품)",
@@ -18692,7 +18692,7 @@
   },
   "389-88-00478|ba45814ddb1306d5|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18709,7 +18709,7 @@
   },
   "730-87-01061|72e0a3bf29f6b204|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18726,7 +18726,7 @@
   },
   "264-86-00888|3bda52591b637232|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -18776,7 +18776,7 @@
   },
   "124-88-01263|8a7fc18d92ba8a8f|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18813,7 +18813,7 @@
   },
   "256-86-01080|42ff487e9ed9e323|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18830,7 +18830,7 @@
   },
   "554-87-02132|6e21fb860131b004|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18847,7 +18847,7 @@
   },
   "467-87-01479|98dadd91574c4387|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18881,7 +18881,7 @@
   },
   "241-81-00901|1436278165854927|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18923,7 +18923,7 @@
   },
   "402-87-01996|e4d06c56914da780|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -18957,7 +18957,7 @@
   },
   "138-81-71551|09883a13a6776f6c|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19016,7 +19016,7 @@
   },
   "610-81-92887|3ab271b91995b0a2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19058,7 +19058,7 @@
   },
   "206-81-50067|5238c94a449d00d6|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19127,7 +19127,7 @@
   },
   "606-81-70604|8f2a01f4d99354cc|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19228,7 +19228,7 @@
   },
   "124-81-94098|cab46d0c2822a395|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19245,7 +19245,7 @@
   },
   "215-81-67373|cb016056e8230097|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Aerospace",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19304,7 +19304,7 @@
   },
   "317-81-43376|0dcb6467f065ddf4|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19321,7 +19321,7 @@
   },
   "282-86-01003|71f87eb2e8bc7876|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "extruded plastic line/rod/profile for industrial and commercial applications; generic extruded products",
@@ -19396,7 +19396,7 @@
   },
   "684-81-01543|c1ba09cdd51e1f4f|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19438,7 +19438,7 @@
   },
   "442-86-01191|91e67ea6b5ca2214|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19480,7 +19480,7 @@
   },
   "144-81-20509|56b3d79a0319e8f2|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19497,7 +19497,7 @@
   },
   "120-86-73607|ac55d02ac643cb5f|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -19522,7 +19522,7 @@
   },
   "122-81-59023|e9b4dbc0e6ac85dc|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19539,7 +19539,7 @@
   },
   "214-88-52764|b25606ad74f6fca5|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19556,7 +19556,7 @@
   },
   "314-86-08792|57b56028c5e7e78c|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19573,7 +19573,7 @@
   },
   "120-87-27376|ffacfc4d855077b0|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19600,7 +19600,7 @@
   },
   "312-86-04790|946c8ae8a18b0edb|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19642,7 +19642,7 @@
   },
   "119-86-51995|1227549f9dbdc332|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19669,7 +19669,7 @@
   },
   "204-86-58020|d0afbb3a35da13f9|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "therapeutics/small-molecule drug discovery, not a hardware/device/material manufacturer",
@@ -19719,7 +19719,7 @@
   },
   "885-88-00151|1f0005d79b6d563b|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19770,7 +19770,7 @@
   },
   "477-86-00413|bed5ffa171224835|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -19804,7 +19804,7 @@
   },
   "881-81-00863|0bf22e636bec35ea|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "IoT sensors instrument molds/tooling plus AI analytics (hardware + SaaS)",
@@ -19846,7 +19846,7 @@
   },
   "410-86-34768|23151f5627a93b97|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Energy/Climate Tech",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "patented building-integrated solar systems / module-integrated metal panels (own IP)",
@@ -20047,7 +20047,7 @@
   },
   "130-81-21931|5315ffcd0d3bfe71|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "mass-produces structural seat-back/cushion frames for global OEMs; tier supplier",
@@ -20089,7 +20089,7 @@
   },
   "615-81-81731|886f5ae66d9820c5|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "mass-production of precision steel balls/rollers/rings/ceramic rolling elements for bearings",
@@ -20124,7 +20124,7 @@
   },
   "107-81-66637|cedbf600fc62d560|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20141,7 +20141,7 @@
   },
   "654-81-02084|67a85a799af1cb53|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20158,7 +20158,7 @@
   },
   "312-81-65680|3f78632003b5eaa7|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20192,7 +20192,7 @@
   },
   "104-81-51381|3b31dd8f415de2ac|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "diversified across aerospace, fashion, retail with investment/operating (holding-like) capabilities",
@@ -20320,7 +20320,7 @@
   },
   "125-81-90547|b6ee6e08c7282651|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20379,7 +20379,7 @@
   },
   "129-86-40331|68adb61e8bd92aee|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20480,7 +20480,7 @@
   },
   "314-81-66031|1840c9c2cebaf35d|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20573,7 +20573,7 @@
   },
   "134-86-38759|f22f5b220483abda|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20640,7 +20640,7 @@
   },
   "550-87-00243|01b9f90ac6435f47|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Semiconductor/Advanced Materials",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",
@@ -20657,7 +20657,7 @@
   },
   "129-86-88562|f1e83b8f3b529414|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -20699,7 +20699,7 @@
   },
   "503-81-55283|163f79da3582ca53|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Industrial Hardware",
     "physical_product": true,
     "consumer_facing_end_product": true,
     "maturity_signal": "",
@@ -20741,7 +20741,7 @@
   },
   "140-81-55364|d80c4b7eec5be127|claude-agent": {
     "verdict": "unclear",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Healthtech Device",
     "physical_product": false,
     "consumer_facing_end_product": false,
     "maturity_signal": "therapeutic biologic (drug) development, not hardware/material/device",
@@ -20766,7 +20766,7 @@
   },
   "131-86-48302|dc5b8d6a1273c1d3|claude-agent": {
     "verdict": "hardtech",
-    "matched_program_field": "Other Deeptech",
+    "matched_program_field": "Sensor/Edge Device",
     "physical_product": true,
     "consumer_facing_end_product": false,
     "maturity_signal": "",

@@ -117,8 +117,11 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
    - **미해결**: 스테이지 오기재는 엔진 밖 문제 → **디캠프 DB 관리자에게 별도 통보 필요**.
      `스테이지_미상` 시트(발송 리스트 중 스테이지 미상 ~255)를 사용자가 훑어 배제 목록 추가.
      기성 제조 중소기업 클러스터(서진산업·신영금속·우창공업 등)는 maturity_signal 로 표시됨.
-2. **Other Deeptech ~130/192**: 분야 세분 미완(Q1). verdict 재판정 아니라 **분야 라벨만
-   재배정**(enum 강제)하면 됨 — 싸다. 지표 ②(분야 0 없음)의 측정 가능성에 필요.
+2. **Other Deeptech 분야 세분(Q1) — 해결됨.** 발송 리스트 Other Deeptech 268→**0**
+   재배정(verdict 불변, enum 강제). 분포: Semiconductor 83·Healthtech 79·Industrial HW
+   63·Energy 44·Sensor 23·Advanced Mfg 21·Robotics 14·Aerospace 12·Physical AI 5.
+   잔여 0: Manufacturing Process Innovation·Quantum(시드 KR DB에 드문 카테고리, 실제 부재
+   가능성). 재배정은 `data/cache/field_prompt.txt`(분야 라벨 전용) 로.
 3. **골든 must_fail 19/21**: 잔여 2건 — 마린테크노(화장품 원료, 분류기 hardtech이나 T2+
    consumer_facing 플래그 / 골든 consumer 유지 = 정책상 경계)·Lihua(§4가 배제하므로
    파이프라인상 문제 아님). (v4로 크레신·이지코스텍·파인유얼뷰티는 consumer 전환 완료.)
