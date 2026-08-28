@@ -28,6 +28,14 @@ tech_ownership 1,139·regulatory 1,142·market 1,148·value_chain 1,042·end_use
 (rule 9a)+엔티티레이어 35+경계 6. **읽기 전용 파생물** — 파이프라인은 classification.json
 사용(352 불변, 롤백 보존). 캐시 키 3상수 불변. 도시에 기반 전환은 Phase 6.
 
+**Phase 3(홈페이지 수집) — 크롤러 준비완료, 실행은 egress 대기**: `engine/engine_website.py`
+(robots 존중·딜레이·재개·사명 `<ENTITY_NAME>` 치환·MISMATCH/파킹 판별·access_status 7종·
+텍스트만·per-company `data/cache/website/{id}.json`). 순수 함수 9개 테스트 통과. **단 이 원격
+세션은 egress 정책상 외부 호스트 403 차단** → 크롤 불가. `crawl()`은 `egress_available()`
+precheck 로 차단 시 `EgressBlocked` 로 크게 실패(전량 오분류 방지). **웹 egress 허용 정책이
+켜진 세션에서** `from engine import engine_website as W; W.crawl(rows)` 실행 → `W.report()`.
+DB Website 컬럼은 3,424곳 100% 채워짐. 실행 후 Phase 4 예상 호출 수 산출.
+
 - 최종 산출물: `output/screening/us_forged_shortlist.xlsx`
 - 발송 리스트 **352**(T1 162 · T2 128 · T3 62), 이메일 172 / 연락처 필요 180
 - 골든 must_pass 15/15 · must_fail 19/21 · 래칫 62/62(회귀 없음) · 스테이지 이탈 0
@@ -121,6 +129,7 @@ python -m pytest tests/ -q && python -m tests.golden_ratchet
 | `engine/engine_diff.py` | §7 스냅샷 diff |
 | `engine/criteria_pack.py` | 활성 기준팩 로더(criteria.json·prompt.md·exclusions.yaml) |
 | `engine/engine_dossier.py` | **공고 무관 도시에**(8축 사실). classification.json→`data/cache/dossier/dossiers.json` 유도-only 마이그레이션(migrate/coverage/back_derive_verdict). 읽기 전용 파생물(Phase 6에서 파이프라인 전환) |
+| `engine/engine_website.py` | **Phase 3 홈페이지 크롤러**. crawl/crawl_one/report + 순수함수(extract_text·mask_entity·detect_lang·classify_content·discover_pages). egress 필요(egress_available precheck, 차단 시 EgressBlocked). `data/cache/website/{id}.json` |
 
 **기준팩** `criteria/237489/`: `prompt.md`(분류 프롬프트 v6) · `criteria.json`(prompt_version·
 program_fields enum·stage_policy·verdicts·fit_rules[데이터만, Phase 6 구현]) · `exclusions.yaml`
