@@ -6,7 +6,7 @@
 
 ---
 
-## 0. 작업 완료 상태 ✅ (v1-final-352 · Phase 1 자산분리 완료)
+## 0. 작업 완료 상태 ✅ (v1-final-352 · Phase 1 자산분리 · Phase 2 도시에 완료)
 
 **엔진 작업 종료.** 최종 산출물 검수 완료. 완성 지점 = 태그 `v1-final-352`
 (브랜치 `claude/file-batch-send-ank4hr` = `us-forged-engine`).
@@ -17,6 +17,16 @@ golden_set.yaml), 배제 목록 → `config/global_exclusions.yaml`(공고무관
 **로직 불변·위치만 이동** — 재현 검증 통과(352/162/128/62·이메일 172·must_pass 15/15·
 must_fail 19/21·스테이지 이탈 0·중복 0·래칫 62/62). 캐시 키 3상수 불변(마이그레이션 불필요).
 `screening/`는 레거시(HAX/500)로 표기(`screening/README.md`). 규칙 v3 구현은 Phase 6.
+
+**Phase 2(도시에 스키마 + 캐시 마이그레이션) 완료**: 공고 무관 '사실'을 8축으로 기록하는
+`engine/engine_dossier.py`(physical_product·tech_ownership·value_chain_position·end_use·
+industry_domains·maturity·regulatory_class·market_orientation, 각 축 {value,evidence,source,
+needs_generation}). classification.json 1,157건 → `data/cache/dossier/dossiers.json`
+**유도-only(LLM 0)** 변환. 유도 불가 축은 needs_generation 플래그(전량 생성=Phase 4:
+tech_ownership 1,139·regulatory 1,142·market 1,148·value_chain 1,042·end_use 846·maturity
+561·physical 179·industry 0). 역산 92.1%(제품축 ~95%); 복원 불가 = tech_ownership 갭 50
+(rule 9a)+엔티티레이어 35+경계 6. **읽기 전용 파생물** — 파이프라인은 classification.json
+사용(352 불변, 롤백 보존). 캐시 키 3상수 불변. 도시에 기반 전환은 Phase 6.
 
 - 최종 산출물: `output/screening/us_forged_shortlist.xlsx`
 - 발송 리스트 **352**(T1 162 · T2 128 · T3 62), 이메일 172 / 연락처 필요 180
@@ -110,6 +120,7 @@ python -m pytest tests/ -q && python -m tests.golden_ratchet
 | `engine/engine_xlsx.py` | §6/§8 산출물 워크북(구 uf_forged_xlsx) |
 | `engine/engine_diff.py` | §7 스냅샷 diff |
 | `engine/criteria_pack.py` | 활성 기준팩 로더(criteria.json·prompt.md·exclusions.yaml) |
+| `engine/engine_dossier.py` | **공고 무관 도시에**(8축 사실). classification.json→`data/cache/dossier/dossiers.json` 유도-only 마이그레이션(migrate/coverage/back_derive_verdict). 읽기 전용 파생물(Phase 6에서 파이프라인 전환) |
 
 **기준팩** `criteria/237489/`: `prompt.md`(분류 프롬프트 v6) · `criteria.json`(prompt_version·
 program_fields enum·stage_policy·verdicts·fit_rules[데이터만, Phase 6 구현]) · `exclusions.yaml`
