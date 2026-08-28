@@ -18,7 +18,7 @@ import json
 import sys
 from pathlib import Path
 
-from screening import uf_golden
+from engine import engine_golden
 
 ROOT = Path(__file__).resolve().parent.parent
 BASELINE_PATH = ROOT / "data" / "snapshots" / "baseline_golden_report.json"
@@ -32,7 +32,7 @@ def _load_baseline() -> dict:
 
 def check() -> int:
     base = _load_baseline()
-    cases, summary = uf_golden.evaluate_all()
+    cases, summary = engine_golden.evaluate_all()
     base_cases = base.get("cases", {})
 
     # ② baseline 에서 통과하던 케이스가 이제 실패 → 회귀

@@ -12,14 +12,24 @@ from pathlib import Path
 
 import yaml
 
-from screening import uf_engine, uf_snapshot
+from engine import engine_core, engine_snapshot
 
 ROOT = Path(__file__).resolve().parent.parent
-GOLDEN_PATH = ROOT / "tests" / "golden_set.yaml"
+GOLDEN_PATH = ROOT / "tests" / "golden_set.yaml"   # 인프라 픽스처(dedup·stage·malformed·invariants)
 
 
 def load_golden() -> dict:
-    return yaml.safe_load(GOLDEN_PATH.read_text(encoding="utf-8"))
+    """인프라 골든(tests) + 활성 기준팩 판정 골든(criteria/<id>/golden_set.yaml) 병합.
+
+    기업 판정 픽스처(classification_must_pass/fail)는 공고 종속이라 기준팩에 있고,
+    인프라 픽스처는 공고 무관이라 tests 에 있다. 합쳐 62 케이스를 이룬다.
+    """
+    from engine import criteria_pack
+    g = yaml.safe_load(GOLDEN_PATH.read_text(encoding="utf-8")) or {}
+    pack_path = criteria_pack.pack_dir() / "golden_set.yaml"
+    if pack_path.exists():
+        g.update(yaml.safe_load(pack_path.read_text(encoding="utf-8")) or {})
+    return g
 
 
 _ROWS = None
@@ -29,14 +39,14 @@ _IDX = None
 def snapshot_rows() -> list[dict]:
     global _ROWS
     if _ROWS is None:
-        _ROWS = uf_snapshot.load_rows()
+        _ROWS = engine_snapshot.load_rows()
     return _ROWS
 
 
 def snapshot_index() -> dict[str, list[dict]]:
     global _IDX
     if _IDX is None:
-        _IDX = uf_snapshot.index_by_biz(snapshot_rows())
+        _IDX = engine_snapshot.index_by_biz(snapshot_rows())
     return _IDX
 
 
@@ -45,7 +55,7 @@ def rec_for(entry: dict) -> dict:
 
     반환에 `_in_snapshot` 로 출처를 표시한다(스냅샷 비의존 검증을 위해).
     """
-    biz, _ = uf_snapshot.normalize_biz_no(entry.get("biz_no"))
+    biz, _ = engine_snapshot.normalize_biz_no(entry.get("biz_no"))
     hits = snapshot_index().get(biz, [])
     if hits:
         r = dict(hits[0])
@@ -61,7 +71,7 @@ def rec_for(entry: dict) -> dict:
 def classification_verdict(entry: dict) -> tuple[str, dict]:
     """골든셋 항목의 하드테크 판정(배제+분류, 스테이지 무관) → (verdict, rec)."""
     rec = rec_for(entry)
-    return uf_engine.hardtech_verdict(rec), rec
+    return engine_core.hardtech_verdict(rec), rec
 
 
 def _case_id(layer: str, key) -> str:
@@ -78,14 +88,14 @@ def evaluate_all() -> tuple[dict, dict]:
     cases: dict[str, dict] = {}
 
     for e in g["classification_must_pass"]:
-        biz, _ = uf_snapshot.normalize_biz_no(e.get("biz_no"))
+        biz, _ = engine_snapshot.normalize_biz_no(e.get("biz_no"))
         v, _rec = classification_verdict(e)
         cid = _case_id("must_pass", biz or e["name"])
         cases[cid] = {"layer": "classification_must_pass", "label": e["name"],
                       "pass": v == "hardtech", "got": v, "expect": "hardtech"}
 
     for e in g["classification_must_fail"]:
-        biz, _ = uf_snapshot.normalize_biz_no(e.get("biz_no"))
+        biz, _ = engine_snapshot.normalize_biz_no(e.get("biz_no"))
         v, _rec = classification_verdict(e)
         cid = _case_id("must_fail", biz or e["name"])
         cases[cid] = {"layer": "classification_must_fail", "label": e["name"],
@@ -95,16 +105,16 @@ def evaluate_all() -> tuple[dict, dict]:
     for c in g["stage_rules"]["value_mapping"]:
         val, exp = c["value"], c["expect"]
         try:
-            got = uf_engine.stage_bucket(val)
+            got = engine_core.stage_bucket(val)
             ok = (exp != "RAISE" and got == exp)
-        except uf_engine.UnknownStageValue:
+        except engine_core.UnknownStageValue:
             got, ok = "RAISE", (exp == "RAISE")
         cases[_case_id("stage", str(val))] = {
             "layer": "stage_value_mapping", "label": str(val),
             "pass": ok, "got": got, "expect": exp}
 
     for c in g["malformed_biz_no"]:
-        _, status = uf_snapshot.normalize_biz_no(c["value"])
+        _, status = engine_snapshot.normalize_biz_no(c["value"])
         ok = status in ("malformed", "valid")
         if "725-870" in c["value"]:
             ok = status == "malformed"
@@ -113,22 +123,22 @@ def evaluate_all() -> tuple[dict, dict]:
             "pass": ok, "got": status, "expect": "malformed/valid"}
 
     # 중복 엔티티 (§2 신원 판정) + Pre-A 예외 (§3)
-    from screening import uf_dedup, uf_stage
-    ents = uf_dedup.resolve_entities(snapshot_rows())
+    from engine import engine_dedup, engine_stage
+    ents = engine_dedup.resolve_entities(snapshot_rows())
     ent_by_biz: dict[str, dict] = {}
     for e in ents:
         if e.get("biz_no"):
             ent_by_biz.setdefault(e["biz_no"], e)
 
     def _disposition(e: dict) -> str:
-        b = uf_stage.stage_bucket(e.get("stage"))
-        if b in (uf_stage.IN_SCOPE, uf_stage.UNKNOWN):
+        b = engine_stage.stage_bucket(e.get("stage"))
+        if b in (engine_stage.IN_SCOPE, engine_stage.UNKNOWN):
             return "to_classification"
-        if b == uf_stage.OUT_OF_SCOPE:
+        if b == engine_stage.OUT_OF_SCOPE:
             return "excluded"
         # EXCEPTION(Pre-A): 미국+physical(=§1) 이면 통과, 아니면 배제. physical 은 §3 단계라 True 가정.
         return ("to_classification"
-                if uf_stage.pre_a_bucket(e.get("target", ""), True) == "stage_exception"
+                if engine_stage.pre_a_bucket(e.get("target", ""), True) == "stage_exception"
                 else "excluded")
 
     for d in g["duplicate_entities"]:
@@ -162,9 +172,9 @@ def evaluate_all() -> tuple[dict, dict]:
         if not e:
             got = "not_found"
         else:
-            b = uf_stage.stage_bucket(e.get("stage"))
-            got = (uf_stage.pre_a_bucket(e.get("target", ""), True) if b == uf_stage.EXCEPTION
-                   else ("OUT_OF_SCOPE" if b == uf_stage.OUT_OF_SCOPE else b))
+            b = engine_stage.stage_bucket(e.get("stage"))
+            got = (engine_stage.pre_a_bucket(e.get("target", ""), True) if b == engine_stage.EXCEPTION
+                   else ("OUT_OF_SCOPE" if b == engine_stage.OUT_OF_SCOPE else b))
         exp = pa["expect_bucket"]
         ok = (got == exp) or (exp == "stage_exception_or_out_of_scope"
                               and got in ("stage_exception", "OUT_OF_SCOPE"))

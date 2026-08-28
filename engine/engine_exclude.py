@@ -2,7 +2,7 @@
 
 판별 기준은 **사업자번호 형식**이지 사명이 아니다(Rooy, Inc. 같은 국내 법인의 영문명은
 배제하면 안 됨). 해외법인은 사업자번호 3형식으로 잡는다: OC*·외국법인_*·해외법인
-(전수 스캔상 각각 169·27·11 = 207건, uf_snapshot.normalize_biz_no 가 foreign 으로 분류).
+(전수 스캔상 각각 169·27·11 = 207건, engine_snapshot.normalize_biz_no 가 foreign 으로 분류).
 
 법인격(투자목적회사·투자조합·SPC·N호 유한회사·지주[사명 끝])은 사명 패턴으로 배제하되
 오탐(홀릭스팩토리의 '스팩', 이노스페이스 등)을 피하도록 정밀 패턴만 쓴다.
@@ -14,13 +14,19 @@ from pathlib import Path
 
 import yaml
 
-_CFG = Path(__file__).resolve().parent.parent / "config" / "known_exclusions.yaml"
+# 배제 목록 = 공고 무관 global + 공고 전용 pack 병합(둘 다 같은 스키마).
+_GLOBAL = Path(__file__).resolve().parent.parent / "config" / "global_exclusions.yaml"
 
 
 def _load_cfg() -> dict:
-    if _CFG.exists():
-        return yaml.safe_load(_CFG.read_text(encoding="utf-8")) or {}
-    return {}
+    """global_exclusions.yaml + 활성 기준팩 exclusions.yaml 병합."""
+    from engine import criteria_pack
+    g = yaml.safe_load(_GLOBAL.read_text(encoding="utf-8")) or {} if _GLOBAL.exists() else {}
+    p = criteria_pack.exclusions()
+    out: dict = {}
+    for key in ("exclusions", "established_suspects", "duplicate_merges"):
+        out[key] = list(g.get(key, []) or []) + list(p.get(key, []) or [])
+    return out
 
 
 _C = _load_cfg()

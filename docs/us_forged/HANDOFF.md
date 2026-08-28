@@ -6,10 +6,17 @@
 
 ---
 
-## 0. 작업 완료 상태 ✅ (v1-final-352)
+## 0. 작업 완료 상태 ✅ (v1-final-352 · Phase 1 자산분리 완료)
 
 **엔진 작업 종료.** 최종 산출물 검수 완료. 완성 지점 = 태그 `v1-final-352`
 (브랜치 `claude/file-batch-send-ank4hr` = `us-forged-engine`).
+
+**Phase 1(범용 엔진 전환·자산 분리) 완료**: `screening/uf_*` → **`engine/engine_*` 패키지**,
+공고 종속 데이터 → **기준팩 `criteria/237489/`**(prompt.md·criteria.json·exclusions.yaml·
+golden_set.yaml), 배제 목록 → `config/global_exclusions.yaml`(공고무관)+기준팩(공고전용).
+**로직 불변·위치만 이동** — 재현 검증 통과(352/162/128/62·이메일 172·must_pass 15/15·
+must_fail 19/21·스테이지 이탈 0·중복 0·래칫 62/62). 캐시 키 3상수 불변(마이그레이션 불필요).
+`screening/`는 레거시(HAX/500)로 표기(`screening/README.md`). 규칙 v3 구현은 Phase 6.
 
 - 최종 산출물: `output/screening/us_forged_shortlist.xlsx`
 - 발송 리스트 **352**(T1 162 · T2 128 · T3 62), 이메일 172 / 연락처 필요 180
@@ -22,22 +29,22 @@
 
 **① 스냅샷이 갱신되면(새 GBD DB xlsx):**
 ```
-# 1. 새 파일을 data/snapshots/ 에 두고 uf_snapshot.DEFAULT_SNAPSHOT 경로 갱신
+# 1. 새 파일을 data/snapshots/ 에 두고 engine_snapshot.DEFAULT_SNAPSHOT 경로 갱신
 # 2. 신규/변경 행만 분류(캐시는 biz_no+소개문해시 키라 기존 행은 캐시 적중, 예산 절약)
-python -c "from screening import uf_shortlist as S; print(S.summarize(S.build()))"  # 캐시 미스 확인
-#    → 캐시 미스(신규 행)만 소개문으로 분류해 uf_classify.put() 후 save_cache()
+python -c "from engine import engine_shortlist as S; print(S.summarize(S.build()))"  # 캐시 미스 확인
+#    → 캐시 미스(신규 행)만 소개문으로 분류해 engine_classify.put() 후 save_cache()
 # 3. 워크북 재생성 + 회귀 확인
-python -c "from screening import uf_forged_xlsx as X; print(X.build())"
+python -c "from engine import engine_xlsx as X; print(X.build())"
 python -m pytest tests/ -q && python -m tests.golden_ratchet
 ```
 전체 재분류(1,159 전건)는 **금지** — 예산 자산. 캐시 미스만.
 
 **② 배제 기업을 추가할 때(신규 상장사·therapeutics 발견):** 코드 수정 없이
-`config/known_exclusions.yaml` 편집:
+`config/global_exclusions.yaml` 편집:
 - `exclusions`: 확실한 배제(상장사 등) → `excluded_entity` + `명시_배제` 시트. `{biz_no, name, reason}`.
 - `established_suspects`: 배제까진 아닌 의심 → T3 강등 + 플래그. `{biz_no, name, note}`.
 - `duplicate_merges`: 1자리차로 못 잡는 확인된 동일 회사 → 강제 병합. `{name, biz_nos:[...], note}`.
-- 신약 바이오텍은 소개문 재분류로 `therapeutics` 판정(프롬프트 v6). 예: `uf_classify.put()`
+- 신약 바이오텍은 소개문 재분류로 `therapeutics` 판정(프롬프트 v6). 예: `engine_classify.put()`
   으로 해당 biz_no에 `verdict=therapeutics` 기록(§4 참조).
 편집 후 `X.build()` 재실행하면 반영. yaml만 바꾸면 되고 테스트/래칫은 자동 통과.
 
@@ -79,24 +86,38 @@ python -m pytest tests/ -q && python -m tests.golden_ratchet
 
 ## 2. 파일 지도 & 실행
 
-**파이프라인 순서** (`uf_shortlist.assess`): **dedup(§2) → 배제(§4) → 스테이지(§3) → 분류(§1) → 티어**
+> **⚠ 현행 엔진은 `engine/` 패키지다. `screening/`는 레거시(2026-08 이전 HAX/500 엔진)이며
+> 현행 파이프라인과 무관하다** — `screening/README.md` 참조. 특히 `screening/rules_v3.py`는
+> 우리 판정 규칙 v3(`RULES_v3.md`)와 **이름만 겹치는 무관한 레거시**다(건드리지 말 것).
+> 공고 종속 데이터는 **기준팩 `criteria/237489/`**(prompt.md·criteria.json·exclusions.yaml·
+> golden_set.yaml)로 분리됨 — 기준팩만 교체하면 다른 공고 평가. 활성 팩 = `engine/criteria_pack.py`
+> (env `ENGINE_CRITERIA`, 기본 237489).
 
-| 모듈 | 역할 |
+**파이프라인 순서** (`engine_shortlist.assess`): **dedup(§2) → 배제(§4) → 스테이지(§3) → 분류(§1) → 티어**
+
+| 모듈 (현행 `engine/`) | 역할 |
 |---|---|
-| `screening/uf_snapshot.py` | 스냅샷 xlsx 로더 + 사업자번호 정규화(valid/foreign/malformed) + **uid**(placeholder는 사명#행인덱스) + provenance/run_metadata + resolve_snapshot |
-| `screening/uf_dedup.py` | §2 신원 판정 중복 병합. **정규화 사명(_norm_name: 주식회사·(주)·공백 제거)으로 그룹핑** → 클러스터(동일 사업자번호 / **1자리차 오타 is_one_digit_diff** / config `duplicate_merges` 수동목록)로 병합. 2자리차 이상 근접은 병합 안 하고 similar_biz_no_suspect 플래그. name_collision/canonical_valid, duplicate_report |
-| `screening/uf_exclude.py` | §4 해외법인(OC*·외국법인_*·해외법인=사업자번호 형식) + 법인격(투자목적회사·조합·SPC·N호·말미 지주) 배제 |
-| `screening/uf_stage.py` | §3 stage_bucket(IN_SCOPE/UNKNOWN/EXCEPTION/OUT_OF_SCOPE, 미매칭 예외), pre_a_bucket(미국+physical), stage_rank |
-| `screening/uf_classify.py` | §1 분류 **프롬프트 전문(v6)** + 캐시 read/write + normalize_field(자유표기→11 enum). verdict에 **therapeutics** 포함 |
-| `screening/uf_engine.py` | 레이어 facade. `classify()`는 **캐시 읽기**(미스→unclear). stage_bucket/entity_verdict/hardtech_verdict |
-| `screening/uf_golden.py` | 골든셋 로더 + evaluate_all(레이어별 케이스 평가, 래칫·리포트 공용) |
-| `screening/uf_pilot.py` | 파일럿 표본(경계 5유형 층화 + 시드 고정) |
-| `screening/uf_fullrun.py` | 전체 분류 집계 + 불안정 서브셋 선별 + **3회 다수결 finalize**(disagreement 플래그·이력) |
-| `screening/uf_shortlist.py` | **파이프라인 조립**: assess()/build()/tier(). disposition= send/excluded_* |
-| `screening/uf_forged_xlsx.py` | §6/§8 산출물 워크북 빌드 |
-| `screening/uf_diff.py` | §7 스냅샷 diff(column_diff 구현 / candidate_impact 인터페이스만) |
+| `engine/engine_snapshot.py` | 스냅샷 xlsx 로더 + 사업자번호 정규화(valid/foreign/malformed) + **uid**(placeholder는 사명#행인덱스) + provenance/run_metadata |
+| `engine/engine_dedup.py` | §2 신원 판정 중복 병합. **정규화 사명(_norm_name)으로 그룹핑** → 클러스터(동일 사업자번호 / **1자리차 오타 is_one_digit_diff** / `duplicate_merges` 수동목록)로 병합. 2자리차 이상은 similar_biz_no_suspect 플래그 |
+| `engine/engine_exclude.py` | §4 해외법인·법인격 배제 + 명시배제(global+pack 병합) |
+| `engine/engine_stage.py` | §3 stage_bucket. **정규식·예외규칙을 기준팩 `stage_policy`에서 컴파일** |
+| `engine/engine_classify.py` | §1 분류. **PROMPT/enum/version을 기준팩에서 로드**. 캐시 read/write. `MODEL`은 캐시키 상수라 코드에 고정. verdict에 **therapeutics** 포함 |
+| `engine/engine_core.py` | 레이어 facade(구 uf_engine). `classify()`=캐시 읽기. entity_verdict는 골든 baseline 비교용으로 레거시 `us_forged._NON_STARTUP` 참조 |
+| `engine/engine_golden.py` | 골든셋 로더(**인프라 tests + 기준팩 판정 골든 병합 → 62 케이스**) + evaluate_all |
+| `engine/engine_pilot.py` | 파일럿 표본(경계 5유형 층화 + 시드 고정) |
+| `engine/engine_fullrun.py` | 전체 분류 집계 + 불안정 서브셋 + **3회 다수결 finalize** |
+| `engine/engine_shortlist.py` | **파이프라인 조립**: assess()/build()/tier() |
+| `engine/engine_xlsx.py` | §6/§8 산출물 워크북(구 uf_forged_xlsx) |
+| `engine/engine_diff.py` | §7 스냅샷 diff |
+| `engine/criteria_pack.py` | 활성 기준팩 로더(criteria.json·prompt.md·exclusions.yaml) |
 
-**워크북 빌드**: `python -c "from screening import uf_forged_xlsx as X; print(X.build())"`
+**기준팩** `criteria/237489/`: `prompt.md`(분류 프롬프트 v6) · `criteria.json`(prompt_version·
+program_fields enum·stage_policy·verdicts·fit_rules[데이터만, Phase 6 구현]) · `exclusions.yaml`
+(공고 전용, 현재 비어있음) · `golden_set.yaml`(판정 픽스처 must_pass 15/must_fail 21).
+**배제 레지스트리**: `config/global_exclusions.yaml`(공고 무관: 상장사 8·suspects 15·법인격·
+해외법인·duplicate_merges) + 기준팩 `exclusions.yaml`(공고 전용).
+
+**워크북 빌드**: `python -c "from engine import engine_xlsx as X; print(X.build())"`
 **테스트**: `python -m pytest tests/ -q` / **래칫**: `python -m tests.golden_ratchet`
 
 ---
@@ -142,7 +163,7 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
     재분류를 혼재·추적. (v2/v3 를 키에 넣으면 부분 재분류가 캐시 전체를 무효화함.)
   - **식별은 uid**(placeholder 사업자번호 = 사명#행인덱스)로 dedup/finalize 에서 처리.
     캐시 키의 biz_no+소개문해시는 placeholder라도 소개문이 달라 충돌하지 않음.
-- **프롬프트 버전 이력** (`uf_classify.PROMPT`, `PROMPT_VERSION`):
+- **프롬프트 버전 이력** (프롬프트 전문=`criteria/237489/prompt.md`, `PROMPT_VERSION`=criteria.json):
   - **v1**: 핵심 판정 질문 + 경계 5유형(수탁/상사/용역/하드+SaaS/기성제조)
   - **v2**: 수직계열화 규칙 + `consumer_facing_end_product`·`maturity_signal` 필드
   - **v3**: 화장품/뷰티 기본값 명시(소재 자체개발 명시 없으면 consumer) +
@@ -158,7 +179,7 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
   - 분야 라벨 재배정(Q1): `data/cache/field_prompt.txt`(라벨 전용, verdict 불변). 원료·시약은
     Healthtech Device 금지 → 소재/Other. Other Deeptech 허용하되 빈칸 금지.
 - **재분류 범위 좁히기**: 신호 있는 항목만 파일로 추려 배치 분류 후 캐시에 덮어쓴다
-  (예: 뷰티 신호 64건 → `beauty_out_*.json` → `uf_classify.put`). 전체(1,159) 재실행
+  (예: 뷰티 신호 64건 → `beauty_out_*.json` → `engine_classify.put`). 전체(1,159) 재실행
   금지. 불안정 서브셋 선별은 `uf_fullrun.recheck_subset()`(low/unclear/consumer_facing/
   maturity), 3회 다수결은 `uf_fullrun.finalize()`.
 - 분류 실행 방식(현 세션): 서브에이전트가 `data/cache/classify_prompt.txt`(=PROMPT)와
@@ -169,7 +190,7 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
 ## 5. 미해결 이슈
 
 1. **상장사/대기업 혼입 — 스테이지 데이터 오류(부분 처리됨).** §3로 안 잡힘(스테이지 값
-   문제). 처리: `config/known_exclusions.yaml`(사업자번호 명시 관리, 골든셋 방식):
+   문제). 처리: `config/global_exclusions.yaml`(사업자번호 명시 관리, 골든셋 방식):
    - **exclusions**(8): 휴젤 + 상장사 7(솔루엠 코스피248070·쏠리드 코스닥050890·휴마시스
      205470·필옵틱스 161580·해성옵틱스 076610·올릭스 226950·한국비엔씨 256840)
      → excluded_entity, `명시_배제` 시트 노출. 새 상장사 발견 시 여기에 사업자번호로 추가.
@@ -221,8 +242,8 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
    ```
    python -m pytest tests/ -q
    python -m tests.golden_ratchet             # baseline 대비 회귀 없음 확인
-   python -c "from screening import uf_shortlist as S; print(S.summarize(S.build()))"
-   python -c "from screening import uf_forged_xlsx as X; print(X.build())"   # 워크북 재생성
+   python -c "from engine import engine_shortlist as S; print(S.summarize(S.build()))"
+   python -c "from engine import engine_xlsx as X; print(X.build())"   # 워크북 재생성
    ```
 3. **새 세션 첫 메시지 예시**:
    > "docs/us_forged/HANDOFF.md 읽고 이어서 작업하자. 다음은 [남은 established_suspect·

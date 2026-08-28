@@ -26,15 +26,15 @@ PROGRAM_FIELDS = [
 VERDICTS = ("hardtech", "software_only", "consumer", "not_a_startup", "unclear")
 
 
-# 스테이지 예외는 uf_stage 로 위임(§3). 하위호환 별칭 유지.
-from screening.uf_stage import UnknownStageValue  # noqa: E402,F401
+# 스테이지 예외는 engine_stage 로 위임(§3). 하위호환 별칭 유지.
+from engine.engine_stage import UnknownStageValue  # noqa: E402,F401
 
 
 # ───────────────────────────────────────────── 스테이지 (§3)
 def stage_bucket(value) -> str:
     """스테이지 값 → IN_SCOPE / UNKNOWN / EXCEPTION / OUT_OF_SCOPE. 미매칭은 예외(§3)."""
-    from screening import uf_stage
-    return uf_stage.stage_bucket(value)
+    from engine import engine_stage
+    return engine_stage.stage_bucket(value)
 
 
 # ───────────────────────────────────────────── 배제 (§4) — baseline
@@ -55,12 +55,12 @@ def classify(rec: dict) -> dict:
 
     캐시 미스면 unclear(low)로 보수적 처리 — 라벨 추측으로 통과/탈락시키지 않는다.
     """
-    from screening import uf_classify
-    c = uf_classify.get_cached({"biz_no": rec.get("biz_no", ""),
+    from engine import engine_classify
+    c = engine_classify.get_cached({"biz_no": rec.get("biz_no", ""),
                                 "desc": rec.get("desc", "")})
     if c:
         c = dict(c)
-        c["matched_program_field"] = uf_classify.normalize_field(
+        c["matched_program_field"] = engine_classify.normalize_field(
             c.get("matched_program_field", ""))
         return c
     return {"verdict": "unclear", "matched_program_field": "None",

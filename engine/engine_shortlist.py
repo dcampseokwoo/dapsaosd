@@ -15,7 +15,7 @@ disposition:
 """
 from __future__ import annotations
 
-from screening import uf_classify, uf_dedup, uf_engine, uf_exclude, uf_snapshot, uf_stage
+from engine import engine_classify, engine_dedup, engine_core, engine_exclude, engine_snapshot, engine_stage
 
 # DB로 검증 불가한 공고 핵심 요건(모든 통과 판정에 함께 출력 — §0/§6)
 UNVERIFIABLE = ["Lab-scale 프로토타입", "미국 진출 의지(타겟국가 98% 결측)",
@@ -49,8 +49,8 @@ def assess(entity: dict) -> dict:
                  not_a_startup. 애매(unclear·저신뢰)는 배제하지 않고 send 에 넣어 T3 로 강등.
     """
     rec = {"biz_no": entity["biz_no"], "desc": entity.get("desc", "")}
-    stage_b = uf_stage.stage_bucket(entity.get("stage"))
-    excl, ereason = uf_exclude.entity_exclusion(entity)
+    stage_b = engine_stage.stage_bucket(entity.get("stage"))
+    excl, ereason = engine_exclude.entity_exclusion(entity)
     us = "미국" in (entity.get("target") or "")
 
     out = {**entity, "stage_bucket": stage_b, "unverifiable_requirements": UNVERIFIABLE}
@@ -60,14 +60,14 @@ def assess(entity: dict) -> dict:
         out.update(disposition="excluded_entity", reason=ereason, tier="—")
         return out
     # 2) §3 스테이지 이탈. Pre-A(EXCEPTION)는 미국 아니면 여기서 이탈(분류 불필요).
-    if stage_b == uf_stage.OUT_OF_SCOPE:
+    if stage_b == engine_stage.OUT_OF_SCOPE:
         out.update(disposition="excluded_stage", reason=f"스테이지 이탈({entity.get('stage')})", tier="—")
         return out
-    if stage_b == uf_stage.EXCEPTION and not us:
+    if stage_b == engine_stage.EXCEPTION and not us:
         out.update(disposition="excluded_stage", reason="Pre-A 예외 미충족(미국 타겟 아님)", tier="—")
         return out
     # 3) 분류
-    c = uf_engine.classify(rec)
+    c = engine_core.classify(rec)
     out.update({f"cls_{k}": v for k, v in c.items()})
     v = c["verdict"]
     if v == "not_a_startup":
@@ -81,7 +81,7 @@ def assess(entity: dict) -> dict:
         out.update(disposition="excluded_field", reason=f"분류: {v}(공고 명시 배제)", tier="—")
         return out
     # Pre-A + 미국 이지만 물리제품 아니면 이탈
-    if stage_b == uf_stage.EXCEPTION and not c.get("physical_product"):
+    if stage_b == engine_stage.EXCEPTION and not c.get("physical_product"):
         out.update(disposition="excluded_stage", reason="Pre-A 예외 미충족(물리제품 아님)", tier="—")
         return out
     # hardtech / unclear → 발송 리스트(unclear 는 T3 로 강등, 배제 아님)
@@ -89,7 +89,7 @@ def assess(entity: dict) -> dict:
     out["tier"] = tier("send", c)
     out["reason"] = ("hardtech 발송" if v == "hardtech" else "unclear → 후순위(T3) 발송")
     # 상장/대형 의심(명시 목록) → 배제 아니라 플래그 + T3 강등(사용자 직접 판단)
-    susp = uf_exclude.established_suspect(entity)
+    susp = engine_exclude.established_suspect(entity)
     if susp:
         out["established_suspect"] = susp
         out["tier"] = "T3"
@@ -98,8 +98,8 @@ def assess(entity: dict) -> dict:
 
 
 def build(rows: list[dict] | None = None) -> list[dict]:
-    rows = rows if rows is not None else uf_snapshot.load_rows()
-    ents = uf_dedup.resolve_entities(rows)
+    rows = rows if rows is not None else engine_snapshot.load_rows()
+    ents = engine_dedup.resolve_entities(rows)
     # 스테이지 통과 전 단계까지 전 엔티티 평가(리젝트 감사 §8 위해 전량 판정)
     return [assess(e) for e in ents]
 

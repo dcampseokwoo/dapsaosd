@@ -15,7 +15,7 @@ from __future__ import annotations
 import re
 from collections import defaultdict
 
-from screening import uf_stage
+from engine import engine_stage
 
 
 def _digits(s: str) -> str:
@@ -55,13 +55,16 @@ def _norm_name(name: str) -> str:
 
 
 def _load_manual_merges() -> list[dict]:
-    """config 의 수동 병합 목록(1자리차로 못 잡는 확인된 동일 회사). {name, biz_nos}."""
+    """수동 병합 목록(1자리차로 못 잡는 확인된 동일 회사). global + 활성 기준팩 병합."""
     from pathlib import Path
     import yaml
-    p = Path(__file__).resolve().parent.parent / "config" / "known_exclusions.yaml"
-    if not p.exists():
-        return []
-    return (yaml.safe_load(p.read_text(encoding="utf-8")) or {}).get("duplicate_merges", [])
+    from engine import criteria_pack
+    g = Path(__file__).resolve().parent.parent / "config" / "global_exclusions.yaml"
+    merges = []
+    if g.exists():
+        merges += (yaml.safe_load(g.read_text(encoding="utf-8")) or {}).get("duplicate_merges", []) or []
+    merges += criteria_pack.exclusions().get("duplicate_merges", []) or []
+    return merges
 
 
 _MANUAL_MERGE_SETS = None
@@ -79,7 +82,7 @@ def _manual_merge_of(biz: str) -> frozenset | None:
 
 def _merge_same_biz(rows: list[dict]) -> dict:
     """같은 사업자번호 여러 행 → 보수적 병합. 스테이지 충돌 시 후기, 업종/소개는 합집합."""
-    best = max(rows, key=lambda r: uf_stage.stage_rank(r.get("stage")))
+    best = max(rows, key=lambda r: engine_stage.stage_rank(r.get("stage")))
     ent = dict(best)
     inds = [r.get("industry", "") for r in rows if r.get("industry")]
     ent["industry"] = " ; ".join(dict.fromkeys(inds))

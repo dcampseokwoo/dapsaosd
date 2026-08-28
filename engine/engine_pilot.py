@@ -10,7 +10,7 @@ from __future__ import annotations
 import random
 import re
 
-from screening import uf_dedup, uf_snapshot, uf_stage
+from engine import engine_dedup, engine_snapshot, engine_stage
 
 BOUNDARY = {
     "1_수탁제조": re.compile(r"파운드리|foundry|수탁|위탁\s*생산|위탁\s*제조|OEM|ODM|임가공|주문\s*제작", re.I),
@@ -26,13 +26,13 @@ BOUNDARY = {
 
 def stage_pool(rows=None) -> list[dict]:
     """스테이지 필터 통과 엔티티(IN_SCOPE/UNKNOWN/Pre-A·미국 예외후보)."""
-    rows = rows if rows is not None else uf_snapshot.load_rows()
+    rows = rows if rows is not None else engine_snapshot.load_rows()
     pool = []
-    for e in uf_dedup.resolve_entities(rows):
-        b = uf_stage.stage_bucket(e.get("stage"))
-        if b in (uf_stage.IN_SCOPE, uf_stage.UNKNOWN):
+    for e in engine_dedup.resolve_entities(rows):
+        b = engine_stage.stage_bucket(e.get("stage"))
+        if b in (engine_stage.IN_SCOPE, engine_stage.UNKNOWN):
             e = dict(e); e["_stage_bucket"] = b; pool.append(e)
-        elif b == uf_stage.EXCEPTION and "미국" in (e.get("target") or ""):
+        elif b == engine_stage.EXCEPTION and "미국" in (e.get("target") or ""):
             e = dict(e); e["_stage_bucket"] = "PRE_A_PROVISIONAL"; pool.append(e)
     return pool
 

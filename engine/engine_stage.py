@@ -22,17 +22,19 @@ class UnknownStageValue(Exception):
     """매핑에 없는 스테이지 값 — 조용히 처리하지 말고 예외."""
 
 
-_IN = re.compile(r"^(pre[-\s]?seed|프리\s*시드|angel|엔젤|seed|시드)$", re.I)
-_EXC = re.compile(r"^(pre[-\s]?a|프리\s*a)$", re.I)
-_OUT = re.compile(
-    r"^(series\s*[a-e](\s*~)?|시리즈\s*[a-e]|pre[-\s]?b|프리\s*b|"
-    r"pre[-\s]?ipo|ipo(\s*\(.*\))?|m&a(\s*\(.*\))?|상장|인수합병)$", re.I)
+from engine import criteria_pack as _pack   # 활성 기준팩(스테이지 정책=공고 종속)
+
+_SP = _pack.criteria()["stage_policy"]
+_IN = re.compile(_SP["in_scope_pattern"], re.I)
+_EXC = re.compile(_SP["exception_pattern"], re.I)
+_OUT = re.compile(_SP["out_of_scope_pattern"], re.I)
+_UNKNOWN = set(_SP.get("unknown_values", ["", "알 수 없음"]))
 
 
 def stage_bucket(value) -> str:
     """스테이지 값 → 버킷. 미매칭은 UnknownStageValue."""
     s = "" if value is None else str(value).strip()
-    if s == "" or s == "알 수 없음":
+    if s in _UNKNOWN:
         return UNKNOWN
     if _IN.match(s):
         return IN_SCOPE
@@ -49,7 +51,8 @@ def pre_a_bucket(target: str, physical_product: bool) -> str:
     타겟 국가가 98.4% 결측인 DB에서 '미국' 명시는 극소수 강신호라 스테이지로 날리지 않는다.
     physical_product 는 §1 분류기가 준다(그 전엔 호출측이 판단/보류).
     """
-    us = "미국" in (target or "")
+    _rule = _SP.get("exception_rule", {})
+    us = _rule.get("require_target_contains", "미국") in (target or "")
     return "stage_exception" if (us and physical_product) else OUT_OF_SCOPE
 
 

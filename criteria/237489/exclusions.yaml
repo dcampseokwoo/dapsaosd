@@ -1,0 +1,6 @@
+# US FORGED(공고 237489) 전용 배제/병합 목록.
+# 공고 무관(상장사·법인격·해외법인·수동병합)은 config/global_exclusions.yaml 에 있다.
+# 여기엔 "이 공고에서만" 배제할 항목을 둔다. 현재 없음.
+exclusions: []
+established_suspects: []
+duplicate_merges: []

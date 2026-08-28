@@ -1,0 +1,173 @@
+{
+  "criteria_id": "237489",
+  "program_name": "디캠프 x HAX US FORGED Hardtech Pre-Program",
+  "prompt_ref": "prompt.md",
+  "prompt_version": "v6",
+  "model": "claude-agent",
+  "program_fields": [
+    "Robotics/Automation",
+    "Advanced Manufacturing",
+    "Energy/Climate Tech",
+    "Industrial Hardware",
+    "Semiconductor/Advanced Materials",
+    "Sensor/Edge Device",
+    "Physical AI",
+    "Healthtech Device",
+    "Manufacturing Process Innovation",
+    "Aerospace",
+    "Quantum",
+    "Other Deeptech",
+    "None"
+  ],
+  "verdicts": [
+    "hardtech",
+    "software_only",
+    "consumer",
+    "therapeutics",
+    "not_a_startup",
+    "unclear"
+  ],
+  "stage_policy": {
+    "_comment": "스테이지 값→버킷 매핑. 현행 정규식을 그대로 담아 engine_stage 가 컴파일(re.I). Phase 6 규칙엔진이 이 데이터를 소유.",
+    "in_scope_pattern": "^(pre[-\\s]?seed|프리\\s*시드|angel|엔젤|seed|시드)$",
+    "exception_pattern": "^(pre[-\\s]?a|프리\\s*a)$",
+    "out_of_scope_pattern": "^(series\\s*[a-e](\\s*~)?|시리즈\\s*[a-e]|pre[-\\s]?b|프리\\s*b|pre[-\\s]?ipo|ipo(\\s*\\(.*\\))?|m&a(\\s*\\(.*\\))?|상장|인수합병)$",
+    "unknown_values": [
+      "",
+      "알 수 없음"
+    ],
+    "exception_rule": {
+      "_comment": "Pre-A(EXCEPTION): 타겟에 '미국' + physical_product 이면 통과(stage_exception), 아니면 배제.",
+      "require_target_contains": "미국",
+      "require_physical_product": true
+    }
+  },
+  "tier_policy": {
+    "_comment": "현행: verdict×플래그(consumer_facing/maturity) 기반. Phase 6 에서 fit_rules 규칙엔진으로 교체.",
+    "T1": "hardtech AND confidence=high AND no flag",
+    "T2": "hardtech AND (consumer_facing_end_product OR maturity_signal)",
+    "T3": "unclear OR confidence=low OR established_suspect"
+  },
+  "fit_rules": {
+    "status": "data_only_not_implemented",
+    "_comment": "판정 규칙 v3. 이번 Phase 미구현(위치만). 구현은 Phase 6. 원문: docs/us_forged/RULES_v3.md",
+    "principle": "배제는 비가역·하향은 가역. 확실할 때만 배제. T1은 엄격.",
+    "questions": {
+      "Q1_final_contribution": [
+        "산업 생산",
+        "의료 치료·진단",
+        "연구",
+        "국방·공공",
+        "개인의 미용·생활·취미·의복",
+        "혼합",
+        "불명"
+      ],
+      "Q2_design_ownership": [
+        "자체설계",
+        "수탁(OEM·ODM)",
+        "유통·중개",
+        "불명"
+      ],
+      "Q3_sold_form": [
+        "물건",
+        "소프트웨어·서비스",
+        "콘텐츠·IP",
+        "혼합"
+      ],
+      "Q4_regulatory": [
+        "해당없음",
+        "의료기기",
+        "의약품",
+        "화장품",
+        "식품",
+        "방산",
+        "복수"
+      ]
+    },
+    "decision_table": [
+      {
+        "rule": 0,
+        "cond": "소개문 30자 미만 OR Q1=불명",
+        "result": "홈페이지 보강 필수, 불가 시 T3"
+      },
+      {
+        "rule": 1,
+        "cond": "업종·기술·소개문 도메인 불일치",
+        "result": "T1 진입 금지(최대 T2)"
+      },
+      {
+        "rule": 2,
+        "cond": "Q3=SW·서비스 OR 콘텐츠·IP",
+        "result": "배제"
+      },
+      {
+        "rule": 3,
+        "cond": "Q3=혼합",
+        "result": "물건 주력 재질문→아니면 배제, 불명 시 T3"
+      },
+      {
+        "rule": 4,
+        "cond": "Q4=의약품 OR 식품(단독)",
+        "result": "배제"
+      },
+      {
+        "rule": 5,
+        "cond": "Q4=화장품(단독)",
+        "result": "배제"
+      },
+      {
+        "rule": 6,
+        "cond": "Q4=복수",
+        "result": "T2 + mixed_regulatory"
+      },
+      {
+        "rule": 7,
+        "cond": "Q1=산업·의료·연구·국방 AND Q2=자체설계",
+        "result": "T1"
+      },
+      {
+        "rule": 8,
+        "cond": "Q1=산업·의료·연구·국방 AND Q2=수탁",
+        "result": "T2 + contract_mfg"
+      },
+      {
+        "rule": "9a",
+        "cond": "Q1=개인 AND Q2=자체설계 AND 소재 자체개발 있음",
+        "result": "T2 + own_material_consumer_end"
+      },
+      {
+        "rule": "9b",
+        "cond": "Q1=개인 AND Q2=자체설계 AND 소재 자체개발 없음",
+        "result": "배제"
+      },
+      {
+        "rule": 10,
+        "cond": "Q1=개인 AND Q2=수탁",
+        "result": "배제"
+      },
+      {
+        "rule": 11,
+        "cond": "Q1=혼합",
+        "result": "T2 + mixed_end_use"
+      },
+      {
+        "rule": 12,
+        "cond": "Q2=유통·중개",
+        "result": "배제"
+      },
+      {
+        "rule": 13,
+        "cond": "그 외 불명",
+        "result": "T3"
+      }
+    ],
+    "rule9_material_signal": "원료·소재·부품·공정 단계 명시 여부. '~부터'·'일괄'·'수직계열화'·'원사 개발'·'원료 생산' 등. 조립·설계만·AI/SW 자체개발은 해당 없음.",
+    "flags": [
+      "mixed_regulatory",
+      "contract_mfg",
+      "own_material_consumer_end",
+      "mixed_end_use",
+      "established_suspect"
+    ]
+  }
+}

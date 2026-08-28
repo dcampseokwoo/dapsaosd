@@ -12,16 +12,16 @@ from __future__ import annotations
 
 import pytest
 
-from screening import uf_engine, uf_golden, uf_snapshot
+from engine import engine_core, engine_golden, engine_snapshot
 
-GOLDEN = uf_golden.load_golden()
+GOLDEN = engine_golden.load_golden()
 
 
 # ───────────────────────── 1. 분류: hardtech 여야 하는 기업
 @pytest.mark.parametrize("entry", GOLDEN["classification_must_pass"],
                          ids=[e["name"] for e in GOLDEN["classification_must_pass"]])
 def test_classification_must_pass(entry):
-    verdict, rec = uf_golden.classification_verdict(entry)
+    verdict, rec = engine_golden.classification_verdict(entry)
     assert verdict == "hardtech", (
         f"{entry['name']}: hardtech 이어야 하는데 '{verdict}' — "
         f"소개문='{rec.get('desc', '')[:60]}' / trap={entry.get('trap', '')}")
@@ -31,7 +31,7 @@ def test_classification_must_pass(entry):
 @pytest.mark.parametrize("entry", GOLDEN["classification_must_fail"],
                          ids=[e["name"] for e in GOLDEN["classification_must_fail"]])
 def test_classification_must_fail(entry):
-    verdict, rec = uf_golden.classification_verdict(entry)
+    verdict, rec = engine_golden.classification_verdict(entry)
     assert verdict != "hardtech", (
         f"{entry['name']}: hardtech 가 아니어야 하는데 통과 — "
         f"기대 '{entry.get('expect_verdict', 'non-hardtech')}' / "
@@ -44,18 +44,18 @@ def test_classification_must_fail(entry):
 def test_stage_value_mapping(case):
     value, expect = case["value"], case["expect"]
     if expect == "RAISE":
-        with pytest.raises(uf_engine.UnknownStageValue):
-            uf_engine.stage_bucket(value)
+        with pytest.raises(engine_core.UnknownStageValue):
+            engine_core.stage_bucket(value)
     else:
-        assert uf_engine.stage_bucket(value) == expect, (
-            f"스테이지 '{value}': 기대 {expect}, 실제 {uf_engine.stage_bucket(value)}")
+        assert engine_core.stage_bucket(value) == expect, (
+            f"스테이지 '{value}': 기대 {expect}, 실제 {engine_core.stage_bucket(value)}")
 
 
 # ───────────────────────── 4. 사업자번호 정규화(malformed 감지)
 @pytest.mark.parametrize("case", GOLDEN["malformed_biz_no"],
                          ids=[c["name"] for c in GOLDEN["malformed_biz_no"]])
 def test_malformed_biz_no_flagged(case):
-    _, status = uf_snapshot.normalize_biz_no(case["value"])
+    _, status = engine_snapshot.normalize_biz_no(case["value"])
     assert status in ("malformed", "valid"), f"{case['name']}: status={status}"
     # 하이픈 위치 오류는 malformed 로 잡혀야 한다(조용히 통과 금지)
     if "725-870" in case["value"]:
@@ -63,7 +63,7 @@ def test_malformed_biz_no_flagged(case):
 
 
 # ───────────────────────── §2 중복 신원 판정 / §3 Pre-A 예외
-_CASES, _ = uf_golden.evaluate_all()
+_CASES, _ = engine_golden.evaluate_all()
 _DUP = {k: v for k, v in _CASES.items() if v["layer"] == "duplicate_entities"}
 _PREA = {k: v for k, v in _CASES.items() if v["layer"] == "pre_a_exception"}
 

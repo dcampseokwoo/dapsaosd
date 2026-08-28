@@ -11,7 +11,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from screening import uf_classify
+from engine import engine_classify
 
 ROOT = Path(__file__).resolve().parent.parent
 CACHE_DIR = ROOT / "data" / "cache"
@@ -44,14 +44,14 @@ _FIELDS = ("verdict", "matched_program_field", "physical_product",
 
 
 def build_cache(items: dict, outs: dict) -> int:
-    cache = uf_classify.load_cache()
+    cache = engine_classify.load_cache()
     for idx, it in items.items():
         o = outs.get(idx)
         if not o:
             continue
         rec = {"biz_no": it["biz_no"], "desc": it["desc"]}
-        uf_classify.put(rec, {k: o.get(k) for k in _FIELDS}, cache)
-    uf_classify.save_cache(cache)
+        engine_classify.put(rec, {k: o.get(k) for k in _FIELDS}, cache)
+    engine_classify.save_cache(cache)
     return len(cache)
 
 
@@ -154,7 +154,7 @@ def main():
         print("\n[일관성] pass2 파일 없음 — 2회차 미완료")
 
     n = build_cache(items, outs)
-    print(f"\n캐시 고정: {uf_classify.CACHE_PATH}  ({n} entries)")
+    print(f"\n캐시 고정: {engine_classify.CACHE_PATH}  ({n} entries)")
 
 
 if __name__ == "__main__":

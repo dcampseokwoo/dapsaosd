@@ -16,7 +16,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from screening import uf_classify
+from engine import engine_classify
 
 CACHE_DIR = Path(__file__).resolve().parent.parent / "data" / "cache"
 _FIELDS = ("verdict", "matched_program_field", "physical_product",
@@ -94,7 +94,7 @@ def finalize() -> dict:
         return d
     p2, p3 = by_ridx("full_out_p2_*.json"), by_ridx("full_out_p3_*.json")
 
-    cache = uf_classify.load_cache()
+    cache = engine_classify.load_cache()
     stats = Counter()
     disagreements = []
     for idx, biz in idx2biz.items():
@@ -118,11 +118,11 @@ def finalize() -> dict:
         entry["disagreement"] = dis
         entry["history"] = [{"verdict": p["verdict"], "confidence": p.get("confidence")}
                             for p in passes]
-        uf_classify.put({"biz_no": biz, "desc": biz2desc.get(biz, "")}, entry, cache)
+        engine_classify.put({"biz_no": biz, "desc": biz2desc.get(biz, "")}, entry, cache)
         stats[verdict] += 1
         if dis:
             disagreements.append({"biz_no": biz,
                                   "verdicts": [p["verdict"] for p in passes]})
-    uf_classify.save_cache(cache)
+    engine_classify.save_cache(cache)
     return {"verdict_dist": dict(stats.most_common()),
             "disagreements": disagreements, "n_cached": sum(stats.values())}

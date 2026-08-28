@@ -9,7 +9,7 @@
   - (2) 후보 영향: **인터페이스만**. 최종 파이프라인(§1~4)이 아직 없어 shortlist 함수를
         주입받는 형태로 열어두고, 미주입 시 명확히 보류를 알린다.
 
-  python -m screening.uf_diff <old.xlsx> <new.xlsx>
+  python -m engine.engine_diff <old.xlsx> <new.xlsx>
 """
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from screening import uf_snapshot
+from engine import engine_snapshot
 
 # 변동을 주로 추적할 컬럼(전 컬럼 비교하되 요약은 이 순서로)
 TRACK_COLS = ["stage", "industry", "target", "name_ko", "name_en", "desc",
@@ -78,11 +78,11 @@ def candidate_impact(old_rows: list[dict], new_rows: list[dict], shortlist_fn=No
 
 
 def run_diff(old_path, new_path, shortlist_fn=None) -> dict:
-    old_rows = uf_snapshot.load_rows(old_path)
-    new_rows = uf_snapshot.load_rows(new_path)
+    old_rows = engine_snapshot.load_rows(old_path)
+    new_rows = engine_snapshot.load_rows(new_path)
     out = {
-        "old": uf_snapshot.provenance(old_path, old_rows),
-        "new": uf_snapshot.provenance(new_path, new_rows),
+        "old": engine_snapshot.provenance(old_path, old_rows),
+        "new": engine_snapshot.provenance(new_path, new_rows),
         "column_diff": column_diff(old_rows, new_rows),
     }
     try:
@@ -95,7 +95,7 @@ def run_diff(old_path, new_path, shortlist_fn=None) -> dict:
 def main(argv=None) -> int:
     argv = argv or sys.argv[1:]
     if len(argv) != 2:
-        print("usage: python -m screening.uf_diff <old.xlsx> <new.xlsx>")
+        print("usage: python -m engine.engine_diff <old.xlsx> <new.xlsx>")
         return 2
     d = run_diff(Path(argv[0]), Path(argv[1]))
     s = d["column_diff"]["summary"]

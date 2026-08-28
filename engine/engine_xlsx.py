@@ -16,7 +16,7 @@ from pathlib import Path
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
-from screening import uf_dedup, uf_shortlist, uf_snapshot
+from engine import engine_dedup, engine_shortlist, engine_snapshot
 
 OUT = Path(__file__).resolve().parent.parent / "output" / "screening" / "us_forged_shortlist.xlsx"
 FONT = "Arial"
@@ -55,12 +55,12 @@ def _contact_status(e):
 
 
 def build(run_ts: str | None = None) -> Path:
-    rows = uf_snapshot.load_rows()
-    assessed = uf_shortlist.build(rows)
-    prov = uf_snapshot.run_metadata(uf_snapshot.DEFAULT_SNAPSHOT,
+    rows = engine_snapshot.load_rows()
+    assessed = engine_shortlist.build(rows)
+    prov = engine_snapshot.run_metadata(engine_snapshot.DEFAULT_SNAPSHOT,
                                     run_ts or datetime.now(timezone.utc).isoformat(timespec="seconds"),
                                     rows)
-    disp = uf_shortlist.summarize(assessed)
+    disp = engine_shortlist.summarize(assessed)
     _TORD = {"T1": 0, "T2": 1, "T3": 2}
     send = sorted([a for a in assessed if a["disposition"] == "send"],
                   key=lambda x: (_TORD.get(x.get("tier"), 9),
@@ -83,8 +83,8 @@ def build(run_ts: str | None = None) -> Path:
         _c(ws, r, 1, k); _c(ws, r, 2, v, align="center"); r += 1
     r += 1
     # 자체채점 지표(§8)
-    from screening import uf_golden
-    _, gsum = uf_golden.evaluate_all()
+    from engine import engine_golden
+    _, gsum = engine_golden.evaluate_all()
     mp = gsum.get("classification_must_pass", {}); mf = gsum.get("classification_must_fail", {})
     ELEVEN = ["Robotics/Automation", "Advanced Manufacturing", "Energy/Climate Tech",
               "Industrial Hardware", "Semiconductor/Advanced Materials", "Sensor/Edge Device",
@@ -93,7 +93,7 @@ def build(run_ts: str | None = None) -> Path:
     ff = Counter(a.get("cls_matched_program_field") for a in send)
     zero = [f for f in ELEVEN if ff.get(f, 0) == 0]
     stage_leak = sum(1 for a in send
-                     if a["stage_bucket"] == uf_shortlist.uf_stage.OUT_OF_SCOPE)
+                     if a["stage_bucket"] == engine_shortlist.engine_stage.OUT_OF_SCOPE)
     tiers = Counter(a.get("tier") for a in send)
     metrics = [
         ("골든 must_pass 통과율", f"{mp.get('pass')}/{mp.get('total')}"),
@@ -186,7 +186,7 @@ def build(run_ts: str | None = None) -> Path:
     wa.freeze_panes = "A4"
 
     # ---- 시트6 중복 엔티티(§2) ----
-    dups = uf_dedup.duplicate_report(rows)
+    dups = engine_dedup.duplicate_report(rows)
     wd = wb.create_sheet("중복_엔티티"); wd.sheet_view.showGridLines = False
     _c(wd, 1, 1, f"동명 다중행 {len(dups)}건 — 신원 판정(§2). DB 관리자 정정 참고",
        bold=True, size=12)
@@ -201,10 +201,10 @@ def build(run_ts: str | None = None) -> Path:
         rr += 1
 
     # ---- 시트: 명시 배제(known_exclusions) ----
-    from screening import uf_exclude
-    known = [a for a in assessed if a.get("biz_no") in uf_exclude.KNOWN_EXCLUDED]
+    from engine import engine_exclude
+    known = [a for a in assessed if a.get("biz_no") in engine_exclude.KNOWN_EXCLUDED]
     wk = wb.create_sheet("명시_배제"); wk.sheet_view.showGridLines = False
-    _c(wk, 1, 1, f"명시 배제 {len(known)}건 — config/known_exclusions.yaml (규칙 추론 아니라 "
+    _c(wk, 1, 1, f"명시 배제 {len(known)}건 — config/global_exclusions.yaml (규칙 추론 아니라 "
        "사업자번호 명시 관리). 무엇을 왜 뺐는지 노출.", bold=True, size=11, wrap=True)
     wk.merge_cells(start_row=1, start_column=1, end_row=1, end_column=4); wk.row_dimensions[1].height = 26
     _hdr(wk, 3, ["국문명", "사업자번호", "DB 스테이지", "배제 사유"], [22, 16, 12, 70])
@@ -212,7 +212,7 @@ def build(run_ts: str | None = None) -> Path:
     for a in known:
         _c(wk, rr, 1, a["name_ko"]); _c(wk, rr, 2, a.get("biz_no", ""), size=8)
         _c(wk, rr, 3, a.get("stage", ""), align="center", size=8)
-        _c(wk, rr, 4, uf_exclude.KNOWN_EXCLUDED[a["biz_no"]], size=8, wrap=True); rr += 1
+        _c(wk, rr, 4, engine_exclude.KNOWN_EXCLUDED[a["biz_no"]], size=8, wrap=True); rr += 1
 
     # ---- 시트: 치료제·신약 배제(therapeutics, v6) ----
     ther = sorted([a for a in assessed if a["disposition"] == "excluded_therapeutics"],
