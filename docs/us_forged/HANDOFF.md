@@ -47,7 +47,7 @@ python -c "from engine import engine_shortlist as S; print(S.summarize(S.build()
 python -c "from engine import engine_xlsx as X; print(X.build())"
 python -m pytest tests/ -q && python -m tests.golden_ratchet
 ```
-전체 재분류(1,159 전건)는 **금지** — 예산 자산. 캐시 미스만.
+전체 재분류(1,157 전건)는 **금지** — 예산 자산. 캐시 미스만.
 
 **② 배제 기업을 추가할 때(신규 상장사·therapeutics 발견):** 코드 수정 없이
 `config/global_exclusions.yaml` 편집:
@@ -69,7 +69,7 @@ python -m pytest tests/ -q && python -m tests.golden_ratchet
 | §7 | 스냅샷 고정 + diff 모드 **인터페이스만**(candidate_impact 는 shortlist_fn 주입형, 미구현) | ✅(부분) |
 | §2 | 중복/신원 판정(병합 전 신원 우선) | ✅ |
 | §3 | 스테이지 재작성(명시 매핑·미매칭 예외·Pre-A 예외버킷) | ✅ |
-| §1 | 라벨 폐기 → 소개문 LLM 분류(1,159 전건 + 3회 다수결) | ✅ |
+| §1 | 라벨 폐기 → 소개문 LLM 분류(1,157건 캐시, 풀런 시 3회 다수결) | ✅ |
 | §4 | 배제 강화(해외법인 3형식·법인격) | ✅ |
 | §6 | 출력 스키마(evidence 전문·이메일·uid·소개원문·티어) | ✅ |
 | §8 | 자체 채점 + 리젝트 감사(무작위 30) | ✅ |
@@ -166,7 +166,7 @@ consumer_facing 또는 maturity_signal 있음 / T3 = unclear 또는 confidence l
 
 ## 4. 분류 캐시 관리 — **⚠ 예산 자산. 함부로 무효화하지 말 것**
 
-`data/cache/classification.json` (약 618KB, 1,159건 + 골든/뷰티 재분류). **예산을
+`data/cache/classification.json` (약 618KB, **1,157건**; 과거 문서의 '1,159'는 풀런 투입 엔티티 수 라벨로, 실제 저장 캐시는 1,148→1,157). **예산을
 들여 만든 자산이다. 캐시 키를 바꾸거나 대량 재분류를 돌리기 전에 반드시 계획 보고.**
 
 - **캐시 키** = `사업자번호(biz_no) | 소개문 SHA256[:16] | 모델명`
