@@ -6,7 +6,7 @@
 
 ---
 
-## 0. 작업 완료 상태 ✅ (v1-final-352 · Phase 1 자산분리 · Phase 2 도시에 완료)
+## 0. 작업 완료 상태 ✅ (v1-final-352 · Phase 1 자산분리 · Phase 2 도시에 · Phase 3 크롤러[수집 대기])
 
 **엔진 작업 종료.** 최종 산출물 검수 완료. 완성 지점 = 태그 `v1-final-352`
 (브랜치 `claude/file-batch-send-ank4hr` = `us-forged-engine`).
@@ -28,13 +28,38 @@ tech_ownership 1,139·regulatory 1,142·market 1,148·value_chain 1,042·end_use
 (rule 9a)+엔티티레이어 35+경계 6. **읽기 전용 파생물** — 파이프라인은 classification.json
 사용(352 불변, 롤백 보존). 캐시 키 3상수 불변. 도시에 기반 전환은 Phase 6.
 
-**Phase 3(홈페이지 수집) — 크롤러 준비완료, 실행은 egress 대기**: `engine/engine_website.py`
-(robots 존중·딜레이·재개·사명 `<ENTITY_NAME>` 치환·MISMATCH/파킹 판별·access_status 7종·
-텍스트만·per-company `data/cache/website/{id}.json`). 순수 함수 9개 테스트 통과. **단 이 원격
-세션은 egress 정책상 외부 호스트 403 차단** → 크롤 불가. `crawl()`은 `egress_available()`
-precheck 로 차단 시 `EgressBlocked` 로 크게 실패(전량 오분류 방지). **웹 egress 허용 정책이
-켜진 세션에서** `from engine import engine_website as W; W.crawl(rows)` 실행 → `W.report()`.
-DB Website 컬럼은 3,424곳 100% 채워짐. 실행 후 Phase 4 예상 호출 수 산출.
+**Phase 3(홈페이지 수집) — 크롤러 완성, 실제 수집 0건(egress 대기). 사용법: `docs/us_forged/CRAWLER.md`**
+- 크롤러 `engine/engine_website.py`: robots 존중·딜레이·재개·사명 `<ENTITY_NAME>` 치환·
+  MISMATCH/파킹 판별·access_status 7종·텍스트만·per-company `data/cache/website/{id}.json`.
+  **순수 함수 테스트 9건 통과. 실제 수집 0건.** 의존성: `requests` 만(나머지 stdlib).
+- **중단 사유**: egress 프록시가 **세션 생성 시점에 고정**되어 이 세션에서는 열 수 없음
+  (정책을 켜도 현 세션 미반영). 외부 호스트 전부 403.
+- **재개 방법(웹 egress 열린 새 세션/로컬)**:
+  1. `from engine import engine_website as W; assert W.egress_available()` 프리체크 통과 확인
+  2. **발송 리스트 352곳 먼저** → `W.report()` 로 수집률·품질 확인 + 포레·메텔·메타맵 3사 검증
+  3. 문제없으면 **전체**(website 있는 전 기업, 3,424곳 100% 채워짐)
+- **🚨 `crawl()`이 `EgressBlocked`를 던지면 절대 우회하지 말 것.** try/except 로 삼키거나
+  precheck 를 끄면 프록시 403 이 전부 **거짓 `DOMAIN_EXPIRED`** 로 기록되어 3,424곳이
+  "홈페이지 없음"으로 오분류되고 그 사실을 영원히 모른다. **환경을 고쳐라(egress 열기), 코드를 우회하지 마라.**
+
+**Phase 4 예산 추정(사전, 수집률 시나리오별 — egress 투자 가치 판단용)**
+- 범위: 전 기업 도시에 생성 ≈ **3,400곳**(기존 1,157 + 신규 2,257). 생성 대상 축 = 소개문으로
+  안 풀리는 5개(end_use·tech_ownership·value_chain·regulatory·market) = 규칙 v3 판정을 가르는 축 전부.
+- **호출 수는 수집률과 거의 무관**(기업당 도시에 생성 1콜; 웹 텍스트는 *호출 수*가 아니라
+  *입력 토큰·결과 품질*을 바꿈). 단일 패스 ~3,400콜 / 3회 다수결(불안정 ~22% 가정) ~4,900콜.
+  (현재 파이프라인 관련분 1,157곳만 하면 ~1,157단일 / ~1,650다수결.)
+- 수집률이 바꾸는 것 = **UNCLEAR 비율(자산 품질)**과 재실행 낭비:
+
+  | 수집률 | 예상 호출 수(전량) | 5개 축 블렌드 UNCLEAR | 결과 |
+  |---|---|---|---|
+  | **0%**(소개문만) | ~3,400 / ~4,900 | **~50%** | 규칙 핵심 축이 대량 UNCLEAR(메텔·메타맵·포레 유형). 자산으로 못 씀 → 웹 확보 후 **재실행 → 콜 낭비** |
+  | **50%** | ~동일 | **~30%** | 절반은 해소, 절반 desc-only. 부분 자산 |
+  | **80%** | ~동일 | **~15%** | 대부분 해소 → **한 번 만들면 재사용** 성립 |
+- 축별: end_use·tech_ownership·value_chain·regulatory 는 웹으로 크게 개선. **market_orientation 은
+  웹으로도 잘 안 풀림**(수출 타겟 명시 드묾) → 높은 UNCLEAR 유지, 별도 소스 필요.
+- **판단**: 호출 수가 시나리오 무관 거의 같으므로 **웹 수집은 "예산은 그대로, 품질만 좌우"**.
+  0%로 돌리면 같은 콜을 쓰고도 규칙 v3 축(Q1/Q2/Q4/9a)이 반쯤 UNCLEAR → 재실행이 불가피.
+  → **egress 확보 후 Phase 4 가 비용 효율적.** (추정치이며 실 수집률·프롬프트로 변동.)
 
 - 최종 산출물: `output/screening/us_forged_shortlist.xlsx`
 - 발송 리스트 **352**(T1 162 · T2 128 · T3 62), 이메일 172 / 연락처 필요 180
