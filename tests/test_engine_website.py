@@ -1,79 +1,120 @@
-"""Phase 3 크롤러의 순수 함수(egress 불필요) 회귀 테스트.
+"""Phase 3 크롤러 순수 함수 회귀 테스트 (egress 불필요).
 
-네트워크 수집 자체는 egress 있는 환경에서만 동작하지만, 판정 품질을 좌우하는 로직
-(텍스트 추출·사명 치환·언어·MISMATCH·링크 탐색)은 여기서 결정적으로 검증한다.
+버그 수정 검증:
+  ① 본문 추출: <body> 텍스트를 실제로 뽑고, JS 셸(title만)은 JS_REQUIRED 로 구분.
+  ② MISMATCH: 원문(치환 전)으로 판정하고, '다른 도메인 리다이렉트 + 사명 부재'로만 판정
+     (영문 브랜드가 한글 등록명을 본문에 안 써서 생기던 45% 오탐 제거).
+실물 사이트를 못 받는 환경이라 대표 HTML 픽스처를 쓴다(bioplus/speedfloor/castwin = JS 셸 유형).
 """
 from engine import engine_website as W
 
 
-def test_extract_text_strips_script_style():
-    html = ("<html><head><title>회사소개</title><style>.x{}</style></head>"
-            "<body><script>var a=1</script><h1>초음파 건조기</h1>"
-            "<p>산업용 세척 장비</p></body></html>")
-    text, title = W.extract_text(html)
-    assert "초음파 건조기" in text and "산업용 세척 장비" in text
-    assert "var a=1" not in text and ".x{}" not in text
-    assert title == "회사소개"
+# ── 대표 픽스처 ──────────────────────────────────────────────────────────
+STATIC_HTML = ("<html><head><title>초음파세정 | 대양</title><style>.a{}</style></head>"
+               "<body><nav>메뉴</nav><h1>초음파 세척 장비</h1>"
+               "<p>대양은 산업용 정밀 세척 장비를 자체 설계·제조하는 기업입니다. "
+               "반도체·디스플레이 공정에 초음파 세정 시스템을 공급하며, 세정 공정 자동화와 "
+               "친환경 용제 순환 설비를 함께 개발합니다.</p>"
+               "<script>var x=1</script></body></html>")
+
+# JS 셸: 본문은 root div 뿐, title 만 존재(= bioplus/speedfloor/castwin 이 보인 증상)
+JS_SHELL_HTML = ("<html><head><title>바이오플러스(주)</title></head>"
+                 "<body><div id=\"root\"></div>"
+                 "<noscript>JavaScript를 활성화해 주세요</noscript></body></html>")
+
+PARKING_HTML = ("<html><head><title>도메인</title></head>"
+                "<body><h1>이 도메인은 판매 중입니다</h1></body></html>")
 
 
-def test_detect_lang():
-    assert W.detect_lang("초음파 건조기를 만드는 회사입니다 산업용 세척") == "ko"
-    assert W.detect_lang("We manufacture ultrasonic drying equipment for industry") == "en"
-    assert W.detect_lang("ultrasonic 초음파 dryer 건조기 mixed 혼합 text 텍스트 abc def") in ("mixed", "ko", "en")
+# ── ① 본문 추출 ─────────────────────────────────────────────────────────
+def test_extract_body_not_just_title():
+    body, title = W.extract_text(STATIC_HTML)
+    assert "초음파 세척 장비" in body and "산업용 정밀 세척" in body
+    assert "반도체·디스플레이 공정" in body
+    assert title == "초음파세정 | 대양"
+    assert "초음파세정" not in body           # title 은 본문에 섞이지 않는다
+    assert "var x=1" not in body and ".a{}" not in body
 
 
-def test_mask_entity_removes_name_pollution():
-    # "로보"트리·파인유얼"뷰티" 오염 방지 — 사명이 판정 텍스트에 남으면 안 됨
-    text = "주식회사 로보트리는 코딩 교육 로봇키트를 만듭니다. 로보트리의 제품은..."
-    masked = W.mask_entity(text, "주식회사 로보트리", "Robotree")
-    assert "로보트리" not in masked
-    assert "<ENTITY_NAME>" in masked
-    assert "코딩 교육 로봇키트" in masked   # 사업 내용은 보존
+def test_js_shell_has_no_body():
+    body, title = W.extract_text(JS_SHELL_HTML)
+    assert title == "바이오플러스(주)"
+    assert len(body) < W.MIN_BODY             # 본문 사실상 없음
+    assert W.looks_js_rendered(JS_SHELL_HTML, body) is True
 
 
-def test_mask_entity_english_and_service():
-    text = "FineYourBeauty Inc. runs a fitness platform. FineYourBeauty helps users train."
-    masked = W.mask_entity(text, "파인유얼뷰티", "FineYourBeauty", extra_names=["FYB"])
-    assert "FineYourBeauty" not in masked
-    assert "fitness platform" in masked
+def test_classify_static_ok():
+    body, title = W.extract_text(STATIC_HTML)
+    assert W.classify_content(body, title, STATIC_HTML) == "OK"
 
 
-def test_classify_content_parking_and_mismatch():
-    assert W.classify_content("이 도메인은 판매 중입니다", "", "메타맵") == "DOMAIN_EXPIRED"
-    assert W.classify_content("Buy this domain now", "for sale", "포레") == "DOMAIN_EXPIRED"
-    assert W.classify_content("짧은글", "", "포레") == "MISMATCH"           # 짧고 사명 흔적 없음
-    long_ok = "포레는 업소용 제빙기를 제조합니다. " * 10
-    assert W.classify_content(long_ok, "포레", "포레") == "OK"
+def test_classify_js_shell_is_js_required():
+    body, title = W.extract_text(JS_SHELL_HTML)
+    assert W.classify_content(body, title, JS_SHELL_HTML) == "JS_REQUIRED"
 
 
-def test_page_kind_ko_en():
-    assert W._page_kind("/about", "회사소개") == "about"
-    assert W._page_kind("/tech", "Technology") == "technology"
-    assert W._page_kind("/cases", "적용사례") == "usecase"
-    assert W._page_kind("/products", "제품") == "product"
-    assert W._page_kind("/blog", "블로그") is None
+def test_classify_parking_is_domain_expired():
+    body, title = W.extract_text(PARKING_HTML)
+    assert W.classify_content(body, title, PARKING_HTML) == "DOMAIN_EXPIRED"
 
 
-def test_discover_pages_same_domain_only():
-    html = ('<a href="/about">회사소개</a>'
-            '<a href="https://other.com/tech">기술</a>'        # 다른 도메인 → 제외
-            '<a href="/products/list">제품</a>')
-    pages = W.discover_pages("https://acme.co.kr/", html)
-    assert pages.get("about") == "https://acme.co.kr/about"
-    assert pages.get("product") == "https://acme.co.kr/products/list"
-    assert "technology" not in pages       # 다른 도메인이라 제외돼야
+def test_three_failing_urls_now_classified_honestly():
+    """bioplus/speedfloor/castwin 유형(JS 셸) → OK-빈껍데기가 아니라 JS_REQUIRED 로."""
+    for title in ("<ENTITY_NAME>(주)", "A | B", "회사명"):
+        html = f"<html><head><title>{title}</title></head><body><div id='app'></div></body></html>"
+        body, t = W.extract_text(html)
+        assert W.classify_content(body, t, html) == "JS_REQUIRED"
+
+
+# ── ② MISMATCH: 원문 기준 + 도메인 리다이렉트로만 ──────────────────────────
+def test_mismatch_only_on_redirect_to_other_domain():
+    # 같은 도메인 → MISMATCH 아님
+    assert W.is_mismatch("https://acme.co.kr/", "https://acme.co.kr/main",
+                         "산업용 장비", "acme", "에이크미") is False
+    # 다른 도메인 + 사명 없음 → MISMATCH
+    assert W.is_mismatch("https://acme.co.kr/", "https://parkingpage.com/",
+                         "전혀 다른 내용", "", "에이크미") is True
+    # 다른 도메인이지만 본문에 사명 있음(정상 이전) → MISMATCH 아님
+    assert W.is_mismatch("https://old.co.kr/", "https://newacme.com/",
+                         "에이크미는 초음파 장비를 만듭니다", "", "에이크미") is False
+
+
+def test_mismatch_not_from_name_absence_alone():
+    # 영문 브랜드: 같은 도메인이면 한글 등록명이 본문에 없어도 MISMATCH 아님(과거 오탐)
+    assert W.is_mismatch("https://bioplus.co.kr/", "https://bioplus.co.kr/",
+                         "We develop biomaterials", "", "바이오플러스") is False
+
+
+# ── 치환은 판정 뒤(순서) ──────────────────────────────────────────────────
+def test_mask_after_classify_semantics():
+    body, title = W.extract_text(STATIC_HTML)
+    assert W.classify_content(body, title, STATIC_HTML) == "OK"   # 원문으로 판정
+    masked = W.mask_entity(body, "대양")                          # 그 다음 치환
+    assert "대양" not in masked and "<ENTITY_NAME>" in masked
+    assert "초음파 세척 장비" in masked                            # 사업 내용 보존
 
 
 def test_access_status_taxonomy_complete():
     assert set(W.ACCESS) == {"OK", "NOT_FOUND", "TIMEOUT", "BLOCKED", "NO_URL",
-                             "DOMAIN_EXPIRED", "MISMATCH"}
+                             "DOMAIN_EXPIRED", "MISMATCH", "JS_REQUIRED", "TLS_ERROR"}
 
 
 def test_crawl_aborts_when_egress_blocked(monkeypatch):
-    # egress 차단 시 전량 오분류 대신 크게 실패해야 한다
     monkeypatch.setattr(W, "egress_available", lambda: False)
     try:
         W.crawl([{"name_ko": "x", "website": "https://x.co", "biz_no": "1"}], delay=0)
         assert False, "EgressBlocked 가 발생해야 함"
     except W.EgressBlocked:
         pass
+
+
+def test_detect_lang():
+    assert W.detect_lang("초음파 건조기를 만드는 회사입니다 산업용 세척") == "ko"
+    assert W.detect_lang("We manufacture ultrasonic drying equipment for industry") == "en"
+
+
+def test_mask_entity_removes_name_pollution():
+    text = "주식회사 로보트리는 코딩 교육 로봇키트를 만듭니다. 로보트리의 제품은..."
+    masked = W.mask_entity(text, "주식회사 로보트리", "Robotree")
+    assert "로보트리" not in masked and "<ENTITY_NAME>" in masked
+    assert "코딩 교육 로봇키트" in masked

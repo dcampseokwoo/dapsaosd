@@ -71,13 +71,23 @@ print(W.report())
 ### access_status 의미(재시도 가능/불가 구분)
 | status | 의미 | 재시도 |
 |---|---|---|
-| `OK` | 정상 수집 | — |
-| `NOT_FOUND` | HTTP 404 | 불가(URL 오류) |
+| `OK` | 본문 실제 수집(≥60자) | — |
+| `JS_REQUIRED` | 200 이지만 본문이 JS(클라이언트) 렌더 — `requests`는 title만 받음 | **가능**(렌더링 수집 필요) |
+| `TLS_ERROR` | SSL 인증서/가로채기 오류(로컬 보안 프로그램 등) — 환경 문제 | **가능**(깨끗한 환경에서) |
 | `TIMEOUT` | 응답 시간 초과 | **가능** |
+| `NOT_FOUND` | HTTP 404 | 불가(URL 오류) |
 | `BLOCKED` | 403/401 또는 robots 금지 | 조건부 |
 | `NO_URL` | DB Website 비어있음 | 불가 |
 | `DOMAIN_EXPIRED` | DNS 실패·연결 거부·파킹·만료 | 불가 |
-| `MISMATCH` | 접속되나 다른 회사(낡은 URL) | 불가(URL 갱신 필요) |
+| `MISMATCH` | **다른 도메인으로 리다이렉트 + 사명 흔적 없음**(낡은 URL, 다른 회사) | 불가(URL 갱신 필요) |
+- 모든 실패 레코드에 `error_class`(ssl/dns/conn/timeout/robots/…)와 `error`(예외 메시지)를 남긴다 → 사후 분석용.
+- `report()`가 `retryable(TIMEOUT+TLS+JS_REQUIRED)`와 `stale_v1_needs_recollect`를 함께 보고.
+
+### ⚠ v1 수집분(2026-08 첫 실행)은 전부 무효 — 자동 재수집됨
+첫 크롤러(v1)에 파싱 버그 2개가 있었다: ① 본문 대신 `<title>`만 저장(JS 렌더 사이트를
+OK-빈껍데기로 기록) ② 사명 치환이 MISMATCH 판정보다 먼저 실행돼 45% 오탐. **수정 완료(v2).**
+레코드에 `crawler_version`을 넣어, **v1(또는 버전 없는) 산출물은 `crawl()` 재실행 시 자동으로
+stale 로 감지되어 재수집**된다(수동 삭제 불필요). 강제 전량 재수집은 `crawl(rows, force=True)`.
 
 ## 재개 방법
 
@@ -85,6 +95,15 @@ print(W.report())
   중단 후 다시 `crawl()` 하면 남은 것만 수집한다.
 - 특정 기업을 다시 받으려면 `crawl_one(row, force=True)` 또는 해당 json 삭제 후 재실행.
 - `TIMEOUT` 만 골라 재시도하려면 그 json 들을 지우고 다시 돌리면 된다.
+
+## JS_REQUIRED 가 많으면 — 렌더링 수집 옵션(미구현, 필요 시 추가)
+
+현재 크롤러는 `requests`(정적 fetch)만 쓴다. 클라이언트 렌더 사이트는 `JS_REQUIRED`로
+정직하게 표시된다(가짜 OK 아님). **수집 후 `report()`의 `JS_REQUIRED` 비율을 먼저 보고**,
+그 비율이 크면 그때 렌더링 수집을 추가하자:
+- 이 환경엔 **Playwright + Chromium 이 사전 설치**돼 있다(`PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers`).
+  `JS_REQUIRED` 레코드만 골라 Playwright 로 재수집하는 경로를 붙이면 된다(엔진 인터페이스는
+  그대로, `_fetch` 만 렌더링 버전으로 분기). **비율을 확인하기 전엔 구현하지 않는다**(맹목 구현 금지).
 
 ## 검증 포인트(수집 후 반드시 확인)
 

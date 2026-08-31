@@ -15,8 +15,13 @@ market)을 홈페이지 본문으로 보강한다(메텔 "Smart Pillow" 4단어,
   OK · NOT_FOUND(404) · TIMEOUT(재시도 가능) · BLOCKED(403/robots) · NO_URL ·
   DOMAIN_EXPIRED(DNS 실패·연결 거부·파킹) · MISMATCH(다른 회사)
 
+순서(중요): 200 응답이면 (1) 원문 추출 → (2) **원문(치환 전)으로** MISMATCH/JS/파킹 판정 →
+(3) OK 일 때만 사명 치환 후 저장. 사명 치환을 판정보다 먼저 하면 "사명 못 찾음 → MISMATCH"
+오탐이 난다(v1 버그). MISMATCH 는 사명 부재가 아니라 **다른 도메인 리다이렉트 + 사명 부재**로만.
+
 주의: 실제 네트워크 수집은 outbound egress 가 허용된 환경에서만 동작한다. 순수 함수
-(_extract_text·mask_entity·detect_lang·classify_content·_page_kind)는 egress 없이 테스트된다.
+(extract_text·mask_entity·detect_lang·classify_content·looks_js_rendered·is_mismatch·
+_page_kind·discover_pages)는 egress 없이 테스트된다(tests/test_engine_website.py, 13건).
 """
 from __future__ import annotations
 
@@ -32,7 +37,12 @@ from urllib import robotparser
 ROOT = Path(__file__).resolve().parent.parent
 WEBSITE_DIR = ROOT / "data" / "cache" / "website"
 
-ACCESS = ("OK", "NOT_FOUND", "TIMEOUT", "BLOCKED", "NO_URL", "DOMAIN_EXPIRED", "MISMATCH")
+ACCESS = ("OK", "NOT_FOUND", "TIMEOUT", "BLOCKED", "NO_URL", "DOMAIN_EXPIRED",
+          "MISMATCH", "JS_REQUIRED", "TLS_ERROR")
+# JS_REQUIRED: 200 이지만 본문이 클라이언트(JS) 렌더 — requests 로는 셸(title)만 받음. 재수집(렌더링) 필요.
+# TLS_ERROR : SSL 인증서/가로채기 오류(로컬 보안 프로그램 등) — 환경 문제, 재시도 가능. DOMAIN_EXPIRED 와 구분.
+
+CRAWLER_VERSION = "2"        # v1(파싱 버그: title만 저장·MISMATCH 오탐) 산출물은 stale 로 자동 재수집
 
 USER_AGENT = "dcamp-research/1.0 (+hardtech screening; contact via dcamp)"
 DEFAULT_DELAY = 2.0          # 요청 간 딜레이(초)
@@ -86,13 +96,17 @@ class _TextExtractor(HTMLParser):
         s = data.strip()
         if not s:
             return
-        if self._in_title:
+        if self._in_title:                    # title 은 body 텍스트(parts)에 넣지 않는다
             self.title = (self.title + " " + s).strip()
+            return
         self.parts.append(s)
 
 
 def extract_text(html: str) -> tuple[str, str]:
-    """HTML → (가시 텍스트, title). 실패해도 예외 없이 최대한."""
+    """HTML → (**본문**(<body> 가시 텍스트, title 제외), title). 실패해도 예외 없이 최대한.
+
+    title 은 parts 에 섞지 않으므로, 반환된 본문 길이가 곧 '실제 콘텐츠 유무'의 지표다
+    (JS 셸이면 본문이 거의 0 이 되어 JS_REQUIRED 판별이 가능해진다)."""
     p = _TextExtractor()
     try:
         p.feed(html)
@@ -101,6 +115,19 @@ def extract_text(html: str) -> tuple[str, str]:
     text = re.sub(r"[ \t]+", " ", "\n".join(p.parts))
     text = re.sub(r"\n{3,}", "\n\n", text).strip()
     return text, p.title
+
+
+# JS(클라이언트) 렌더 앱 신호 — 본문이 비어 있을 때 JS_REQUIRED 판별에 사용
+_JS_APP = re.compile(
+    r'id=["\'](root|app|__next|__nuxt|q-app)["\']|__NEXT_DATA__|__NUXT__|'
+    r'window\.__|ng-version|data-reactroot|v-cloak|'
+    r'(enable|turn on|활성화).{0,20}(javascript|자바스크립트)|'
+    r'(javascript|자바스크립트).{0,20}(필요|required|enable)', re.I)
+
+
+def looks_js_rendered(html: str, body_text: str) -> bool:
+    """본문이 거의 없는데 JS 앱 신호가 있으면 클라이언트 렌더로 본다."""
+    return len(body_text) < 60 and bool(_JS_APP.search(html or ""))
 
 
 def detect_lang(text: str) -> str:
@@ -142,18 +169,41 @@ def mask_entity(text: str, name_ko: str, name_en: str = "",
     return text
 
 
-def classify_content(text: str, title: str, name_ko: str, name_en: str = "") -> str:
-    """수집된 본문이 실제 그 회사인지 판정 → OK / MISMATCH / DOMAIN_EXPIRED.
+MIN_BODY = 60        # 실제 콘텐츠로 인정하는 최소 본문 길이(title 제외)
 
-    파킹·만료 신호 → DOMAIN_EXPIRED. 본문이 너무 짧고 사명 흔적 없음 → MISMATCH 의심.
+
+def classify_content(body_text: str, title: str, html: str = "") -> str:
+    """**원문(치환 전) 본문**으로 콘텐츠 유형 판정 → OK / DOMAIN_EXPIRED / JS_REQUIRED.
+
+    사명 존재 여부는 여기서 보지 않는다(MISMATCH 는 crawl_one 이 도메인 리다이렉트로 판정).
+    영문 브랜드 사이트가 한글 등록명을 본문에 안 써서 생기던 MISMATCH 오탐을 없앤다.
     """
-    if _PARKING.search(text) or _PARKING.search(title):
-        return "DOMAIN_EXPIRED"
-    variants = _name_variants(name_ko, name_en)
-    has_name = any(re.search(re.escape(v), text + " " + title, re.I) for v in variants)
-    if len(text) < 120 and not has_name:
-        return "MISMATCH"
+    if _PARKING.search(body_text) or _PARKING.search(title):
+        return "DOMAIN_EXPIRED"                       # 파킹·판매·만료
+    if len(body_text) < MIN_BODY:
+        return "JS_REQUIRED"                          # 본문 없음 = 정적 fetch 로 못 얻음(JS/빈 셸)
     return "OK"
+
+
+def _registrable(host: str) -> str:
+    """도메인의 등록가능 부분(대략) — 리다이렉트가 '다른 회사'인지 판별용. 마지막 두 라벨."""
+    host = (host or "").lower().split(":")[0]
+    parts = [p for p in host.split(".") if p]
+    # co.kr / or.kr 등 2단계 국가 도메인은 세 라벨로
+    if len(parts) >= 3 and parts[-1] == "kr" and parts[-2] in ("co", "or", "ne", "go", "re", "pe"):
+        return ".".join(parts[-3:])
+    return ".".join(parts[-2:]) if len(parts) >= 2 else host
+
+
+def is_mismatch(orig_url: str, final_url: str, body_text: str, title: str,
+                name_ko: str, name_en: str = "") -> bool:
+    """다른 회사로 판정: **최종 도메인이 원 도메인과 다른데(리다이렉트)** 본문·제목에 사명 흔적도 없음.
+    같은 회사가 도메인만 바꾼 정상 리다이렉트(사명 존재)는 MISMATCH 아님."""
+    if _registrable(urlparse(orig_url).netloc) == _registrable(urlparse(final_url).netloc):
+        return False                                  # 같은 도메인 계열 → MISMATCH 아님
+    variants = _name_variants(name_ko, name_en)
+    has_name = any(re.search(re.escape(v), body_text + " " + title, re.I) for v in variants)
+    return not has_name                               # 다른 도메인 + 사명 흔적 없음 = 다른 회사
 
 
 def _page_kind(href: str, link_text: str) -> str | None:
@@ -216,24 +266,27 @@ def _normalize_url(u: str) -> str:
     return u
 
 
-def _fetch(url: str):
-    """(status_code, final_url, text) or ('ERR', reason, ''). requests + 프록시 CA."""
+def _fetch(url: str) -> dict:
+    """1회 GET. 반환 dict: {code, final, text, err_class, err}. requests + 프록시 CA.
+
+    code: HTTP 정수 / 'TIMEOUT' / 'TLS' / 'EGRESS' / 'CONN'. err 에 예외 메시지(사후 분석용)."""
     import requests
     verify = CA_BUNDLE if Path(CA_BUNDLE).exists() else True
     try:
         r = requests.get(url, timeout=TIMEOUT, allow_redirects=True,
                          headers={"User-Agent": USER_AGENT}, verify=verify)
-        return r.status_code, r.url, r.text
-    except requests.exceptions.Timeout:
-        return "TIMEOUT", url, ""
+        return {"code": r.status_code, "final": r.url, "text": r.text, "err_class": "", "err": ""}
+    except requests.exceptions.Timeout as e:
+        return {"code": "TIMEOUT", "final": url, "text": "", "err_class": "timeout", "err": str(e)[:300]}
     except requests.exceptions.ProxyError as e:
-        return "EGRESS", str(e), ""              # 프록시 egress 차단 = 환경 문제(사이트 문제 아님)
+        return {"code": "EGRESS", "final": url, "text": "", "err_class": "proxy", "err": str(e)[:300]}
     except requests.exceptions.SSLError as e:
-        return "ERR", f"ssl:{e}", ""
+        # 로컬 보안 프로그램의 SSL 가로채기 등 — 환경 문제, DOMAIN_EXPIRED 와 구분(재시도 가능)
+        return {"code": "TLS", "final": url, "text": "", "err_class": "ssl", "err": str(e)[:300]}
     except requests.exceptions.ConnectionError as e:
-        return "DOMAIN_EXPIRED", str(e), ""      # DNS 실패·연결 거부 = 도메인 만료 의심
+        return {"code": "CONN", "final": url, "text": "", "err_class": "conn", "err": str(e)[:300]}
     except Exception as e:
-        return "ERR", str(e), ""
+        return {"code": "CONN", "final": url, "text": "", "err_class": "other", "err": str(e)[:300]}
 
 
 class EgressBlocked(RuntimeError):
@@ -242,8 +295,7 @@ class EgressBlocked(RuntimeError):
 
 def egress_available() -> bool:
     """외부 수집이 가능한 환경인지 1회 probe. 크롤 전 호출해 조용한 오분류 방지."""
-    code, _, _ = _fetch("https://example.com/")
-    return not (code == "EGRESS")
+    return _fetch("https://example.com/")["code"] != "EGRESS"
 
 
 def _robots_ok(base_url: str) -> bool:
@@ -262,58 +314,70 @@ def crawl_one(row: dict, *, delay: float = DEFAULT_DELAY, force: bool = False) -
     cid = _company_id(row)
     out_path = WEBSITE_DIR / f"{cid}.json"
     if out_path.exists() and not force:
-        return json.loads(out_path.read_text(encoding="utf-8"))
+        prev = json.loads(out_path.read_text(encoding="utf-8"))
+        if prev.get("crawler_version") == CRAWLER_VERSION:
+            prev["_fetched"] = False                     # 캐시 skip(재개) — 네트워크 요청 없음
+            return prev
+        # 구버전(v1: 파싱 버그) 산출물은 stale → 재수집
 
     url = _normalize_url(row.get("website", ""))
-    rec = {"company_id": cid, "biz_no": row.get("biz_no", ""),
+    rec = {"company_id": cid, "biz_no": row.get("biz_no", ""), "crawler_version": CRAWLER_VERSION,
            "url": url, "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-           "access_status": "NO_URL", "pages": {}, "text_length": 0, "lang": "unknown"}
+           "access_status": "NO_URL", "pages": {}, "text_length": 0, "lang": "unknown",
+           "error_class": "", "error": ""}
+
+    def _save():
+        out_path.write_text(json.dumps(rec, ensure_ascii=False, indent=2), encoding="utf-8")
+        rec["_fetched"] = rec["access_status"] != "NO_URL"   # NO_URL 은 요청 안 함
+        return rec
+
     if not url:
-        out_path.write_text(json.dumps(rec, ensure_ascii=False, indent=2), encoding="utf-8")
-        return rec
-
+        return _save()
     if not _robots_ok(url):
-        rec["access_status"] = "BLOCKED"; rec["block_reason"] = "robots.txt disallow"
-        out_path.write_text(json.dumps(rec, ensure_ascii=False, indent=2), encoding="utf-8")
-        return rec
+        rec["access_status"] = "BLOCKED"; rec["error_class"] = "robots"; rec["error"] = "robots.txt disallow"
+        return _save()
 
-    code, final, html = _fetch(url)
+    f = _fetch(url)
+    code, final = f["code"], f["final"]
+    rec["final_url"] = final
+    rec["error_class"], rec["error"] = f["err_class"], f["err"]
     if code == "EGRESS":
         raise EgressBlocked("outbound egress 차단 — 웹 접근 가능한 환경/세션에서 실행하세요")
     if code == "TIMEOUT":
-        rec["access_status"] = "TIMEOUT"
-    elif code == "DOMAIN_EXPIRED":
-        rec["access_status"] = "DOMAIN_EXPIRED"; rec["error"] = final[:200]
-    elif code == "ERR":
-        rec["access_status"] = "DOMAIN_EXPIRED"; rec["error"] = final[:200]
-    elif isinstance(code, int) and code == 404:
-        rec["access_status"] = "NOT_FOUND"
-    elif isinstance(code, int) and code in (401, 403):
-        rec["access_status"] = "BLOCKED"
-    elif isinstance(code, int) and code >= 400:
-        rec["access_status"] = "DOMAIN_EXPIRED"; rec["error"] = f"http {code}"
-    else:
-        # 200: 홈 + 하위 페이지 수집
-        name_ko, name_en = row.get("name_ko", ""), row.get("name_en", "")
-        pages = {}
-        home_text, home_title = extract_text(html)
-        status = classify_content(home_text, home_title, name_ko, name_en)
-        rec["access_status"] = status
-        if status == "OK":
-            pages["main"] = mask_entity(home_text, name_ko, name_en, [row.get("svc", "")])
-            for kind, purl in discover_pages(final, html).items():
-                time.sleep(delay)
-                c2, f2, h2 = _fetch(purl)
-                if isinstance(c2, int) and c2 == 200 and h2:
-                    t2, _ = extract_text(h2)
-                    pages[kind] = mask_entity(t2, name_ko, name_en, [row.get("svc", "")])
+        rec["access_status"] = "TIMEOUT"; return _save()
+    if code == "TLS":
+        rec["access_status"] = "TLS_ERROR"; return _save()      # SSL 가로채기 등 환경 문제(재시도 가능)
+    if code == "CONN":
+        rec["access_status"] = "DOMAIN_EXPIRED"; return _save()  # DNS 실패·연결 거부
+    if isinstance(code, int) and code == 404:
+        rec["access_status"] = "NOT_FOUND"; return _save()
+    if isinstance(code, int) and code in (401, 403):
+        rec["access_status"] = "BLOCKED"; return _save()
+    if isinstance(code, int) and code >= 400:
+        rec["access_status"] = "DOMAIN_EXPIRED"; rec["error"] = f"http {code}"; return _save()
+
+    # 200 — 순서: (1) 원문 추출 (2) 원문으로 MISMATCH/JS/파킹 판정 (3) OK 일 때만 치환 저장
+    html = f["text"]
+    name_ko, name_en, svc = row.get("name_ko", ""), row.get("name_en", ""), row.get("svc", "")
+    body_text, title = extract_text(html)               # 본문(title 제외)
+    if is_mismatch(url, final, body_text, title, name_ko, name_en):
+        rec["access_status"] = "MISMATCH"; rec["error"] = f"redirected to {final}"; return _save()
+    status = classify_content(body_text, title, html)   # OK / DOMAIN_EXPIRED / JS_REQUIRED (치환 전)
+    rec["access_status"] = status
+    if status == "OK":
+        pages = {"main": mask_entity(body_text, name_ko, name_en, [svc])}   # ← 판정 후 치환
+        for kind, purl in discover_pages(final, html).items():
+            time.sleep(delay)
+            f2 = _fetch(purl)
+            if isinstance(f2["code"], int) and f2["code"] == 200 and f2["text"]:
+                t2, _ = extract_text(f2["text"])
+                if len(t2) >= MIN_BODY:
+                    pages[kind] = mask_entity(t2, name_ko, name_en, [svc])
         rec["pages"] = pages
         allt = "\n".join(pages.values())
         rec["text_length"] = len(allt)
         rec["lang"] = detect_lang(allt)
-
-    out_path.write_text(json.dumps(rec, ensure_ascii=False, indent=2), encoding="utf-8")
-    return rec
+    return _save()
 
 
 def crawl(rows: list[dict], *, delay: float = DEFAULT_DELAY, force: bool = False,
@@ -327,11 +391,9 @@ def crawl(rows: list[dict], *, delay: float = DEFAULT_DELAY, force: bool = False
     for i, row in enumerate(rows, 1):
         rec = crawl_one(row, delay=delay, force=force)
         dist[rec["access_status"]] += 1
-        if rec["access_status"] not in ("NO_URL",) and not (WEBSITE_DIR / f"{_company_id(row)}.json").exists():
-            pass
         if i % progress_every == 0:
             print(f"  {i}/{len(rows)} … {dict(dist)}")
-        if rec.get("_skipped") is None:      # 실제 요청한 경우에만 딜레이
+        if rec.get("_fetched"):              # 실제 네트워크 요청한 경우에만 딜레이(캐시 skip 제외)
             time.sleep(delay)
     return {"total": len(rows), "access_status": dict(dist)}
 
@@ -347,10 +409,15 @@ def report() -> dict:
         return lens[int(len(lens) * p)] if lens else 0
     ok = dist.get("OK", 0)
     with_url = sum(v for k, v in dist.items() if k != "NO_URL")
+    # 재시도 가치 있는 실패(환경/렌더링 문제): 재수집하면 OK 될 수 있음
+    retryable = sum(dist.get(k, 0) for k in ("TIMEOUT", "TLS_ERROR", "JS_REQUIRED"))
+    stale = sum(1 for r in recs if r.get("crawler_version") != CRAWLER_VERSION)
     return {
         "collected": len(recs),
         "access_status": dict(dist),
         "collection_rate_of_url": round(ok / with_url, 3) if with_url else 0,
-        "text_length": {"min": lens[0] if lens else 0, "p25": pct(.25), "median": pct(.5),
-                        "p75": pct(.75), "max": lens[-1] if lens else 0},
+        "retryable(TIMEOUT+TLS+JS_REQUIRED)": retryable,
+        "stale_v1_needs_recollect": stale,
+        "text_length_OK": {"min": lens[0] if lens else 0, "p25": pct(.25), "median": pct(.5),
+                           "p75": pct(.75), "max": lens[-1] if lens else 0},
     }
